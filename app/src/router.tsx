@@ -1,11 +1,22 @@
 import { createBrowserRouter, } from "react-router-dom";
-import Landing from './App.tsx'
+import Landing from "./views/Landing";
+import MainPage from "./layouts/MainPage";
 
 const router = createBrowserRouter([
 
 	{
+
 		path : "/",
-		element : <Landing/>
+		element : <MainPage/>,
+		children : [
+
+			{
+				index : true,
+				element : <Landing/>
+			},
+
+		]
+
 	},
 
 ]);
