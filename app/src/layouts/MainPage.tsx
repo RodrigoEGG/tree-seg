@@ -1,8 +1,6 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { FilesTable } from "@/components/files-table";
 import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Outlet } from "react-router-dom";
-
+import {SidebarProvider } from "@/components/ui/sidebar";
 export default function MainPage() {
 
 	return (
@@ -17,13 +15,11 @@ export default function MainPage() {
 
 					<div className="flex flex-1">
 
-						<AppSidebar />
+						<div className="flex-1 ml-8 mr-8">
 
-						<SidebarInset>
+							<FilesTable />
 
-							<Outlet/>
-
-						</SidebarInset>
+						</div>
 
 					</div>
 

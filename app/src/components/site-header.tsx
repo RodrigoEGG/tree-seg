@@ -1,28 +1,29 @@
-import { SidebarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { useSidebar } from "@/components/ui/sidebar"
-import UploadDataModal from "@/components/ui/modal"
+import { TreePine } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import UploadDataModal from "./ui/modal";
 
 export function SiteHeader() {
-  const { toggleSidebar } = useSidebar()
-
   return (
-    <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
-      <div className="flex h-[--header-height] w-full items-center gap-2 px-4">
-        <Button
-          className="h-8 w-8"
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-        >
-          <SidebarIcon />
-        </Button>
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Button className="ml-auto">Export Data</Button>
-        <UploadDataModal/>
-        
+    <header className="sticky top-0 z-50 w-full border-b bg-background">
+      <div className="flex h-[50px] items-center px-6 space-x-6">
+        {/* Logo y nombre */}
+        <div className="flex items-center space-x-2">
+          <TreePine className="h-6 w-6" />
+          <span className="font-semibold text-lg">TreeSeg</span>
+        </div>
+
+        {/* Menú de navegación */}
+        <nav className="flex space-x-6 text-sm">
+          <Button variant="link" className="font-semibold underline">
+            View Files
+          </Button>
+          <Button variant="link" className="text-muted-foreground">
+            Export Data
+          </Button>
+          <UploadDataModal/>
+          
+        </nav>
       </div>
     </header>
-  )
+  );
 }

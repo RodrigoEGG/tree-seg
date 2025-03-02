@@ -20,7 +20,7 @@ const UploadDataModal: React.FC = () => {
 
   return (
     <>
-      <Button onClick={showModal}>
+      <Button variant="link" className="text-muted-foreground" onClick={showModal}>
         Upload Data
       </Button>
       <Modal title="Upload your Files" 
