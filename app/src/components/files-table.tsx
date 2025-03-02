@@ -11,19 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, Loader2, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, Loader2 } from "lucide-react"
 import { CheckedState } from "@radix-ui/react-checkbox"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { FileRecord } from "@/interfaces/file-record"
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -33,7 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Separator } from "@radix-ui/react-separator"
 
 const data: FileRecord[] = [
     {

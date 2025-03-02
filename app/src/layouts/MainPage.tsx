@@ -1,9 +1,6 @@
-import { AppSidebar } from "@/components/app-sidebar";
 import { FilesTable } from "@/components/files-table";
 import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Outlet } from "react-router-dom";
-
+import {SidebarProvider } from "@/components/ui/sidebar";
 export default function MainPage() {
 
 	return (
