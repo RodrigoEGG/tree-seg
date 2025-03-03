@@ -1,6 +1,6 @@
-import { FilesTable } from "@/components/files-table";
 import { SiteHeader } from "@/components/site-header";
 import {SidebarProvider } from "@/components/ui/sidebar";
+import { Outlet } from "react-router-dom";
 export default function MainPage() {
 
 	return (
@@ -15,11 +15,9 @@ export default function MainPage() {
 
 					<div className="flex flex-1">
 
-						<div className="flex-1 ml-8 mr-8">
 
-							<FilesTable />
+						<Outlet/>
 
-						</div>
 
 					</div>
 
