@@ -24,12 +24,15 @@ export default function Viewer(){
 		const potree = new Potree();
 
 		const pointClouds : PointCloudOctree[] = [];
-		const baseUrl = "/output/";
+		const baseUrl = "/original/";
 
 		potree
 		.loadPointCloud("metadata.json", (relativeUrl) => `${baseUrl}${relativeUrl}`)
 		.then((pco) => {
-			pco.material.size = 0.01;
+			pco.material.size = 0.5;
+			pco.position.x += 3;
+			pco.position.y -= 3;
+			pco.position.z += 4;
 			pointClouds.push(pco);
 			scene.add(pco);
 		});

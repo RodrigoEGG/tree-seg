@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Menu from "./components/Menu";
 import Viewer from "./tabs/viewer/Viewer";
 import Stats from "./tabs/stats/Stats";
+import Seg from "./tabs/seg/Seg";
 
 
 export default function Visualization() {
@@ -22,11 +23,16 @@ export default function Visualization() {
 
                             <TabsList className="bg-white">
                                 <TabsTrigger value="viewer">Visualization</TabsTrigger>
+                                <TabsTrigger value="seg">Segmentation</TabsTrigger>
                                 <TabsTrigger value="stats">Statistics</TabsTrigger>
                             </TabsList>
 
                             <TabsContent value="viewer">
                                 <Viewer/>
+                            </TabsContent>
+
+                            <TabsContent value="seg">
+                                <Seg/>
                             </TabsContent>
 
                             <TabsContent value="stats">
