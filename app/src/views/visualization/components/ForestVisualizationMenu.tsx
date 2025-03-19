@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Eye, Palette } from "lucide-react";
-import { MetadataMenu } from "./MetadataMenu";
 
 export default function ForestVisualizationMenu() {
 
@@ -35,9 +34,6 @@ export default function ForestVisualizationMenu() {
                             </div>
 
                         </div>
-                        
-                        <MetadataMenu/>
-
                 </div>
 
             </div>
