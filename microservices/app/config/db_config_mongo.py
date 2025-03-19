@@ -3,7 +3,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import dotenv_values
 
-def connect_to_db():
+def connect_to_db_mongo():
     # Load the environment variables
     CONFIG = dotenv_values(".env")
 
