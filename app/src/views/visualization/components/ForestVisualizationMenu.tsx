@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Eye, Palette } from "lucide-react";
 
-export default function Menu() {
+export default function ForestVisualizationMenu() {
 
     return (
         <>
