@@ -2,7 +2,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ForestVisualizationMenu from "./components/ForestVisualizationMenu";
 import Viewer from "./tabs/viewer/Viewer";
 import Stats from "./tabs/stats/Stats";
-import Seg from "./tabs/seg/Seg";
 
 
 export default function Visualization() {
@@ -30,9 +29,6 @@ export default function Visualization() {
                                 <Viewer/>
                             </TabsContent>
 
-                            <TabsContent value="seg">
-                                <Seg/>
-                            </TabsContent>
 
                             <TabsContent value="stats">
                                 <Stats />
