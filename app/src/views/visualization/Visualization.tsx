@@ -1,7 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ForestVisualizationMenu from "./components/ForestVisualizationMenu";
-import Viewer from "./tabs/viewer/Viewer";
-import Stats from "./tabs/stats/Stats";
+import Viewer from "./components/Viewer";
+
 
 
 export default function Visualization() {
@@ -17,25 +16,7 @@ export default function Visualization() {
 
                     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
 
-                        <Tabs defaultValue="viewer" className="w-screen h-screen">
-
-                            <TabsList className="bg-white">
-                                <TabsTrigger value="viewer">Visualization</TabsTrigger>
-                                <TabsTrigger value="seg">Segmentation</TabsTrigger>
-                                <TabsTrigger value="stats">Statistics</TabsTrigger>
-                            </TabsList>
-
-                            <TabsContent value="viewer">
-                                <Viewer/>
-                            </TabsContent>
-
-
-                            <TabsContent value="stats">
-                                <Stats />
-                            </TabsContent>
-
-                        </Tabs>
-
+                        <Viewer/>
 
                     </main>
                 </div>
