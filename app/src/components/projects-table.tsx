@@ -1,4 +1,5 @@
 import * as React from "react"
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -122,10 +123,10 @@ const data: ProjectRecord[] = [
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
-          <Link to={`/projects/${row.getValue("project_id")}`}>
+          <Link to="/">
             <Button variant="secondary" size="sm">View</Button>
           </Link>
-          <Button variant="secondary" size="sm">Edit</Button>
+          <Button variant="ghost" size="sm">Edit</Button>
           <Button variant="ghost" size="sm">Delete</Button>
         </div>
       ),
