@@ -1,26 +1,62 @@
+import { useState } from "react";
 import { TreePine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UploadDataModal from "./ui/modal";
+import { Link } from "react-router-dom";
 
 export function SiteHeader() {
+  const [activeButton, setActiveButton] = useState("View Projects"); // Default active button
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="flex h-[50px] items-center px-6 space-x-6">
-        {/* Logo y nombre */}
-        <div className="flex items-center space-x-2">
-          <TreePine className="h-6 w-6" />
-          <span className="font-semibold text-lg">TreeSeg</span>
-        </div>
+        {/* Logo and Name */}
+        <Link to="/projects">
+          <div className="flex items-center space-x-2">
+            <TreePine className="h-6 w-6" />
+            <span className="font-semibold text-lg">TreeSeg</span>
+          </div>
+        </Link>
 
-        {/* Menú de navegación */}
+        {/* Navigation Menu */}
         <nav className="flex space-x-6 text-sm">
-          <Button variant="link" className="font-semibold underline">
-            View Files
-          </Button>
-          <Button variant="link" className="text-muted-foreground">
+          <Link to="/projects">
+            <Button
+              variant="link"
+              onClick={() => setActiveButton("View Projects")}
+              className={
+                activeButton === "View Projects"
+                  ? "font-bold text-foreground" // Active: Bold and normal color
+                  : "text-muted-foreground"   // Inactive: Normal weight and muted color
+              }
+            >
+              View Projects
+            </Button>
+          </Link>
+
+          <Button
+            variant="link"
+            onClick={() => setActiveButton("Export Data")}
+            className={
+              activeButton === "Export Data"
+                ? "font-bold text-foreground"
+                : "text-muted-foreground"
+            }
+          >
             Export Data
           </Button>
-          <UploadDataModal/>
+          
+          <Button
+            variant="link"
+            onClick={() => setActiveButton("Upload Data")}
+            className={
+              activeButton === "Upload Data"
+                ? "font-bold text-foreground"
+                : "text-muted-foreground"
+            }
+          >
+            <UploadDataModal />
+          </Button>
           
         </nav>
       </div>

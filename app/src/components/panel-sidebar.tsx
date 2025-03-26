@@ -7,7 +7,7 @@ export default function ProjectsPanel() {
             <div className="flex h-full max-h-screen flex-col gap-2">
                 <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
                     <div className="flex items-center">
-                        <h1 className="text-lg font-semibold">Project panel</h1>
+                        <h1 className="text-lg font-semibold"> </h1>
                     </div>
                 </div>
             </div>
