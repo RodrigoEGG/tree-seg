@@ -7,6 +7,7 @@ const ViewerContext = createContext<ViewerContextType | undefined>(undefined);
 export const ViewerProvider: React.FC = ({ children }) => {
   const potreeContainerRef = useRef<HTMLDivElement | null>(null);
   const [viewer, setViewer] = useState<any>(null);
+  const [markers, setMarkers] = useState<any>([]);
 
   useEffect(() => {
     if (!window.Potree) {
@@ -41,7 +42,7 @@ export const ViewerProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <ViewerContext.Provider value={{ viewer, setViewer, potreeContainerRef }}>
+    <ViewerContext.Provider value={{ viewer, setViewer, potreeContainerRef , markers, setMarkers}}>
       {children}
     </ViewerContext.Provider>
   );

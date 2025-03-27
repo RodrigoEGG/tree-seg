@@ -7,36 +7,36 @@ import {
 import Markers from "./Markers"
 
 export default function Annotations() {
-  return (
+	return (
 
-    <div className="w-full">
+		<div className="w-full">
 
 
-        <Tabs defaultValue="marker" className="w-full h-full">
+			<Tabs defaultValue="marker" className="w-full h-full">
 
-            <TabsList className="bg-white">
+				<TabsList className="bg-white">
 
-                <TabsTrigger value="marker">Marker</TabsTrigger>
-                <TabsTrigger value="seg">Distance</TabsTrigger>
-                <TabsTrigger value="stats">Volume</TabsTrigger>
-                <TabsTrigger value="cirfumference">Circumference</TabsTrigger>
+					<TabsTrigger value="marker">Marker</TabsTrigger>
+					<TabsTrigger value="seg">Distance</TabsTrigger>
+					<TabsTrigger value="stats">Volume</TabsTrigger>
+					<TabsTrigger value="cirfumference">Circumference</TabsTrigger>
 
-            </TabsList>
+				</TabsList>
 
-            <TabsContent value="marker">
+				<TabsContent value="marker">
 
-                <Markers/>
+					<Markers/>
 
-            </TabsContent>
+				</TabsContent>
 
-            <TabsContent value="password">
+				<TabsContent value="password">
 
-                <a>aaa</a>
+					<a>aaa</a>
 
-            </TabsContent>
+				</TabsContent>
 
-        </Tabs>
+			</Tabs>
 
-    </div>
-  )
+		</div>
+	)
 }

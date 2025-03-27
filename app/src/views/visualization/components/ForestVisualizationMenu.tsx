@@ -11,9 +11,13 @@ import {
 } from "@/components/ui/select";
 import { useViewer } from "@/context/ViewerProvider";
 import { useState } from "react";
+import SelectMarker from "./SelectMarker";
+import SelectVolume from "./SelectVolume";
+import SelectDistance from "./SelectDistance";
+import SelectCircumference from "./SelectCircumference";
 
 export default function ForestVisualizationMenu() {
-  const { viewer, setViewer, potreeContainerRef } = useViewer();
+  const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
   const [attr, setAttr] = useState<string>("rgba");
 
   const handleAttrChange = (newAttr: string) => {
@@ -79,7 +83,12 @@ export default function ForestVisualizationMenu() {
 		maxMarkers: 1,
 		name: 'Point'});
 
-    console.log("Measurement started:", measurement);
+    setMarkers((prevMarkers) => [...prevMarkers,measurement]);
+
+
+
+
+
   };
 
 
@@ -137,7 +146,7 @@ export default function ForestVisualizationMenu() {
 
 
   return (
-    <div className="hidden border-r md:block">
+    <div className="hidden border-r md:block overflow-scroll">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
           <div className="flex items-center">
@@ -188,6 +197,17 @@ export default function ForestVisualizationMenu() {
               Circumference
             </Button>
           </div>
+        </div>
+        <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
+          <div className="flex items-center">
+            <h1 className="text-lg font-semibold">Annotations</h1>
+          </div>
+
+          <div className="my-2">
+            <SelectMarker/>
+          </div>
+
+
         </div>
       </div>
     </div>
