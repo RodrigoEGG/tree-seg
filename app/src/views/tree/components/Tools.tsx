@@ -1,20 +1,25 @@
 // @ts-nocheck
-import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useViewer } from "@/context/ViewerProvider";
-import { useState } from "react";
-import SelectMarker from "./SelectMarker";
+	Bird,
+	Rabbit,
+	Turtle,
+  } from "lucide-react"
+  
+  import { Input } from "@/components/ui/input"
+  import { Label } from "@/components/ui/label"
+  import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+  } from "@/components/ui/select"
+import { useTree } from "@/context/TreeProvider"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
 
-export default function ForestVisualizationMenu() {
-  const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
+export default function(){
+  const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useTree();
   const [attr, setAttr] = useState<string>("rgba");
 
   const handleAttrChange = (newAttr: string) => {
@@ -141,40 +146,23 @@ export default function ForestVisualizationMenu() {
     console.log("Measurement started:", measurement);
   };
 
+	return (
+		<>
 
-  return (
-    <div className="hidden border-r md:block overflow-scroll">
-      <div className="flex h-full max-h-screen flex-col gap-2">
-        <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold">Tools</h1>
-          </div>
-
-          <div className="mt-4">
-            <Select value={attr} onValueChange={handleAttrChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a color scheme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Scalar fields</SelectLabel>
-                  <SelectItem value="rgba">RGBA</SelectItem>
-                  <SelectItem value="intensity">Intensity</SelectItem>
-                  <SelectItem value="elevation">Elevation</SelectItem>
-                  <SelectItem value="classification">Classification</SelectItem>
-                  <SelectItem value="final_segs">Segmentation</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="mt-4">
-            <Button className="w-full bg-gray-300 text-black hover:text-white shadow-lg" onClick={startPointMeasurement}>
+			<fieldset className="grid gap-6 rounded-lg border p-4">
+						<legend className="-ml-1 px-1 text-sm font-medium">
+							Tools
+						</legend>
+						<div className="grid py-2 items-start px-2 text-sm font-medium lg:px-4">
+						<div className="mt-4">
+            <Button
+              className="w-full bg-gray-300 text-black hover:text-white shadow-lg"
+              onClick={startPointMeasurement}
+            >
               Marker
             </Button>
           </div>
-
-          <div className="mt-4">
+						<div className="mt-4">
             <Button
               className="w-full bg-gray-300 text-black hover:text-white shadow-lg"
               onClick={startDistanceMeasurement}
@@ -194,19 +182,9 @@ export default function ForestVisualizationMenu() {
               Circumference
             </Button>
           </div>
-        </div>
-        <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold">Annotations</h1>
-          </div>
+						</div>
 
-          <div className="my-2">
-            <SelectMarker/>
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-  );
+					</fieldset>
+		</>
+	)
 }
