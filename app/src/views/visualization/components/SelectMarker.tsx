@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/select";
 import { useViewer } from "@/context/ViewerProvider";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 export default function SelectMarker() {
+
+	const navigate = useNavigate();
 
 	const [ id, setId] =useState(undefined);
 
@@ -21,11 +24,13 @@ export default function SelectMarker() {
 		if (id == markers.length-1) {
 
 			Swal.fire({
+
 				title: 'Error!',
 				text: 'Could not retreive the data',
 				icon: 'error',
-				confirmButtonText: 'Cool'
-			})
+				showCancelButton: true,
+
+        	})
 
 		}else{
 
@@ -43,8 +48,14 @@ export default function SelectMarker() {
 				title: 'Info',
 				html: s,
 				icon: 'info',
-				confirmButtonText: 'Cool'
+				showCancelButton: true,
+				confirmButtonText: 'Visualize tree'
+			}).then((result) => {
+            if (result.isConfirmed) {
+                navigate(`/visualization/tree/${markers[id].points[0].final_segs[0]}`);
+            }
 			})
+
 
 
 
