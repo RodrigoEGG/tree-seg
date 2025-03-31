@@ -57616,6 +57616,7 @@ uniform vec2 elevationRange;
 uniform vec2 intensityRange;
 
 uniform vec2 uFilterReturnNumberRange;
+uniform vec2 uFilterSegmentation;
 uniform vec2 uFilterNumberOfReturnsRange;
 uniform vec2 uFilterPointSourceIDClipRange;
 uniform vec2 uFilterGPSTimeClipRange;
@@ -58295,6 +58296,17 @@ void doClipping(){
 		vec2 range = uFilterReturnNumberRange;
 		if(returnNumber < range.x || returnNumber > range.y){
 			gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
+			
+			return;
+		}
+	}
+	#endif
+
+	#if defined(clip_segmentation_enabled)
+	{ // return segmentation
+		vec2 range = uFilterSegmentation;
+		if(returnNumber < range.x || returnNumber > range.y){
+			discard;
 			
 			return;
 		}
@@ -59138,7 +59150,9 @@ void main() {
 				returnNumber: { type: 'f', value: [] },
 				numberOfReturns: { type: 'f', value: [] },
 				pointSourceID: { type: 'f', value: [] },
-				indices: { type: 'fv', value: [] }
+				indices: { type: 'fv', value: [] },
+				final_segs: { type: 'fv', value: [] }
+
 			};
 
 			this.uniforms = {
@@ -59207,6 +59221,7 @@ void main() {
 				uExtraGammaBrightContr:	{ type: "3fv", value: [1, 0, 0] },
 
 				uFilterReturnNumberRange:		{ type: "fv", value: [0, 7]},
+				uFilterSegmentation:		{ type: "fv", value: [0, 7]},
 				uFilterNumberOfReturnsRange:	{ type: "fv", value: [0, 7]},
 				uFilterGPSTimeClipRange:		{ type: "fv", value: [0, 7]},
 				uFilterPointSourceIDClipRange:		{ type: "fv", value: [0, 65535]},
@@ -60956,6 +60971,7 @@ void main() {
 				pickMaterial.shape = Potree.PointShape.PARABOLOID;
 
 				pickMaterial.uniforms.uFilterReturnNumberRange.value = this.material.uniforms.uFilterReturnNumberRange.value;
+				pickMaterial.uniforms.uFilterSegmentation.value = this.material.uniforms.uFilterSegmentation.value;
 				pickMaterial.uniforms.uFilterNumberOfReturnsRange.value = this.material.uniforms.uFilterNumberOfReturnsRange.value;
 				pickMaterial.uniforms.uFilterGPSTimeClipRange.value = this.material.uniforms.uFilterGPSTimeClipRange.value;
 				pickMaterial.uniforms.uFilterPointSourceIDClipRange.value = this.material.uniforms.uFilterPointSourceIDClipRange.value;
@@ -63298,12 +63314,14 @@ void main() {
 
 				{
 					let uFilterReturnNumberRange = material.uniforms.uFilterReturnNumberRange.value;
+					let uFilterSegmentation = material.uniforms.uFilterSegmentation.value;
 					let uFilterNumberOfReturnsRange = material.uniforms.uFilterNumberOfReturnsRange.value;
 					let uFilterPointSourceIDClipRange = material.uniforms.uFilterPointSourceIDClipRange.value;
 					
 					
 					
 					shader.setUniform2f("uFilterReturnNumberRange", uFilterReturnNumberRange);
+					shader.setUniform2f("uFilterSegmentation", uFilterSegmentation);
 					shader.setUniform2f("uFilterNumberOfReturnsRange", uFilterNumberOfReturnsRange);
 					shader.setUniform2f("uFilterPointSourceIDClipRange", uFilterPointSourceIDClipRange);
 				}
@@ -63497,6 +63515,10 @@ void main() {
 						if(attributes["return number"]){
 							defines.push("#define clip_return_number_enabled");
 						}
+
+						//if(attributes["final_segs"]){
+						//	defines.push("#define clip_segmentation_enabled");
+						//}
 
 						if(attributes["number of returns"]){
 							defines.push("#define clip_number_of_returns_enabled");
@@ -70869,6 +70891,7 @@ void main() {
 					depthMaterial.classificationTexture.needsUpdate = true;
 
 					depthMaterial.uniforms.uFilterReturnNumberRange.value = material.uniforms.uFilterReturnNumberRange.value;
+					depthMaterial.uniforms.uFilterSegmentation.value = material.uniforms.uFilterSegmentation.value;
 					depthMaterial.uniforms.uFilterNumberOfReturnsRange.value = material.uniforms.uFilterNumberOfReturnsRange.value;
 					depthMaterial.uniforms.uFilterGPSTimeClipRange.value = material.uniforms.uFilterGPSTimeClipRange.value;
 					depthMaterial.uniforms.uFilterPointSourceIDClipRange.value = material.uniforms.uFilterPointSourceIDClipRange.value;
@@ -70912,6 +70935,7 @@ void main() {
 					attributeMaterial.classificationTexture.needsUpdate = true;
 
 					attributeMaterial.uniforms.uFilterReturnNumberRange.value = material.uniforms.uFilterReturnNumberRange.value;
+					depthMaterial.uniforms.uFilterSegmentation.value = material.uniforms.uFilterSegmenation.value;
 					attributeMaterial.uniforms.uFilterNumberOfReturnsRange.value = material.uniforms.uFilterNumberOfReturnsRange.value;
 					attributeMaterial.uniforms.uFilterGPSTimeClipRange.value = material.uniforms.uFilterGPSTimeClipRange.value;
 					attributeMaterial.uniforms.uFilterPointSourceIDClipRange.value = material.uniforms.uFilterPointSourceIDClipRange.value;
@@ -87932,6 +87956,7 @@ ENDSEC
 			this.elevationGradientRepeat = ElevationGradientRepeat.CLAMP;
 
 			this.filterReturnNumberRange = [0, 7];
+			this.filterSegmentation = [0, 65535];
 			this.filterNumberOfReturnsRange = [0, 7];
 			this.filterGPSTimeRange = [-Infinity, Infinity];
 			this.filterPointSourceIDRange = [0, 65535];
@@ -88501,6 +88526,11 @@ ENDSEC
 		setFilterReturnNumberRange(from, to){
 			this.filterReturnNumberRange = [from, to];
 			this.dispatchEvent({'type': 'filter_return_number_range_changed', 'viewer': this});
+		}
+
+		setFilterSegmentation(from, to){
+			this.filterSegmentation = [from, to];
+			this.dispatchEvent({'type': 'filter_segmentation', 'viewer': this});
 		}
 
 		setFilterNumberOfReturnsRange(from, to){
@@ -89419,6 +89449,7 @@ ENDSEC
 				let material = pointcloud.material;
 
 				material.uniforms.uFilterReturnNumberRange.value = this.filterReturnNumberRange;
+				material.uniforms.uFilterSegmentation.value = this.filterSegmenation;
 				material.uniforms.uFilterNumberOfReturnsRange.value = this.filterNumberOfReturnsRange;
 				material.uniforms.uFilterGPSTimeClipRange.value = this.filterGPSTimeRange;
 				material.uniforms.uFilterPointSourceIDClipRange.value = this.filterPointSourceIDRange;

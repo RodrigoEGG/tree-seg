@@ -162,7 +162,7 @@ export default function ForestVisualizationMenu() {
                   <SelectItem value="intensity">Intensity</SelectItem>
                   <SelectItem value="elevation">Elevation</SelectItem>
                   <SelectItem value="classification">Classification</SelectItem>
-                  <SelectItem value="final_segs">Segmentation</SelectItem>
+                  <SelectItem value="point source id">Segmentation</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

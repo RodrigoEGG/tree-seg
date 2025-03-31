@@ -23,7 +23,7 @@ const router = createBrowserRouter([
 				element : <Visualization/>
 			},
 			{
-				path : "/visualization/tree",
+				path : "/visualization/tree/:id",
 				element : <Tree/>
 			}
 		]

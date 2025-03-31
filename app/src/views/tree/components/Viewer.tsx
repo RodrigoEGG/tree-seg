@@ -14,11 +14,7 @@ const Wrapper = styled.div`
 
 export default function Viewer(){
 	const { viewer, setViewer, potreeContainerRef } = useTree();
-	useEffect(()=>{
-		if(viewer!=undefined){
-			console.log(viewer)
-		}
-	},[viewer])
+
 	return (
 		<>
 			<div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
