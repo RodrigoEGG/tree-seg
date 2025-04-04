@@ -78,6 +78,7 @@ cd <project_directory>/app
 4. Install dependencies:
 ```bash
 npm install
+npm install potree-core
 ```
 
 5. Running the Frontend
