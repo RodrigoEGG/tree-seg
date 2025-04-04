@@ -5,7 +5,7 @@ import UploadDataModal from "./ui/modal";
 import { Link } from "react-router-dom";
 
 export function SiteHeader() {
-  const [activeButton, setActiveButton] = useState("View Projects"); // Default active button
+  const [activeButton, setActiveButton] = useState("TreeSeg"); // Default active button
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -68,7 +68,7 @@ export function SiteHeader() {
                 : "text-muted-foreground"
             }
           >
-            Upload Data
+            <UploadDataModal />
           </Button>
         </nav>
       </div>
