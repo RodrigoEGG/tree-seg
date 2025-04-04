@@ -1,4 +1,3 @@
-import { FilesTable } from "@/components/files-table";
 export default function Landing() {
 
     return (
@@ -7,7 +6,6 @@ export default function Landing() {
 
             <div className="flex-1 ml-8 mr-8">
 
-                <FilesTable />
 
             </div>
 

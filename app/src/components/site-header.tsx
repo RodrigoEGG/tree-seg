@@ -11,10 +11,23 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="flex h-[50px] items-center px-6 space-x-6">
         {/* Logo and Name */}
-        <Link to="/projects">
-          <div className="flex items-center space-x-2">
-            <TreePine className="h-6 w-6" />
-            <span className="font-semibold text-lg">TreeSeg</span>
+        <Link to="/">
+          <div
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => setActiveButton("TreeSeg")}
+          >
+            <TreePine
+              className={`h-6 w-6 ${
+                activeButton === "TreeSeg" ? "text-foreground" : "text-muted-foreground"
+              }`}
+            />
+            <span
+              className={`font-semibold text-lg ${
+                activeButton === "TreeSeg" ? "text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              TreeSeg
+            </span>
           </div>
         </Link>
 
@@ -26,8 +39,8 @@ export function SiteHeader() {
               onClick={() => setActiveButton("View Projects")}
               className={
                 activeButton === "View Projects"
-                  ? "font-bold text-foreground" // Active: Bold and normal color
-                  : "text-muted-foreground"   // Inactive: Normal weight and muted color
+                  ? "font-semibold text-foreground" // Active: Bold and normal color
+                  : "text-muted-foreground" // Inactive: Normal weight and muted color
               }
             >
               View Projects
@@ -39,25 +52,24 @@ export function SiteHeader() {
             onClick={() => setActiveButton("Export Data")}
             className={
               activeButton === "Export Data"
-                ? "font-bold text-foreground"
+                ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }
           >
             Export Data
           </Button>
-          
+
           <Button
             variant="link"
             onClick={() => setActiveButton("Upload Data")}
             className={
               activeButton === "Upload Data"
-                ? "font-bold text-foreground"
+                ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }
           >
-            <UploadDataModal />
+            Upload Data
           </Button>
-          
         </nav>
       </div>
     </header>

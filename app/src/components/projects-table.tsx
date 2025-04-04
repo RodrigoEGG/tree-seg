@@ -123,7 +123,7 @@ const data: ProjectRecord[] = [
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
-          <Link to="/">
+          <Link to="/files">
             <Button variant="secondary" size="sm">View</Button>
           </Link>
           <Button variant="ghost" size="sm">Edit</Button>
