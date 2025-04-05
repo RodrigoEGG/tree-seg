@@ -1,5 +1,5 @@
 import { FilesTable } from "@/components/files-table";
-export default function Landing() {
+export default function Files() {
 
     return (
         
