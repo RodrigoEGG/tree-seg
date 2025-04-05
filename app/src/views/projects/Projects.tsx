@@ -7,7 +7,7 @@ export default function Projects() {
             <ProjectsPanel />
             <div className="flex flex-col">
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                    <div className="bg-white rounded-lg shadow-md p-4">
+                    <div className="bg-white rounded-lg shadow-lg p-4">
                         <ProjectTable />
                     </div>
                 </main>

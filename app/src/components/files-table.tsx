@@ -175,7 +175,7 @@ export function FilesTable() {
   })
 
   return (
-    <div className="w-full">
+    <div className="w-full rounded-lg shadow-lg p-4">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter files..."
