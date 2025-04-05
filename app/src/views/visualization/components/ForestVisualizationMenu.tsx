@@ -107,6 +107,7 @@ export default function ForestVisualizationMenu() {
     }
 
 	let volume = viewer.volumeTool.startInsertion(); 
+  console.log(volume)
 
     console.log("Measurement started:", measurement);
   };
