@@ -17,6 +17,7 @@ import { Link } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { ProjectRecord } from "@/interfaces/project-record"
+import EditProjectModal from "@/components/edit-project"
 
 import { Input } from "@/components/ui/input"
 
@@ -81,7 +82,7 @@ const data: ProjectRecord[] = [
           </Button>
         );
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+      cell: ({ row }) => <div><strong>{row.getValue("name")}</strong></div>,
     },
     {
       accessorKey: "description",
@@ -124,10 +125,10 @@ const data: ProjectRecord[] = [
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
           <Link to="/files">
-            <Button variant="secondary" size="sm">View</Button>
+            <Button size="sm">View</Button>
           </Link>
-          <Button variant="ghost" size="sm">Edit</Button>
-          <Button variant="ghost" size="sm">Delete</Button>
+          <EditProjectModal/>
+          <Button variant="secondary" size="sm">Download</Button>
         </div>
       ),
     }    
@@ -173,6 +174,10 @@ export function ProjectTable() {
           }
           className="max-w-sm"
         />
+        <Button
+          className="ml-auto"> 
+            Add New Project
+          </Button>
       </div>
       <div className="rounded-md border">
         <Table>

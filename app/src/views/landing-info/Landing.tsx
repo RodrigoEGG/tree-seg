@@ -116,6 +116,7 @@ export default function Landing() {
                 <section id="team" className="py-16 bg-white">
                     <div className="container mx-auto px-4">
                         <h2 className="text-3xl font-bold text-center mb-12">Meet Our Team</h2>
+                        <p className="text-slate-600 text-center mb-8">This project is the result of a collaborative effort between Linnaeus University (LNU) and Universidad de Monterrey (UDEM).</p>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
                             <Card>
                                 <CardContent className="pt-6 text-center">

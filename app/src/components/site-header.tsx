@@ -49,18 +49,6 @@ export function SiteHeader() {
 
           <Button
             variant="link"
-            onClick={() => setActiveButton("Export Data")}
-            className={
-              activeButton === "Export Data"
-                ? "font-semibold text-foreground"
-                : "text-muted-foreground"
-            }
-          >
-            Export Data
-          </Button>
-
-          <Button
-            variant="link"
             onClick={() => setActiveButton("Upload Data")}
             className={
               activeButton === "Upload Data"
