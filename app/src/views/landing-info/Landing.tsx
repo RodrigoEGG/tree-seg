@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Bell, Tree, Upload, Eye } from "lucide-react";
+import ViewerDemo from "./components/ViewerDemo";
+import { Demo } from "@/context/Demo";
 
 export default function Landing() {
 
@@ -100,6 +102,7 @@ export default function Landing() {
                     </div>
                 </section>
 
+                <Demo>
                 <section id="demo" className="py-16 bg-slate-50">
                     <div className="container mx-auto px-4">
                         <h2 className="text-3xl font-bold text-center mb-12">Try Our Demo</h2>
@@ -107,11 +110,12 @@ export default function Landing() {
                             {/* Demo Viewer Space */}
                             <div className="aspect-video relative">
                                 {/* Placeholder for the actual viewer component */}
-                                
+                                <ViewerDemo />
                             </div>
                         </div>
                     </div>
                 </section>
+                </Demo>
 
                 <section id="team" className="py-16 bg-white">
                     <div className="container mx-auto px-4">
