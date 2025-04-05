@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Menu from "./components/Menu";
+import ForestVisualizationMenu from "./components/ForestVisualizationMenu";
 import Viewer from "./tabs/viewer/Viewer";
 import Stats from "./tabs/stats/Stats";
 import Seg from "./tabs/seg/Seg";
@@ -12,8 +12,7 @@ export default function Visualization() {
 
             <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
 
-                <Menu/>
-
+                <ForestVisualizationMenu/>
 
                 <div className="flex bg-gray-100 flex-col">
 
