@@ -4,6 +4,7 @@ import MainPage from "./layouts/MainPage";
 import Auth from "./layouts/Auth";
 import Login from "./views/login/Login";
 import Visualization from "./views/visualization/Visualization";
+import Tree from "./views/tree/Tree";
 
 const router = createBrowserRouter([
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
 			{
 				path : "/visualization",
 				element : <Visualization/>
+			},
+			{
+				path : "/visualization/tree/:id",
+				element : <Tree/>
 			}
 		]
 
