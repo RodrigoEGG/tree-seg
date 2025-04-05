@@ -3,6 +3,8 @@ import ForestVisualizationMenu from "./components/ForestVisualizationMenu";
 import PointcloudNavigator from "./components/Test";
 import { ViewerProvider } from "@/context/ViewerProvider";
 import Viewer from "./components/Viewer";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar";
 
 
 
@@ -10,26 +12,27 @@ export default function Visualization() {
 
     return (
         <>
-
-            <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-
-                        <ViewerProvider>
-                <ForestVisualizationMenu/>
-
-                <div className="flex bg-gray-100 flex-col">
-
-                    <main className="flex flex-1 flex-col  lg:gap-6 p-4">
-
-
-                            <Viewer/>
+            <SidebarProvider>
 
 
 
+                    <ViewerProvider>
 
-                    </main>
-                </div>
-                        </ViewerProvider>
-            </div>
+                            <AppSidebar/>
+
+                            <main className="flex  bg-gray-100 flex-1 flex-col  w-screen h-screen lg:gap-2 p-2">
+
+                                <SidebarTrigger/>
+
+                                <Viewer/>
+
+                            </main>
+
+
+                    </ViewerProvider>
+
+            </SidebarProvider>
+
         
         </>
     )
