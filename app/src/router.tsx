@@ -6,6 +6,7 @@ import Login from "./views/login/Login";
 import Projects from "./views/projects/Projects";
 import Visualization from "./views/visualization/Visualization";
 import Files from "./views/files/Files";
+import LandingSkeleton from "./layouts/LandingSkeleton";
 
 const router = createBrowserRouter([
 
@@ -15,10 +16,6 @@ const router = createBrowserRouter([
 		element : <MainPage/>,
 		children : [
 
-			{
-				index : true,
-				element : <Landing/>
-			},
 			{
 				path : "/visualization",
 				element : <Visualization/>
@@ -44,6 +41,16 @@ const router = createBrowserRouter([
 				element : <Login/>
 			}
 			
+		]
+	},
+	{
+		path : "/",
+		element : <LandingSkeleton/>,
+		children : [
+			{
+				index : true,
+				element : <Landing/>
+			}
 		]
 	}
 ]);

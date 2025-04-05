@@ -37,7 +37,7 @@ const EditProjectModal: React.FC = () => {
                 footer={false}>
 
                 <form className='flex flex-col gap-6'>
-                    <fieldset>
+                    <fieldset className="space-y-4">
                         <div className="form-group space-y-2">
                             <Label htmlFor="project-name">Project Name:</Label>
                             <Input type="text" id="project-name" placeholder="Name" />
