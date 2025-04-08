@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from microservices.app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
+from app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
 
 # Create a new project
 def create_project(db: Session, project: ProjectCreate):

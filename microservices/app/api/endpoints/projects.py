@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from microservices.app.config.db_config_postgres import connect_to_db_postgres
-from microservices.app.crud.projects.projects import create_project, get_projects, get_project_by_id, get_project_by_name, update_project, update_project_by_name, delete_project, delete_project_by_name
-from microservices.app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
+from app.config.db_config_postgres import connect_to_db_postgres
+from app.crud.projects.projects import create_project, get_projects, get_project_by_id, get_project_by_name, update_project, update_project_by_name, delete_project, delete_project_by_name
+from app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
 
 # Handle HTTP requests for the /projects endpoint with try and except blocks
 router = APIRouter()
