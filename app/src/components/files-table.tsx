@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-table"
 import { ArrowUpDown, Loader2 } from "lucide-react"
 import { CheckedState } from "@radix-ui/react-checkbox"
+import { Link } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -55,7 +56,7 @@ const data: FileRecord[] = [
     },
     {
       fileName: "scan5.las",
-      createdAt: "12-05-2024", // Corregido de "212-05-2024"
+      createdAt: "12-05-2024",
       status: "Failed",
       segmented: false,
     },
@@ -129,7 +130,9 @@ const data: FileRecord[] = [
         cell: ({ row }) => (
             row.getValue("segmented") ? (
                 <div className="flex items-center">
+                  <Link to="/visualization">
                     <Button variant="secondary" size="sm">Visualize</Button>
+                  </Link>
                     <Button variant="ghost" size="sm">Delete</Button>
                 </div>
             ) : (
@@ -172,7 +175,7 @@ export function FilesTable() {
   })
 
   return (
-    <div className="w-full">
+    <div className="w-full rounded-lg shadow-lg p-4">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter files..."
