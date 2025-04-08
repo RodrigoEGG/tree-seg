@@ -8,21 +8,21 @@ router = APIRouter()
 @router.get("/get_all_files")
 async def get_all_files(db: Session = Depends(get_db)):
     try:
-        return crud_files.get_all_files()
+        return crud_files.get_all_files(db)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 @router.get("/get_file/{file_id}")
-async def get_file(db: Session = Depends(get_db), file_id: int):
+async def get_file(file_id: int, db: Session = Depends(get_db)):
     try:
-        return crud_files.get_file(db: Session = Depends(get_db), file_id)
+        return crud_files.get_file(db, file_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 @router.get("/get_project_files/{project_id}")
-async def get_project_files(project_id: int):
+async def get_project_files(project_id: int, db: Session = Depends(get_db)):
     try:
-        return crud_files.get_project_files(db: Session = Depends(get_db), project_id)
+        return crud_files.get_project_files(db, project_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 

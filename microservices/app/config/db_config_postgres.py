@@ -6,7 +6,7 @@ def connect_to_db_postgres():
     # Load environment variables
     CONFIG = dotenv_values(".env")
 
-    DATABASE_URL = CONFIG.get("POSTGRES_URL")
+    DATABASE_URL = CONFIG.get("POSTGRES_CONNECTION_STRING")
 
     if not DATABASE_URL:
         raise ValueError("POSTGRES_URL is not set in the environment variables.")
@@ -14,14 +14,7 @@ def connect_to_db_postgres():
     # Create SQLAlchemy engine
     engine = create_engine(DATABASE_URL)
 
-    # Create a session factory
+    # Create a session factory and return it
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-    # Dependency to get DB session
-    try:
-        db = SessionLocal()
-        print("Connected to PostgreSQL!")
-        return db
-    except Exception as e:
-        print("Failed to connect to PostgreSQL:", e)
-        return None
+    
+    return SessionLocal  # Return the session factory, not a session

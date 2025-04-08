@@ -7,11 +7,6 @@ from app.api.endpoints import projects, files
 api_router = APIRouter()
 
 # Include all endpoint routers with appropriate prefixes and tags
-api_router.include_router(
-    projects.router,
-    prefix="/projects",
-    tags=["projects"]
-)
 
 api_router.include_router(
     files.router,

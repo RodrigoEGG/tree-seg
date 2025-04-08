@@ -1,9 +1,12 @@
 from sqlalchemy.orm import Session
-from .database import SessionLocal
+from app.config.db_config_postgres import connect_to_db_postgres
+
+# Create a session factory once
+SessionLocal = connect_to_db_postgres()
 
 def get_db():
-    db = SessionLocal()
+    db = SessionLocal()  # Create a new session
     try:
-        yield db  # Provide the session
+        yield db
     finally:
-        db.close()  # Ensure the session is closed after use
+        db.close()
