@@ -5,9 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import api_router
 from pymongo import MongoClient
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from dotenv import dotenv_values
-from microservices.app.config.db_config_mongo import connect_to_db_mongo
-from microservices.app.config.db_config_postgres import connect_to_db_postgres, SessionLocal
+from app.config.db_config_mongo import connect_to_db_mongo
+from app.config.db_config_postgres import connect_to_db_postgres
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -39,18 +40,17 @@ def startup_db_client_():
     print("Connected to MongoDB!")
 
     # PostgreSQL
-    app.postgres_db = SessionLocal()
-    print("Connected to PostgreSQL!")
-
+    app.postgres_db = connect_to_db_postgres()
+    if app.postgres_db is None:
+        raise Exception("Failed to connect to PostgreSQL")
+    else:
+        print("Connected to PostgreSQL!")
 
 # Shutdown event
 @app.on_event("shutdown")
 def shutdown_db_client():
     # MongoDB
     app.mongodb_client.close()
-
-    # PostgreSQL
-    app.postgres_db.close()
 
 
 @app.get("/health")
