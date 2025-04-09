@@ -1,0 +1,66 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from app.dependencies.postgres_depends import get_db
+from app.crud.projects.projects import (
+    create_project,
+    get_projects,
+    get_project_by_id,
+    get_project_by_name,
+    update_project,
+    update_project_by_name,
+    delete_project,
+    delete_project_by_name,
+)
+from app.models.project_schema import ProjectCreate, ProjectUpdate, ProjectResponse
+
+router = APIRouter()
+
+@router.post("/", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
+def create_new_project(project: ProjectCreate, db: Session = Depends(get_db)):
+    return create_project(db, project)
+
+@router.get("/", response_model=list[ProjectResponse], status_code=status.HTTP_200_OK)
+def fetch_all_projects(db: Session = Depends(get_db)):
+    return get_projects(db)
+
+@router.get("/{project_id}", response_model=ProjectResponse, status_code=status.HTTP_200_OK)
+def fetch_project_by_id(project_id: int, db: Session = Depends(get_db)):
+    project = get_project_by_id(db, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return project
+
+@router.get("/name/{name}", response_model=ProjectResponse, status_code=status.HTTP_200_OK)
+def fetch_project_by_name(name: str, db: Session = Depends(get_db)):
+    project = get_project_by_name(db, name)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return project
+
+@router.put("/{project_id}", response_model=ProjectResponse, status_code=status.HTTP_200_OK)
+def modify_project_by_id(project_id: int, project: ProjectUpdate, db: Session = Depends(get_db)):
+    updated_project = update_project(db, project_id, project)
+    if not updated_project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return updated_project
+
+@router.put("/name/{name}", response_model=ProjectResponse, status_code=status.HTTP_200_OK)
+def modify_project_by_name(name: str, project: ProjectUpdate, db: Session = Depends(get_db)):
+    updated_project = update_project_by_name(db, name, project)
+    if not updated_project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return updated_project
+
+@router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
+def remove_project_by_id(project_id: int, db: Session = Depends(get_db)):
+    deleted_project = delete_project(db, project_id)
+    if not deleted_project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return None
+
+@router.delete("/name/{name}", status_code=status.HTTP_204_NO_CONTENT)
+def remove_project_by_name(name: str, db: Session = Depends(get_db)):
+    deleted_project = delete_project_by_name(db, name)
+    if not deleted_project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return None

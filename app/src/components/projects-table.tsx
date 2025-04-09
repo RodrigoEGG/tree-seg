@@ -1,4 +1,5 @@
 import * as React from "react"
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,15 +12,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Loader2 } from "lucide-react"
-import { CheckedState } from "@radix-ui/react-checkbox"
+import { ArrowUpDown } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { FileRecord } from "@/interfaces/file-record"
+import { ProjectRecord } from "@/interfaces/project-record"
+import EditProjectModal from "@/components/edit-project"
 
 import { Input } from "@/components/ui/input"
+
 import {
   Table,
   TableBody,
@@ -29,124 +30,112 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const data: FileRecord[] = [
+const data: ProjectRecord[] = [
     {
-      fileName: "scan1.las",
-      createdAt: "15-01-2024",
-      status: "Segmented",
-      segmented: true,
+      project_id: 1,
+      name: "Västerbotten Woodland",
+      description: "A dense boreal forest in northern Sweden, known for its rich biodiversity and reindeer grazing areas.",
+      owner: "Norma Elizondo",
+      date: "2025-03-18"
     },
     {
-      fileName: "scan2.laz",
-      createdAt: "20-02-2024",
-      status: "Segmented",
-      segmented: true,
+      project_id: 2,
+      name: "Dalarna Pine Reserve",
+      description: "A vast pine-dominated region in central Sweden, home to ancient trees and extensive hiking trails.",
+      owner: "Rodrigo Eguiluz",
+      date: "2025-02-10"
     },
     {
-      fileName: "scan3.las",
-      createdAt: "05-03-2024",
-      status: "In Progress",
-      segmented: false,
+      project_id: 3,
+      name: "Småland Forests",
+      description: "Located in southern Sweden, these forests are characterized by a mix of conifers and broadleaf trees.",
+      owner: "Juan Cuevas",
+      date: "2025-01-22"
     },
     {
-      fileName: "scan4.laz",
-      createdAt: "20-04-2024",
-      status: "Segmented",
-      segmented: true,
+      project_id: 4,
+      name: "Gotland Oak Groves",
+      description: "A unique ecosystem on the island of Gotland, featuring ancient oak trees and limestone-rich soil.",
+      owner: "Norma Elizondo",
+      date: "2025-04-05"
     },
     {
-      fileName: "scan5.las",
-      createdAt: "12-05-2024",
-      status: "Failed",
-      segmented: false,
-    },
-  ];
+      project_id: 5,
+      name: "Jämtland Highlands",
+      description: "A high-altitude forested region in western Sweden, offering a mix of spruce, birch, and alpine meadows.",
+      owner: "Rodrigo Eguiluz",
+      date: "2025-03-02"
+    }
+  ];  
   
-  export const columns: ColumnDef<FileRecord>[] = [
+  export const columns: ColumnDef<ProjectRecord>[] = [
     {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value: CheckedState) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(checked: CheckedState) => row.toggleSelected(!!checked)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "fileName",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            File
+            Project Name
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("fileName")}</div>,
+      cell: ({ row }) => <div><strong>{row.getValue("name")}</strong></div>,
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "description",
+      header: "Description",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
+        <div className="capitalize">{row.getValue("description")}</div>
       ),
     },
     {
-      accessorKey: "createdAt",
-      header: () => <div className="text-right">Created At</div>,
-      cell: ({ row }) => {
-        const rawDate = row.getValue("createdAt") as string;
-        const [day, month, year] = rawDate.split("-").map(Number);
-        const date = new Date(year, month - 1, day); // JavaScript usa meses base 0
-  
-        const formatted = date.toLocaleDateString("en-US", {
-          month: "2-digit",
-          day: "2-digit",
-          year: "numeric",
-        });
-  
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
+      accessorKey: "owner",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Owner
+            <ArrowUpDown />
+          </Button>
+        );
+      }
     },
     {
-        accessorKey: "segmented",
-        header: "Segmented",
-        cell: ({ row }) => (
-            row.getValue("segmented") ? (
-                <div className="flex items-center">
-                  <Link to="/visualization">
-                    <Button variant="secondary" size="sm">Visualize</Button>
-                  </Link>
-                    <Button variant="ghost" size="sm">Delete</Button>
-                </div>
-            ) : (
-                <Button disabled variant="outline" size="sm">
-                    <Loader2 className="animate-spin" />
-                    Please wait
-                </Button>
-            )
-        ),
-    }
+      accessorKey: "date",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Date
+            <ArrowUpDown />
+          </Button>
+        );
+      }
+    },
+    {
+      accessorKey: "project_id",
+      header: "Actions",
+      cell: ({ row }) => (
+        <div className="flex items-center space-x-2">
+          <Link to="/files">
+            <Button size="sm">View</Button>
+          </Link>
+          <EditProjectModal/>
+          <Button variant="secondary" size="sm">Download</Button>
+        </div>
+      ),
+    }    
   ];
   
 
-export function FilesTable() {
+export function ProjectTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -175,16 +164,20 @@ export function FilesTable() {
   })
 
   return (
-    <div className="w-full rounded-lg shadow-lg p-4">
+    <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter files..."
-          value={(table.getColumn("fileName")?.getFilterValue() as string) ?? ""}
+        <Input // Search input
+          placeholder="Filter projects..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("fileName")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
+        <Button
+          className="ml-auto"> 
+            Add New Project
+          </Button>
       </div>
       <div className="rounded-md border">
         <Table>

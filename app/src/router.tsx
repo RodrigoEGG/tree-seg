@@ -1,10 +1,12 @@
 import { createBrowserRouter, } from "react-router-dom";
-import Landing from "./views/landing/Landing";
+import Landing from "./views/landing-info/Landing";
 import MainPage from "./layouts/MainPage";
 import Auth from "./layouts/Auth";
 import Login from "./views/login/Login";
+import Projects from "./views/projects/Projects";
 import Visualization from "./views/visualization/Visualization";
-import Tree from "./views/tree/Tree";
+import Files from "./views/files/Files";
+import LandingSkeleton from "./layouts/LandingSkeleton";
 
 const router = createBrowserRouter([
 
@@ -15,16 +17,16 @@ const router = createBrowserRouter([
 		children : [
 
 			{
-				index : true,
-				element : <Landing/>
-			},
-			{
 				path : "/visualization",
 				element : <Visualization/>
 			},
 			{
-				path : "/visualization/tree/:id",
-				element : <Tree/>
+				path : "/projects",
+				element : <Projects/>
+			},
+			{
+				path : "/files",
+				element : <Files/>
 			}
 		]
 
@@ -40,8 +42,17 @@ const router = createBrowserRouter([
 			}
 			
 		]
+	},
+	{
+		path : "/",
+		element : <LandingSkeleton/>,
+		children : [
+			{
+				index : true,
+				element : <Landing/>
+			}
+		]
 	}
-
 ]);
 
 export default router;
