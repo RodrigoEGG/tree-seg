@@ -24,5 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 
+.env
 app/package-lock.json
 app/yarn.lock
