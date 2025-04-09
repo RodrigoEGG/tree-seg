@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
-from sqlalchemy import select
+from app.models.project_schema import Project, ProjectCreate, ProjectUpdate
+
 # Create a new project
 def create_project(db: Session, project: ProjectCreate):
     new_project = Project(**project.dict())
@@ -11,8 +11,7 @@ def create_project(db: Session, project: ProjectCreate):
 
 # Get all projects
 def get_projects(db: Session):
-    stmt = select(Project)
-    return db.execute(stmt).scalars().all()
+    return db.query(Project).all()
 
 # Get a project by ID
 def get_project_by_id(db: Session, project_id: int):
@@ -24,24 +23,38 @@ def get_project_by_name(db: Session, name: str):
 
 # Update a project by ID
 def update_project(db: Session, project_id: int, project: ProjectUpdate):
-    db.query(Project).filter(Project.project_id == project_id).update(project.dict())
+    existing_project = db.query(Project).filter(Project.project_id == project_id).first()
+    if not existing_project:
+        return None
+    for key, value in project.dict(exclude_unset=True).items():
+        setattr(existing_project, key, value)
     db.commit()
-    return db.query(Project).filter(Project.project_id == project_id).first()
+    db.refresh(existing_project)
+    return existing_project
 
 # Update a project by name
 def update_project_by_name(db: Session, name: str, project: ProjectUpdate):
-    db.query(Project).filter(Project.name == name).update(project.dict())
+    existing_project = db.query(Project).filter(Project.name == name).first()
+    if not existing_project:
+        return None
+    for key, value in project.dict(exclude_unset=True).items():
+        setattr(existing_project, key, value)
     db.commit()
-    return db.query(Project).filter(Project.name == name).first()
+    db.refresh(existing_project)
+    return existing_project
 
 # Delete a project by ID
 def delete_project(db: Session, project_id: int):
-    db.query(Project).filter(Project.project_id == project_id).delete()
-    db.commit()
-    return project_id
+    project = db.query(Project).filter(Project.project_id == project_id).first()
+    if project:
+        db.delete(project)
+        db.commit()
+    return project
 
 # Delete a project by name
 def delete_project_by_name(db: Session, name: str):
-    db.query(Project).filter(Project.name == name).delete()
-    db.commit()
-    return name
+    project = db.query(Project).filter(Project.name == name).first()
+    if project:
+        db.delete(project)
+        db.commit()
+    return project

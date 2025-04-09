@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, Numeric, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from pydantic import BaseModel
 from datetime import date as date_type
-
-Base = declarative_base()
+from pydantic import BaseModel
+from app.models import Base
+from app.models.project_member_schema import ProjectMember
+from app.models.files_schema import File
 
 # SQLAlchemy Model (Database Representation)
 class Project(Base):
@@ -16,8 +17,8 @@ class Project(Base):
     date = Column(Date, nullable=False, server_default="CURRENT_DATE")
    
     # Relationships
-    members = relationship("ProjectMember", back_populates="project")
-    files = relationship("File", back_populates="project")
+    members = relationship("ProjectMember", back_populates="project", cascade="all, delete-orphan")
+    files = relationship("File", back_populates="project", cascade="all, delete-orphan")
 
 # Pydantic Schema (For Request/Response Validation)
 class ProjectBase(BaseModel):
@@ -38,4 +39,4 @@ class ProjectResponse(ProjectBase):
     date: date_type | None = None
     
     class Config:
-        from_attributes = True  # Allows conversion from SQLAlchemy models
+        orm_mode = True  # Allows conversion from SQLAlchemy models
