@@ -9,8 +9,7 @@ def connect_to_db_postgres():
     DATABASE_URL = CONFIG.get("POSTGRES_CONNECTION_STRING")
 
     if not DATABASE_URL:
-        raise ValueError("POSTGRES_URL is not set in the environment variables.")
-
+        raise ValueError("POSTGRES_CONNECTION_STRING is not set in the environment variables.")
     # Create SQLAlchemy engine
     engine = create_engine(DATABASE_URL)
 
