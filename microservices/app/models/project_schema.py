@@ -1,25 +1,29 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey, Numeric, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date as date_type
 
 Base = declarative_base()
 
 # SQLAlchemy Model (Database Representation)
 class Project(Base):
-    __tablename__ = "projects"
-
+    __tablename__ = "project"
+   
     project_id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
-    description = Column(String(500), nullable=True)
-    owner = Column(String(100), nullable=False)
-    date = Column(DateTime, nullable=False, default=datetime.utcnow)
+    description = Column(String(1000))
+    date = Column(Date, nullable=False, server_default="CURRENT_DATE")
+   
+    # Relationships
+    members = relationship("ProjectMember", back_populates="project")
+    files = relationship("File", back_populates="project")
 
 # Pydantic Schema (For Request/Response Validation)
 class ProjectBase(BaseModel):
     name: str
     description: str | None = None
-    owner: str
+    date: date_type | None = None
 
 class ProjectCreate(ProjectBase):
     pass  # No project_id since it's auto-generated
@@ -27,11 +31,11 @@ class ProjectCreate(ProjectBase):
 class ProjectUpdate(ProjectBase):
     name: str | None = None
     description: str | None = None
-    owner: str | None = None
+    date: date_type | None = None
 
 class ProjectResponse(ProjectBase):
     project_id: int
-    date: datetime
-
+    date: date_type | None = None
+    
     class Config:
         from_attributes = True  # Allows conversion from SQLAlchemy models

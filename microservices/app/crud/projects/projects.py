@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.project_schema import Project, ProjectCreate, ProjectUpdate, ProjectResponse
-
+from sqlalchemy import select
 # Create a new project
 def create_project(db: Session, project: ProjectCreate):
     new_project = Project(**project.dict())
@@ -11,7 +11,8 @@ def create_project(db: Session, project: ProjectCreate):
 
 # Get all projects
 def get_projects(db: Session):
-    return db.query(Project).all()
+    stmt = select(Project)
+    return db.execute(stmt).scalars().all()
 
 # Get a project by ID
 def get_project_by_id(db: Session, project_id: int):
