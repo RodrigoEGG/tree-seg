@@ -21,10 +21,10 @@ The backend is implemented using FastAPI and serves as the API layer of the appl
 1. Clone the repository:
 
 ```bash
-cd <project_directory>/backend
+git clone <project_url>
 ```
 
-2. Create a virtual environment:
+2. Go into microservices folder:
 
 ```bash
 cd microservices/
@@ -33,21 +33,21 @@ cd microservices/
 3. Create virutal enviornment:
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 ```
 
 4. Install dependencies:
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requitements.txt
 ```
 
 5. Running the Backend
 
 Start the FastAPI server using Uvicorn:
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --reload
 ```
 The API documentation is available at:
 - Swagger UI: http://127.0.0.1:8000/docs
