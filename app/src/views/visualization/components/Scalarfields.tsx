@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CircleHelp } from "lucide-react";
 
 export default function Scalarfields(){
 	const { viewer } = useViewer();
@@ -27,8 +28,8 @@ export default function Scalarfields(){
 	  };
 	return (
 		<>
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold">Scalar fields </h1>
+          <div className="flex items-center gap-3 p-2">
+            <h1 className="text-lg font-semibold">Scalar fields </h1><CircleHelp className="h-5 w-5" /> 
           </div>
 
           <div className="mt-4">

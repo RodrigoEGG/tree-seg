@@ -4,6 +4,8 @@ import { useViewer } from "@/context/ViewerProvider";
 import { useState } from "react";
 import SelectMarker from "./SelectMarker";
 import Scalarfields from "./Scalarfields";
+import Metrics from "./Metrics";
+import { CircleHelp } from "lucide-react";
 
 export default function ForestVisualizationMenu() {
   const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
@@ -141,8 +143,8 @@ export default function ForestVisualizationMenu() {
   return (
     <>
         <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold">Tools</h1>
+          <div className="flex items-center gap-3 p-2">
+            <h1 className="text-lg font-semibold">Tools </h1><CircleHelp className="h-5 w-5" /> 
           </div>
 
 
@@ -187,8 +189,8 @@ export default function ForestVisualizationMenu() {
 
 
         <div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
-          <div className="flex items-center">
-            <h1 className="text-lg font-semibold">Individual view</h1>
+          <div className="flex items-center gap-3 p-2">
+            <h1 className="text-lg font-semibold">Individual view</h1><CircleHelp className="h-5 w-5" /> 
           </div>
 
           <div className="my-2">
@@ -197,6 +199,9 @@ export default function ForestVisualizationMenu() {
 
 
         </div>
+          <div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
+            <Metrics/>
+            </div>
     </>
   );
 }

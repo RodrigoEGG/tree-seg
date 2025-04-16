@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import ForestVisualizationMenu from "./ForestVisualizationMenu"
-import Metrics from "./Metrics"
 
 export default function Forestmenu() {
   return (
@@ -31,7 +30,6 @@ export default function Forestmenu() {
 
 				</SidebarGroup>
 
-				<Metrics/>
 
 			</SidebarContent>
 
