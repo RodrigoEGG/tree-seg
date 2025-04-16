@@ -39,4 +39,4 @@ class ProjectResponse(ProjectBase):
     date: date_type | None = None
     
     class Config:
-        orm_mode = True  # Allows conversion from SQLAlchemy models
+        from_attributes = True  # Allows conversion from SQLAlchemy models

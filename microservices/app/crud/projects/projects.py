@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.project_schema import Project, ProjectCreate, ProjectUpdate
+from app.models.project_member_schema import ProjectMember
 
 # Create a new project
 def create_project(db: Session, project: ProjectCreate):
@@ -20,6 +21,10 @@ def get_project_by_id(db: Session, project_id: int):
 # Get a project by name
 def get_project_by_name(db: Session, name: str):
     return db.query(Project).filter(Project.name == name).first()
+
+# Get a project by owner ID
+def get_project_by_owner_id(db: Session, owner_id: int):
+    return db.query(Project).join(ProjectMember).filter(ProjectMember.user_id == owner_id).all()
 
 # Update a project by ID
 def update_project(db: Session, project_id: int, project: ProjectUpdate):

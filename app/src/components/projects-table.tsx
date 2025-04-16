@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useEffect, useState } from "react"
 
 import {
   ColumnDef,
@@ -18,8 +19,10 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { ProjectRecord } from "@/interfaces/project-record"
 import EditProjectModal from "@/components/edit-project"
+import NewProjectModal from "@/components/new-project"
 
 import { Input } from "@/components/ui/input"
+import { apiService } from "@/services/api-service"
 
 import {
   Table,
@@ -30,45 +33,54 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const data: ProjectRecord[] = [
-    {
-      project_id: 1,
-      name: "Västerbotten Woodland",
-      description: "A dense boreal forest in northern Sweden, known for its rich biodiversity and reindeer grazing areas.",
-      owner: "Norma Elizondo",
-      date: "2025-03-18"
-    },
-    {
-      project_id: 2,
-      name: "Dalarna Pine Reserve",
-      description: "A vast pine-dominated region in central Sweden, home to ancient trees and extensive hiking trails.",
-      owner: "Rodrigo Eguiluz",
-      date: "2025-02-10"
-    },
-    {
-      project_id: 3,
-      name: "Småland Forests",
-      description: "Located in southern Sweden, these forests are characterized by a mix of conifers and broadleaf trees.",
-      owner: "Juan Cuevas",
-      date: "2025-01-22"
-    },
-    {
-      project_id: 4,
-      name: "Gotland Oak Groves",
-      description: "A unique ecosystem on the island of Gotland, featuring ancient oak trees and limestone-rich soil.",
-      owner: "Norma Elizondo",
-      date: "2025-04-05"
-    },
-    {
-      project_id: 5,
-      name: "Jämtland Highlands",
-      description: "A high-altitude forested region in western Sweden, offering a mix of spruce, birch, and alpine meadows.",
-      owner: "Rodrigo Eguiluz",
-      date: "2025-03-02"
+export function ProjectTable() {
+  // State to store projects data from API
+  const [projects, setProjects] = useState<ProjectRecord[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // States for table functionality
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  // Function to refresh projects data
+  const refreshProjects = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await apiService.getProjects();
+      setProjects(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+      console.error("Error fetching projects:", err);
+    } finally {
+      setIsLoading(false);
     }
-  ];  
-  
-  export const columns: ColumnDef<ProjectRecord>[] = [
+  };
+
+  // Add download handler function
+  const handleDownload = (projectId: number) => {
+    console.log(`Downloading project ${projectId}`);
+    // Missing download implementation here
+  };
+
+  // Add delete handler function
+  const handleDelete = async (projectId: number) => {
+    if (window.confirm('Are you sure you want to delete this project?')) {
+      try {
+        await apiService.deleteProject(projectId);
+        await refreshProjects(); // Refresh after deletion
+      } catch (err) {
+        console.error("Error deleting project:", err);
+        setError(err instanceof Error ? err.message : "Failed to delete project");
+      }
+    }
+  };
+
+  // Define columns with access to the refreshProjects function
+  const columns: ColumnDef<ProjectRecord>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => {
@@ -78,7 +90,7 @@ const data: ProjectRecord[] = [
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Project Name
-            <ArrowUpDown />
+            <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
@@ -88,22 +100,8 @@ const data: ProjectRecord[] = [
       accessorKey: "description",
       header: "Description",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("description")}</div>
+        <div>{row.getValue("description")}</div>
       ),
-    },
-    {
-      accessorKey: "owner",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Owner
-            <ArrowUpDown />
-          </Button>
-        );
-      }
     },
     {
       accessorKey: "date",
@@ -114,9 +112,13 @@ const data: ProjectRecord[] = [
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Date
-            <ArrowUpDown />
+            <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
+      },
+      cell: ({ row }) => {
+        const date = new Date(row.getValue("date"));
+        return <div>{date.toLocaleDateString()}</div>;
       }
     },
     {
@@ -124,28 +126,34 @@ const data: ProjectRecord[] = [
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
-          <Link to="/files">
-            <Button size="sm">View</Button>
+          <Link to={`/files/${row.getValue("project_id")}`}>
+            <Button size="sm" asChild>
+              <span>View</span>
+            </Button>
           </Link>
-          <EditProjectModal/>
-          <Button variant="secondary" size="sm">Download</Button>
+          <EditProjectModal
+            projectId={row.getValue("project_id")}
+            onProjectUpdated={refreshProjects}
+          />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => handleDownload(row.getValue("project_id"))}
+          >
+            Download
+          </Button>
         </div>
       ),
-    }    
+    }
   ];
-  
 
-export function ProjectTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  // Fetch projects from the API
+  useEffect(() => {
+    refreshProjects();
+  }, []);
 
   const table = useReactTable({
-    data,
+    data: projects,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -161,12 +169,12 @@ export function ProjectTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input // Search input
+      <div className="flex py-4">
+        <Input
           placeholder="Filter projects..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
@@ -174,61 +182,72 @@ export function ProjectTable() {
           }
           className="max-w-sm"
         />
-        <Button
-          className="ml-auto"> 
-            Add New Project
-          </Button>
+        <div className="ml-auto">
+          <NewProjectModal onProjectAdded={refreshProjects} />
+        </div>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+
+      {isLoading ? (
+        <div className="flex justify-center items-center h-40">
+          <p>Loading projects...</p>
+        </div>
+      ) : error ? (
+        <div className="text-red-500 py-4">
+          Error: {error}. Please try again.
+        </div>
+      ) : (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                      </TableHead>
+                    )
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No projects found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
