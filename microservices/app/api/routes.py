@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 # Import all endpoint routers
-from app.api.endpoints import projects, files, users
+from app.api.endpoints import projects, files, users, auth
 
 # Create the main API router
 api_router = APIRouter()
@@ -24,4 +24,10 @@ api_router.include_router(
     users.router,
 	prefix='/users',
 	tags=["users"]
+)
+
+api_router.include_router(
+    auth.router,
+	prefix='/auth',
+	tags=["auth"]
 )

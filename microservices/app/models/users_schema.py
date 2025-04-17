@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.models import Base
+from pydantic import BaseModel
 
 class User(Base):
     __tablename__ = 'user'
@@ -14,3 +15,12 @@ class User(Base):
     
     # Relationships
     projects = relationship("ProjectMember", back_populates="user")
+
+# Pydantic Schema (For Request/Response Validation)
+class ProjectBase(BaseModel):
+    name: str
+    description: str | None = None
+    date: date_type | None = None
+
+class ProjectCreate(ProjectBase):
+    pass  # No project_id since it's auto-generated
