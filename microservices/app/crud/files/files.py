@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from app.models.files_schema import File
-from app.dependencies.postgres_depends import get_db
 
 def get_all_files(db: Session):
     return db.query(File).all()
