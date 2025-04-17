@@ -5,27 +5,28 @@ import Auth from "./layouts/Auth";
 import Login from "./views/login/Login";
 import Projects from "./views/projects/Projects";
 import Visualization from "./views/visualization/Visualization";
-import Files from "./views/files/Files";
+import ProtectedRoute from "./utils/ProtectedRoute";
 import LandingSkeleton from "./layouts/LandingSkeleton";
+import Files from "./views/files/files";
 
 const router = createBrowserRouter([
 
 	{
 
-		path : "/",
-		element : <MainPage/>,
+		path : "/app",
+		element : <ProtectedRoute><MainPage/></ProtectedRoute>,
 		children : [
 
 			{
-				path : "/visualization",
+				path : "/app/view",
 				element : <Visualization/>
 			},
 			{
-				path : "/projects",
+				path : "/app/projects",
 				element : <Projects/>
 			},
 			{
-				path : "/files",
+				path : "/app/files",
 				element : <Files/>
 			}
 		]
