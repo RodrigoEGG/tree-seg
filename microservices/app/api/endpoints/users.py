@@ -6,9 +6,9 @@ from app.dependencies.postgres_depends import get_db
 
 router = APIRouter()
 
-@router.post('/' , reponse_model = UserResponse , status_code = status.HTTP_200_OK)
+@router.post('/user' , response_model = UserResponse , status_code = status.HTTP_200_OK)
 def create_new_user( user : UserCreate , db : Session = Depends(get_db)):
-	new_user = create_user(user)
+	new_user = create_user(db, user)
 	return new_user
  
 @router.get('/', status_code = status.HTTP_200_OK)
