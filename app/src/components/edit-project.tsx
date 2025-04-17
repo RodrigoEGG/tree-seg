@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { projectServices } from '@/services/project-api';
 import { Modal } from 'antd';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { apiService } from "@/services/api-service";
 import { ProjectRecord } from "@/interfaces/project-record";
 
 interface EditProjectModalProps {
@@ -28,7 +28,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
         try {
             setIsLoading(true);
             setError(null);
-            const projectData = await apiService.getProject(projectId);
+            const projectData = await projectServices.getProject(projectId);
             setProject(projectData);
 
             // Set form fields with project data
@@ -65,7 +65,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
             setIsLoading(true);
             setError(null);
 
-            await apiService.updateProject(projectId, {
+            await projectServices.updateProject(projectId, {
                 name,
                 description,
             });
@@ -92,7 +92,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
         try {
             setIsLoading(true);
             setError(null);
-            await apiService.deleteProject(projectId);
+            await projectServices.deleteProject(projectId);
 
             // Call the callback if provided
             if (onProjectUpdated) {

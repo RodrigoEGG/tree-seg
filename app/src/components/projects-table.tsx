@@ -22,7 +22,7 @@ import EditProjectModal from "@/components/edit-project"
 import NewProjectModal from "@/components/new-project"
 
 import { Input } from "@/components/ui/input"
-import { apiService } from "@/services/api-service"
+import { projectServices } from "@/services/project-api"
 
 import {
   Table,
@@ -50,7 +50,7 @@ export function ProjectTable() {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await apiService.getProjects();
+      const data = await projectServices.getProjects();
       setProjects(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -70,7 +70,7 @@ export function ProjectTable() {
   const handleDelete = async (projectId: number) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        await apiService.deleteProject(projectId);
+        await projectServices.deleteProject(projectId);
         await refreshProjects(); // Refresh after deletion
       } catch (err) {
         console.error("Error deleting project:", err);

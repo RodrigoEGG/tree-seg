@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { projectServices } from '@/services/project-api';
 import { Modal, message } from 'antd';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { apiService } from "@/services/api-service";
 
 // Dummy owner ID
 const OWNER_ID = 1;
@@ -34,7 +34,7 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
         const today = new Date().toISOString().split('T')[0];
 
         try {
-            await apiService.createProject({
+            await projectServices.createProject({
                 name,
                 description,
                 owner_id: OWNER_ID,
