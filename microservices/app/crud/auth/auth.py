@@ -1,8 +1,9 @@
+from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models.users_schema import User
-from jose import jwt
+from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from app.utils.security import pwd_context
+from app.utils.security import pwd_context, oauth2_scheme
 
 SECRET_KEY = "ge_jNAKDubIXNwlFTBjBXY0RtGzhENMNftgV-df--xw"
 ALGORITHM = "HS256"
@@ -24,3 +25,11 @@ def create_token(data: dict):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def validate_token(token: str = Depends(oauth2_scheme)):
+    try:
+        jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return True
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido")
