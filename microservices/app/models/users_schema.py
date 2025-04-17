@@ -16,11 +16,16 @@ class User(Base):
     # Relationships
     projects = relationship("ProjectMember", back_populates="user")
 
-# Pydantic Schema (For Request/Response Validation)
-class ProjectBase(BaseModel):
+class UserBase(BaseModel):
     name: str
-    description: str | None = None
-    date: date_type | None = None
+    password : str
+    email : str
 
-class ProjectCreate(ProjectBase):
-    pass  # No project_id since it's auto-generated
+class UserCreate(UserBase):
+    pass
+
+class UserResponse(UserBase):
+    user_id : int
+    
+    class Config:
+        from_attributes = True

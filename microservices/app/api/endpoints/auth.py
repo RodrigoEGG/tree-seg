@@ -6,7 +6,6 @@ from app.dependencies.postgres_depends import get_db
 
 router = APIRouter()
 
-
 @router.post("/token")
 async def login(db : Session = Depends(get_db) , form_data: OAuth2PasswordRequestForm = Depends()):
     user = auth_user(db, form_data.username, form_data.password)
