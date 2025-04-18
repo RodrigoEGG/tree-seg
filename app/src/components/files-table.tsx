@@ -188,7 +188,7 @@ export function FilesTable() {
                 />
 
 
-                    <UploadDataModal />
+                <UploadDataModal />
 
             </div>
 

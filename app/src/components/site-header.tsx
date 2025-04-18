@@ -44,7 +44,7 @@ export function SiteHeader() {
                     </Link>
 
                     <nav className="flex space-x-6 text-sm">
-                        <Link to="/projects">
+                        <Link to="/app/projects">
                             <Button
                                 variant="link"
                                 onClick={() => setActiveButton("View Projects")}
