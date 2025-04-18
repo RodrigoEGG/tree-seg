@@ -5,11 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useSelector } from 'react-redux';
+import { selectToken } from '@/redux/slices/useSlice';
 
 // Dummy owner ID
 const OWNER_ID = 1;
 
 const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAdded }) => {
+
+    const token = useSelector(selectToken);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -39,7 +44,7 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
                 description,
                 owner_id: OWNER_ID,
                 date: date || today,
-            });
+            }, token);
 
             message.success('Project created successfully!');
             resetForm();

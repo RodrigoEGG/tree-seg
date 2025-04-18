@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }: Props) => {
 	const token = useSelector(selectToken);
 
 	if (!token) {
-		return <Navigate to="/app/auth" replace />;
+		return <Navigate to="/auth" replace />;
 	}
 
 	return children;

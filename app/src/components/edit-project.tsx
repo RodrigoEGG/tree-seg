@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ProjectRecord } from "@/interfaces/project-record";
+import { selectToken } from '@/redux/slices/useSlice';
+import { useSelector } from 'react-redux';
 
 interface EditProjectModalProps {
     projectId: number;
@@ -13,6 +15,9 @@ interface EditProjectModalProps {
 }
 
 const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjectUpdated }) => {
+
+    const token = useSelector(selectToken)
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [project, setProject] = useState<ProjectRecord | null>(null);
@@ -28,7 +33,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
         try {
             setIsLoading(true);
             setError(null);
-            const projectData = await projectServices.getProject(projectId);
+            const projectData = await projectServices.getProject(projectId, token);
             setProject(projectData);
 
             // Set form fields with project data
@@ -66,9 +71,10 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
             setError(null);
 
             await projectServices.updateProject(projectId, {
-                name,
-                description,
-            });
+                    name,
+                    description,
+                }, token
+            );
 
             // Call the callback if provided
             if (onProjectUpdated) {
@@ -92,7 +98,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ projectId, onProjec
         try {
             setIsLoading(true);
             setError(null);
-            await projectServices.deleteProject(projectId);
+            await projectServices.deleteProject(projectId, token);
 
             // Call the callback if provided
             if (onProjectUpdated) {

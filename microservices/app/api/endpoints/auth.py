@@ -7,7 +7,7 @@ from app.dependencies.postgres_depends import get_db
 router = APIRouter()
 
 @router.post("/token")
-async def login(db : Session = Depends(get_db) , form_data: OAuth2PasswordRequestForm = Depends()):
+def login(db : Session = Depends(get_db) , form_data: OAuth2PasswordRequestForm = Depends()):
     user = auth_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Credenciales incorrectas")

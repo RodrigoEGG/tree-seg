@@ -17,18 +17,18 @@ interface ProjectUpdatePayload {
 // project API service methods for endpoints
 const projectServices = {
     // Get all projects
-    getProjects: async (): Promise<ProjectRecord[]> => {
-        return apiRequest<ProjectRecord[]>('/projects/');
+    getProjects: async (token : string): Promise<ProjectRecord[]> => {
+        return apiRequest<ProjectRecord[]>('/projects/', token);
     },
 
     // Get a single project by ID
-    getProject: async (projectId: number): Promise<ProjectRecord> => {
-        return apiRequest<ProjectRecord>(`/projects/${projectId}`);
+    getProject: async (projectId: number, token : string): Promise<ProjectRecord> => {
+        return apiRequest<ProjectRecord>(`/projects/${projectId}`, token);
     },
 
     // Get a project by name
-    getProjectByName: async (name: string): Promise<ProjectRecord> => {
-        return apiRequest<ProjectRecord>(`/projects/name/${encodeURIComponent(name)}`);
+    getProjectByName: async (name: string, token : string): Promise<ProjectRecord> => {
+        return apiRequest<ProjectRecord>(`/projects/name/${encodeURIComponent(name)}`, token);
     },
 
     // Get projects by owner ID
@@ -37,39 +37,41 @@ const projectServices = {
     },
 
     // Create a new project
-    createProject: async (project: ProjectCreatePayload): Promise<ProjectRecord> => {
-        return apiRequest<ProjectRecord>('/projects/', {
-            method: 'POST',
-            body: JSON.stringify(project)
-        });
+    createProject: async (project: ProjectCreatePayload, token : string): Promise<ProjectRecord> => {
+        return apiRequest<ProjectRecord>('/projects/',token,
+            {
+                method: 'POST',
+                body: JSON.stringify(project)
+            }
+        );
     },
 
     // Update a project by ID
-    updateProject: async (projectId: number, project: ProjectUpdatePayload): Promise<ProjectRecord> => {
-        return apiRequest<ProjectRecord>(`/projects/${projectId}`, {
+    updateProject: async (projectId: number, project: ProjectUpdatePayload, token : string): Promise<ProjectRecord> => {
+        return apiRequest<ProjectRecord>(`/projects/${projectId}`, token, {
             method: 'PUT',
             body: JSON.stringify(project)
         });
     },
 
     // Update a project by name
-    updateProjectByName: async (name: string, project: ProjectUpdatePayload): Promise<ProjectRecord> => {
-        return apiRequest<ProjectRecord>(`/projects/name/${encodeURIComponent(name)}`, {
+    updateProjectByName: async (name: string, project: ProjectUpdatePayload , token : string): Promise<ProjectRecord> => {
+        return apiRequest<ProjectRecord>(`/projects/name/${encodeURIComponent(name)}`, token , {
             method: 'PUT',
             body: JSON.stringify(project)
         });
     },
 
     // Delete a project by ID
-    deleteProject: async (projectId: number): Promise<void> => {
-        return apiRequest<void>(`/projects/${projectId}`, {
+    deleteProject: async (projectId: number, token : string): Promise<void> => {
+        return apiRequest<void>(`/projects/${projectId}`, token , {
             method: 'DELETE'
         });
     },
 
     // Delete a project by name
-    deleteProjectByName: async (name: string): Promise<void> => {
-        return apiRequest<void>(`/projects/name/${encodeURIComponent(name)}`, {
+    deleteProjectByName: async (name: string, token : string): Promise<void> => {
+        return apiRequest<void>(`/projects/name/${encodeURIComponent(name)}`, token,  {
             method: 'DELETE'
         });
     }

@@ -32,8 +32,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useSelector } from "react-redux"
+import { selectToken } from "@/redux/slices/useSlice"
 
 export function ProjectTable() {
+  const token = useSelector(selectToken);
   // State to store projects data from API
   const [projects, setProjects] = useState<ProjectRecord[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -50,7 +53,7 @@ export function ProjectTable() {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await projectServices.getProjects();
+      const data = await projectServices.getProjects(token);
       setProjects(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -70,7 +73,7 @@ export function ProjectTable() {
   const handleDelete = async (projectId: number) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        await projectServices.deleteProject(projectId);
+        await projectServices.deleteProject(projectId, token);
         await refreshProjects(); // Refresh after deletion
       } catch (err) {
         console.error("Error deleting project:", err);
