@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app.crud.files.files import get_all_files, get_file, get_project_files
+from app.crud.files.files import get_all_files, get_file, get_project_files, get_signed_url
 from app.dependencies.postgres_depends import get_db
 
 router = APIRouter()
@@ -27,4 +27,13 @@ def fetch_project_files(project_id: int, db: Session = Depends(get_db)):
         return files
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/signedurl/{filename}", status_code=status.HTTP_200_OK)
+def fetch_signed_url(filename : str):
+    try:
+        url = get_signed_url(filename)
+        return url
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
