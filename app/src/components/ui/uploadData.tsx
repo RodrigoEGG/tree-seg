@@ -1,12 +1,16 @@
 import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { Upload, message } from 'antd';
-import axios from 'axios';
 import type { UploadProps } from 'antd';
+import { fileServices } from '@/services/file-api';
+import { useSelector } from 'react-redux';
+import { selectToken } from '@/redux/slices/useSlice';
 
 const { Dragger } = Upload;
 
 const UploadData: React.FC = () => {
+
+    const token = useSelector(selectToken)
     const props: UploadProps = {
         name: 'file',
         multiple: false,
@@ -32,21 +36,22 @@ const UploadData: React.FC = () => {
             const realFile = file as File;
 
             try {
-        
-                const response = await axios.post('/api/get-presigned-url', {
-                    filename: realFile.name,
+
+                const data = await fileServices.getSignedUrl(`${realFile.name}`, token);
+                const presignedUrl = data.signedurl;
+
+                const uploadResponse = await fetch(presignedUrl, {
+                    method: 'PUT',
+                    body: realFile,
                 });
+
+                if (uploadResponse.ok) {
+                    onSuccess?.("ok");
+                    message.success(`Subido exitosamente`);
+                } else {
+                    throw new Error("Error");
+                }
         
-                const presignedUrl = response.data?.url;
-        
-                await axios.put(presignedUrl, realFile, {
-                    headers: {
-                        'Content-Type': realFile.type,
-                    },
-                });
-        
-                onSuccess?.("ok");
-                message.success(`${realFile.name} subido exitosamente`);
             } catch (err) {
                 console.error(err);
                 onError?.(new Error("Error al subir a MinIO"));
