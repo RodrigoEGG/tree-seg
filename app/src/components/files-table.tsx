@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from 'react';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -28,7 +28,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
 import UploadDataModal from "./ui/modal"
+import { useSelector } from "react-redux"
+import { selectToken } from "@/redux/slices/useSlice"
 
 const data: FileRecord[] = [
     {
@@ -148,6 +151,13 @@ export const columns: ColumnDef<FileRecord>[] = [
   
 
 export function FilesTable() {
+
+    const token = useSelector(selectToken)
+
+    const [files, setFiles] = useState<FileRecord[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -171,6 +181,28 @@ export function FilesTable() {
         rowSelection,
         },
     })
+
+    const refreshProjects = async () => {
+
+        try {
+
+            setIsLoading(true);
+            setError(null);
+            //const data = await projectServices.getProjects(token);
+            setFiles(data);
+
+        } catch (err) {
+
+            setError(err instanceof Error ? err.message : "An unknown error occurred");
+            console.error("Error fetching projects:", err);
+
+        } finally {
+
+            setIsLoading(false);
+
+        }
+
+      };
 
     return (
 

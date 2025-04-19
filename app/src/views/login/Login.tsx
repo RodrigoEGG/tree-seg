@@ -5,7 +5,7 @@ import { userServices } from "@/services/user-api";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setToken } from "@/redux/slices/useSlice";
+import { setToken, setUid, setUsername } from "@/redux/slices/useSlice";
 
 
 export default function Login() {
@@ -34,31 +34,44 @@ export default function Login() {
 		}
 
 		try {
-			const token = await userServices.login({ username, password });
-			console.log("Login success:", token);
-			dispatch(setToken({token : token.access_token}))
-			
+
+			const data = await userServices.login({ username, password });
+			dispatch(setToken({token : data.access_token}))
+			dispatch(setUid({uid : data.user.user_id}));
+			dispatch(setUsername({username : data.user.name}))
 			navigate("/app/projects");
+
 		} catch (err: any) {
-			console.error("Login error:", err);
+
 			setError("Invalid username or password.");
+
 		} finally {
+
 			setIsLoading(false);
+
 		}
+
 	};
 
 	return (
+
 		<form onSubmit={handleSubmit}>
+
 			<div className="mx-auto grid w-[350px] gap-6">
+
 				<div className="grid gap-2 text-center">
+
 					<h1 className="text-3xl font-bold">ForestMap</h1>
 					<p className="text-muted-foreground">
 						Enter your username below to login to your account
 					</p>
+
 				</div>
 
 				<div className="grid gap-4">
+
 					<div className="grid gap-2">
+
 						<Label htmlFor="username">Username</Label>
 						<Input
 							id="username"
@@ -67,10 +80,13 @@ export default function Login() {
 							placeholder="Enter your username"
 							required
 						/>
+
 					</div>
 
 					<div className="grid gap-2">
+
 						<div className="flex items-center">
+
 							<Label htmlFor="password">Password</Label>
 							<a
 								href="/forgot-password"
@@ -78,13 +94,16 @@ export default function Login() {
 							>
 								Forgot your password?
 							</a>
+
 						</div>
+
 						<Input
 							id="password"
 							type="password"
 							ref={passwordRef}
 							required
 						/>
+
 					</div>
 
 					{error && (
@@ -100,8 +119,11 @@ export default function Login() {
 					<Button variant="outline" className="w-full" type="button">
 						Login with Google
 					</Button>
+
 				</div>
+
 			</div>
+
 		</form>
 	);
 }

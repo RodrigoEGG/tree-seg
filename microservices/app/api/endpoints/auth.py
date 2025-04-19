@@ -12,4 +12,4 @@ def login(db : Session = Depends(get_db) , form_data: OAuth2PasswordRequestForm 
     if not user:
         raise HTTPException(status_code=400, detail="Credenciales incorrectas")
     access_token = create_token(data={"sub": user.name})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user" : user}

@@ -6,7 +6,9 @@ export default function Files() {
         <>
 
             <div className="flex-1 ml-8 mr-8">
+
                 <br />
+
                 <FilesTable />
 
             </div>

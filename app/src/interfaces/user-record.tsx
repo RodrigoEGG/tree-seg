@@ -8,4 +8,5 @@ export interface UserRecord {
 export interface AuthRecord {
 	access_token : string;
 	token_type : string;
+	user : UserRecord;
 }
