@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from app.models import Base
 from sqlalchemy.sql import func
+from pydantic import BaseModel
 
 class File(Base):
     __tablename__ = 'file'
@@ -16,3 +17,9 @@ class File(Base):
     # Relationships
     project = relationship("Project", back_populates="files")
     zones = relationship("ZFMapping", back_populates="file")
+
+class FileUrl(BaseModel):
+    filename : str
+
+class FileUrlResponse(BaseModel):
+    signedurl : str

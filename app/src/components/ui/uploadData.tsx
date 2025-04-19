@@ -1,46 +1,61 @@
 import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { Upload, message } from 'antd';
+import axios from 'axios';
 import type { UploadProps } from 'antd';
 
 const { Dragger } = Upload;
 
 const UploadData: React.FC = () => {
-
     const props: UploadProps = {
-
         name: 'file',
-        multiple: true,
+        multiple: false,
         beforeUpload(file) {
-
             const isLt500MB = file.size < 500 * 1024 * 1024;
             const validExtensions = ['.las', '.laz'];
             const fileName = file.name.toLowerCase();
             const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
 
             if (!isLt500MB) {
-                message.error(`Max 500MB`);
-                return true;
+                message.error(`Max 500MB.`);
+                return false;
             }
 
             if (!hasValidExtension) {
-                message.error(`Only .las o .laz`);
-                return true;
+                message.error(`Solo .las o .laz).`);
+                return false;
             }
 
             return true;
-
         },
         customRequest: async ({ file, onSuccess, onError }) => {
+            const realFile = file as File;
 
-            console.log(file)
-            onSuccess?.("ok");
-
+            try {
+        
+                const response = await axios.post('/api/get-presigned-url', {
+                    filename: realFile.name,
+                });
+        
+                const presignedUrl = response.data?.url;
+        
+                await axios.put(presignedUrl, realFile, {
+                    headers: {
+                        'Content-Type': realFile.type,
+                    },
+                });
+        
+                onSuccess?.("ok");
+                message.success(`${realFile.name} subido exitosamente`);
+            } catch (err) {
+                console.error(err);
+                onError?.(new Error("Error al subir a MinIO"));
+                message.error(`Falló la subida`);
+            }
         },
+
         onDrop(e) {
-
             console.log('Archivos soltados:', e.dataTransfer.files);
-
         },
     };
 
