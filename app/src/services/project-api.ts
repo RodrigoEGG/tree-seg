@@ -1,5 +1,5 @@
 // src/services/api-service.ts
-import { ProjectRecord } from "@/interfaces/project-record"; 
+import { ProjectMemberRecord, ProjectRecord } from "@/interfaces/project-record"; 
 import apiRequest from "./client";
 
 interface ProjectCreatePayload {
@@ -74,6 +74,15 @@ const projectServices = {
         return apiRequest<void>(`/projects/name/${encodeURIComponent(name)}`, token,  {
             method: 'DELETE'
         });
+    },
+
+    createProjectMember: async(projectID : number, userID : number, token : string) : Promise<ProjectMemberRecord> => {
+        return apiRequest<ProjectMemberRecord>('/projects/member/', token ,
+            {
+                method: 'POST',
+                body: JSON.stringify({user_id : userID, project_id : projectID })
+            }
+        );
     }
 };
 

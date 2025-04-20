@@ -6,12 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useSelector } from 'react-redux';
-import { selectToken } from '@/redux/slices/useSlice';
+import { selectToken, selectUid } from '@/redux/slices/useSlice';
 
 // Dummy owner ID
-const OWNER_ID = 1;
 
 const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAdded }) => {
+    const uid = useSelector(selectUid);
 
     const token = useSelector(selectToken);
 
@@ -39,10 +39,10 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
         const today = new Date().toISOString().split('T')[0];
 
         try {
-            await projectServices.createProject({
+            const data = await projectServices.createProject({
                 name,
                 description,
-                owner_id: OWNER_ID,
+                owner_id: uid,
                 date: date || today,
             }, token);
 

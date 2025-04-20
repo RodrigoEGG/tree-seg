@@ -27,6 +27,7 @@ class ProjectBase(BaseModel):
     date: date_type | None = None
 
 class ProjectCreate(ProjectBase):
+    owner_id : int
     pass  # No project_id since it's auto-generated
 
 class ProjectUpdate(ProjectBase):

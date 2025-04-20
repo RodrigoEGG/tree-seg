@@ -1,13 +1,19 @@
 from sqlalchemy.orm import Session
 from app.models.project_schema import Project, ProjectCreate, ProjectUpdate
-from app.models.project_member_schema import ProjectMember
+from app.models.project_member_schema import ProjectMember, ProjectMemberCreate
 
 # Create a new project
 def create_project(db: Session, project: ProjectCreate):
-    new_project = Project(**project.dict())
+    new_project = Project(
+        name=project.name,
+        description=project.description,
+        date=project.date
+    )
     db.add(new_project)
     db.commit()
     db.refresh(new_project)
+    pm = ProjectMemberCreate(user_id=project.owner_id, project_id=new_project.project_id)
+    create_projectmember(db, pm)
     return new_project
 
 # Get all projects
@@ -63,3 +69,10 @@ def delete_project_by_name(db: Session, name: str):
         db.delete(project)
         db.commit()
     return project
+
+def create_projectmember(db : Session , project_member : ProjectMemberCreate):
+    new_project_member = ProjectMember(**project_member.dict())
+    db.add(new_project_member)
+    db.commit()
+    db.refresh(new_project_member)
+    return new_project_member

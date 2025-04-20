@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from app.models.project_member_schema import ProjectMemberCreate, ProjectMemberResponse
 from sqlalchemy.orm import Session
 from app.dependencies.postgres_depends import get_db
 from app.crud.projects.projects import (
     create_project,
+    create_projectmember,
     get_projects,
     get_project_by_id,
     get_project_by_name,
@@ -18,6 +20,7 @@ router = APIRouter()
 
 @router.post("/", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
 def create_new_project(project: ProjectCreate, db: Session = Depends(get_db)):
+    print(project)
     return create_project(db, project)
 
 @router.get("/", response_model=list[ProjectResponse], status_code=status.HTTP_200_OK)
@@ -72,3 +75,7 @@ def remove_project_by_name(name: str, db: Session = Depends(get_db)):
     if not deleted_project:
         raise HTTPException(status_code=404, detail="Project not found")
     return None
+
+@router.post("/member/", response_model=ProjectMemberResponse, status_code=status.HTTP_200_OK)
+def create_project_member(project_member : ProjectMemberCreate):
+    return create_projectmember(project_member)
