@@ -76,3 +76,13 @@ def create_projectmember(db : Session , project_member : ProjectMemberCreate):
     db.commit()
     db.refresh(new_project_member)
     return new_project_member
+
+def check_projectmember(db: Session, project_member: ProjectMemberCreate):
+    projectmember=db.query(ProjectMember).filter(
+        ProjectMember.user_id == project_member.user_id,
+        ProjectMember.project_id == project_member.project_id
+    ).first()
+    if projectmember:
+        return True
+    else:
+        return False

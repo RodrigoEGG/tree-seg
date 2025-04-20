@@ -83,7 +83,12 @@ const projectServices = {
                 body: JSON.stringify({user_id : userID, project_id : projectID })
             }
         );
+    },
+
+    checkProjectMember: async(projectID : number, userID : number, token : string) : Promise<void> => {
+        return apiRequest<void>('')
     }
+
 };
 
 export { 
