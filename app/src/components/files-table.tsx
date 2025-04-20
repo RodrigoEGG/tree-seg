@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -11,9 +11,9 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Loader2, PlusCircle } from "lucide-react"
+import { ArrowUpDown, Loader2} from "lucide-react"
 import { CheckedState } from "@radix-ui/react-checkbox"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -32,39 +32,8 @@ import {
 import UploadDataModal from "./ui/modal"
 import { useSelector } from "react-redux"
 import { selectToken } from "@/redux/slices/useSlice"
+import { fileServices } from '@/services/file-api';
 
-const data: FileRecord[] = [
-    {
-        fileName: "scan1.las",
-        createdAt: "15-01-2024",
-        status: "Segmented",
-        segmented: true,
-    },
-    {
-        fileName: "scan2.laz",
-        createdAt: "20-02-2024",
-        status: "Segmented",
-        segmented: true,
-    },
-    {
-        fileName: "scan3.las",
-        createdAt: "05-03-2024",
-        status: "In Progress",
-        segmented: false,
-    },
-    {
-        fileName: "scan4.laz",
-        createdAt: "20-04-2024",
-        status: "Segmented",
-        segmented: true,
-    },
-    {
-        fileName: "scan5.las",
-        createdAt: "12-05-2024",
-        status: "Failed",
-        segmented: false,
-    },
-  ];
   
 export const columns: ColumnDef<FileRecord>[] = [
     {
@@ -90,7 +59,7 @@ export const columns: ColumnDef<FileRecord>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "fileName",
+        accessorKey: "file_name",
         header: ({ column }) => {
             return (
             <Button
@@ -102,28 +71,29 @@ export const columns: ColumnDef<FileRecord>[] = [
             </Button>
             );
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("fileName")}</div>,
+        cell: ({ row }) => <div className="lowercase">{row.getValue("file_name")}</div>,
     },
     {
-        accessorKey: "status",
+        accessorKey: "is_segmented",
         header: "Status",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
+            <div className="capitalize">{row.getValue("is_segmented")}</div>
         ),
     },
     {
-        accessorKey: "createdAt",
+        accessorKey: "date_uploaded",
         header: () => <div className="text-right">Created At</div>,
         cell: ({ row }) => {
-            const rawDate = row.getValue("createdAt") as string;
+            const rawDate = row.getValue("date_uploaded") as string;
             const [day, month, year] = rawDate.split("-").map(Number);
-            const date = new Date(year, month - 1, day); // JavaScript usa meses base 0
+            const date = new Date(year, month - 1, day);
     
             const formatted = date.toLocaleDateString("en-US", {
             month: "2-digit",
             day: "2-digit",
             year: "numeric",
             });
+            
     
             return <div className="text-right font-medium">{formatted}</div>;
         },
@@ -134,9 +104,9 @@ export const columns: ColumnDef<FileRecord>[] = [
         cell: ({ row }) => (
             row.getValue("segmented") ? (
                 <div className="flex items-center">
-                  <Link to="/visualization">
-                    <Button variant="secondary" size="sm">Visualize</Button>
-                  </Link>
+                    <Link to="/app/view">
+                        <Button variant="secondary" size="sm">Visualize</Button>
+                    </Link>
                     <Button variant="ghost" size="sm">Delete</Button>
                 </div>
             ) : (
@@ -152,7 +122,9 @@ export const columns: ColumnDef<FileRecord>[] = [
 
 export function FilesTable() {
 
-    const token = useSelector(selectToken)
+    const token = useSelector(selectToken);
+
+    const { id } = useParams();
 
     const [files, setFiles] = useState<FileRecord[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -164,7 +136,7 @@ export function FilesTable() {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data,
+        data: files,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -182,13 +154,14 @@ export function FilesTable() {
         },
     })
 
-    const refreshProjects = async () => {
+    const refreshFiles = async () => {
 
         try {
 
             setIsLoading(true);
             setError(null);
-            //const data = await projectServices.getProjects(token);
+            const data = await fileServices.getFilesByProject(parseInt(id ?? '0'), token);
+            console.log(data)
             setFiles(data);
 
         } catch (err) {
@@ -202,7 +175,11 @@ export function FilesTable() {
 
         }
 
-      };
+    };
+
+    useEffect(() => {
+        refreshFiles();
+    }, []);
 
     return (
 
@@ -212,9 +189,9 @@ export function FilesTable() {
 
                 <Input
                     placeholder="Filter files..."
-                    value={(table.getColumn("fileName")?.getFilterValue() as string) ?? ""}
+                    value={(table.getColumn("file_name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("fileName")?.setFilterValue(event.target.value)
+                        table.getColumn("file_name")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -225,67 +202,82 @@ export function FilesTable() {
             </div>
 
             <div className="rounded-md border">
-                <Table>
+                {isLoading ? (
 
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                            return (
-                                <TableHead key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
-                                </TableHead>
-                            )
-                            })}
-                        </TableRow>
-                        ))}
-                    </TableHeader>
+                        <div className="flex justify-center items-center h-40">
+                            <p>Loading Files...</p>
+                        </div>
 
-                    <TableBody>
-                        {
-                            table.getRowModel().rows?.length ? (
+                    ) : error ? (
 
-                                table.getRowModel().rows.map((row) => (
+                        <div className="text-red-500 py-4">
+                            Error: {error}. Please try again.
+                        </div>
 
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
+                    ) : (
 
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                        </TableCell>
-                                    ))}
+                        <Table>
 
-                                    </TableRow>
-                                ))
-                            ) : (
-
-                                <TableRow>
-
-                                    <TableCell
-                                        colSpan={columns.length}
-                                        className="h-24 text-center"
-                                    >
-                                    No results.
-                                    </TableCell>
-
+                            <TableHeader>
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => {
+                                    return (
+                                        <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                        </TableHead>
+                                    )
+                                    })}
                                 </TableRow>
-                            )
-                        }
+                                ))}
+                            </TableHeader>
 
-                    </TableBody>
+                            <TableBody>
+                                {
+                                    table.getRowModel().rows?.length ? (
 
-                </Table>
+                                        table.getRowModel().rows.map((row) => (
+
+                                            <TableRow
+                                                key={row.id}
+                                                data-state={row.getIsSelected() && "selected"}
+                                            >
+
+                                            {row.getVisibleCells().map((cell) => (
+                                                <TableCell key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                                </TableCell>
+                                            ))}
+
+                                            </TableRow>
+                                        ))
+                                    ) : (
+
+                                        <TableRow>
+
+                                            <TableCell
+                                                colSpan={columns.length}
+                                                className="h-24 text-center"
+                                            >
+                                            No results.
+                                            </TableCell>
+
+                                        </TableRow>
+                                    )
+                                }
+
+                            </TableBody>
+
+                        </Table>
+                    )}
 
             </div>
 

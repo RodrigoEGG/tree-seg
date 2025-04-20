@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.models.files_schema import FileUrl, FileUrlResponse
+from app.models.files_schema import FileCreate, FileCreateResponse, FileUrl, FileUrlResponse
 from sqlalchemy.orm import Session
-from app.crud.files.files import get_all_files, get_file, get_project_files, get_signed_url
+from app.crud.files.files import create_file, get_all_files, get_file, get_project_files, get_signed_url
 from app.dependencies.postgres_depends import get_db
 
 router = APIRouter()
@@ -28,7 +28,7 @@ def fetch_project_files(project_id: int, db: Session = Depends(get_db)):
         return files
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    
 @router.post("/signedurl", response_model=FileUrlResponse, status_code=status.HTTP_200_OK)
 def fetch_signed_url(fileurl : FileUrl):
     try:
@@ -37,4 +37,7 @@ def fetch_signed_url(fileurl : FileUrl):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.post("/file", response_model=FileCreateResponse, status_code=status.HTTP_200_OK)
+def create_file_endpoint(file: FileCreate, db: Session = Depends(get_db)):
+    return create_file(db, file)
 

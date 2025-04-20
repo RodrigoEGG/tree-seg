@@ -5,12 +5,16 @@ import type { UploadProps } from 'antd';
 import { fileServices } from '@/services/file-api';
 import { useSelector } from 'react-redux';
 import { selectToken } from '@/redux/slices/useSlice';
+import { useParams } from 'react-router-dom';
 
 const { Dragger } = Upload;
 
 const UploadData: React.FC = () => {
 
     const token = useSelector(selectToken)
+
+    const {id} = useParams();
+
     const props: UploadProps = {
         name: 'file',
         multiple: false,
@@ -33,6 +37,7 @@ const UploadData: React.FC = () => {
             return true;
         },
         customRequest: async ({ file, onSuccess, onError }) => {
+
             const realFile = file as File;
 
             try {
@@ -51,6 +56,8 @@ const UploadData: React.FC = () => {
                 } else {
                     throw new Error("Error");
                 }
+
+                void fileServices.createFile(id ? parseInt(id) : 1 , realFile.name, token);
         
             } catch (err) {
                 console.error(err);

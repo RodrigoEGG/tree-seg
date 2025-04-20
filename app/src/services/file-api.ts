@@ -1,3 +1,4 @@
+import { FileRecord } from "@/interfaces/file-record";
 import apiRequest from "./client";
 
 
@@ -16,6 +17,24 @@ const fileServices = {
             }
         );
     },
+
+    getFilesByProject: async (projectID : number, token : string) : Promise<FileRecord[]> => {
+        return apiRequest<FileRecord[]>(`/files/project/${projectID}`, token);
+    },
+
+    createFile: async(projectID : number, filename : string, token : string) : Promise<void> => {
+        await apiRequest<void>(
+            '/files/file',
+            token,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    file_name: filename,
+                    project_id: projectID
+                })
+            }
+        );
+    }
 
 };
 

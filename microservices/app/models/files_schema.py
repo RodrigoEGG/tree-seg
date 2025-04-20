@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from app.models import Base
 from sqlalchemy.sql import func
 from pydantic import BaseModel
+from datetime import date as date_type
 
 class File(Base):
     __tablename__ = 'file'
@@ -17,6 +17,18 @@ class File(Base):
     # Relationships
     project = relationship("Project", back_populates="files")
     zones = relationship("ZFMapping", back_populates="file")
+
+class FileCreate(BaseModel):
+    file_name : str
+    project_id : int
+
+class FileCreateResponse(FileCreate):
+    file_id : int
+    date_uploaded : date_type
+    is_segmented : bool
+
+    class Config:
+        from_attributes = True
 
 class FileUrl(BaseModel):
     filename : str

@@ -1,6 +1,8 @@
 export interface FileRecord {
-    fileName: string;
-    createdAt: string;
-    status: "Segmented" | "Failed" | "In Progress";
-    segmented?: boolean;
+    file_id : number;
+    file_name: string;
+    date_uploaded: string;
+    is_segmented : boolean;
+    project_id : number;
+
 }

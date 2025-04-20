@@ -1,7 +1,7 @@
 from datetime import timedelta
 from app.utils.minio import get_minio_client, get_minio_bucket
 from sqlalchemy.orm import Session
-from app.models.files_schema import File, FileUrl
+from app.models.files_schema import File, FileCreate, FileUrl
 
 def get_all_files(db: Session):
     return db.query(File).all()
@@ -32,3 +32,15 @@ def get_signed_url(fileurl : FileUrl):
     except Exception as e:
         return f"Error al generar la URL firmada: {str(e)}"
 
+def create_file(db : Session , file : FileCreate):
+
+    file = File(
+        file_name=file.file_name,
+        project_id=file.project_id
+    )
+
+    db.add(file)
+    db.commit()
+    db.refresh(file)
+
+    return file
