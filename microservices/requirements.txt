@@ -1,6 +1,10 @@
 annotated-types==0.7.0
 anyio==4.9.0
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
 bcrypt==4.3.0
+certifi==2025.1.31
+cffi==1.17.1
 click==8.1.8
 colorama==0.4.6
 dnspython==2.7.0
@@ -10,9 +14,12 @@ fastapi==0.115.12
 greenlet==3.1.1
 h11==0.14.0
 idna==3.10
+minio==7.2.15
 passlib==1.7.4
 psycopg2-binary==2.9.10
 pyasn1==0.4.8
+pycparser==2.22
+pycryptodome==3.22.0
 pydantic==2.11.3
 pydantic_core==2.33.1
 pymongo==4.12.0
@@ -27,4 +34,5 @@ sqlmodel==0.0.24
 starlette==0.46.1
 typing-inspection==0.4.0
 typing_extensions==4.13.1
+urllib3==2.4.0
 uvicorn==0.34.0

@@ -42,7 +42,7 @@ const UploadData: React.FC = () => {
 
             try {
 
-                const data = await fileServices.getSignedUrl(`${realFile.name}`, token);
+                const data = await fileServices.getSignedUrl(`${id}/${realFile.name}`, token);
                 const presignedUrl = data.signedurl;
 
                 const uploadResponse = await fetch(presignedUrl, {

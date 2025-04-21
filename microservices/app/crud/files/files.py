@@ -1,7 +1,7 @@
 from datetime import timedelta
 from app.utils.minio import get_minio_client, get_minio_bucket
 from sqlalchemy.orm import Session
-from app.models.files_schema import File, FileCreate, FileUrl
+from app.models.files_schema import File, FileCreate, FileUpdate, FileUrl
 
 def get_all_files(db: Session):
     return db.query(File).all()
@@ -44,3 +44,55 @@ def create_file(db : Session , file : FileCreate):
     db.refresh(file)
 
     return file
+
+def check_file(db : Session , file : FileCreate):
+
+    result = db.query(File).filter(File.project_id == file.project_id, File.file_name == file.file_name).first()
+
+    if result : 
+        return False
+    else : 
+        return True
+    
+def delete_file(db : Session, file_id : int):
+
+    try:
+
+        client = get_minio_client()
+        bucket = get_minio_bucket()
+    
+        file = db.query(File).filter(File.file_id == file_id).first()
+
+        client.remove_object(bucket, f"{file.project_id}/{file.file_id}")
+
+        if file:
+            db.delete(file)
+            db.commit()
+        
+        return file
+    
+    except Exception as e:
+        return None
+
+def update_file(db : Session, file_id : int , file : FileUpdate):
+    existing_file = db.query(File).filter(File.file_id == file_id).first()
+    if not existing_file:
+        return None
+    for key, value in file.dict(exclude_unset=True).items():
+        setattr(existing_file, key, value)
+    db.commit()
+    db.refresh(existing_file)
+    return existing_file
+    
+
+def update_file(db : Session, file_id : int , file : FileUpdate):
+    existing_file = db.query(File).filter(File.file_id == file_id).first()
+    if not existing_file:
+        return None
+    for key, value in file.dict(exclude_unset=True).items():
+        setattr(existing_file, key, value)
+    db.commit()
+    db.refresh(existing_file)
+    return existing_file
+    
+

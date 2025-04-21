@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.models.files_schema import FileCreate, FileCreateResponse, FileUrl, FileUrlResponse
+from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, FileUrl, FileUrlResponse
 from sqlalchemy.orm import Session
-from app.crud.files.files import create_file, get_all_files, get_file, get_project_files, get_signed_url
+from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_project_files, get_signed_url, update_file
 from app.dependencies.postgres_depends import get_db
 
 router = APIRouter()
@@ -40,4 +40,27 @@ def fetch_signed_url(fileurl : FileUrl):
 @router.post("/file", response_model=FileCreateResponse, status_code=status.HTTP_200_OK)
 def create_file_endpoint(file: FileCreate, db: Session = Depends(get_db)):
     return create_file(db, file)
+
+@router.delete("/{file_id}", status_code=status.HTTP_200_OK)
+def remove_file_by_id(file_id : int, db : Session = Depends(get_db)):
+    deleted_file = delete_file(db, file_id)
+    if not deleted_file:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return None
+ 
+@router.post("/file/check/", status_code=status.HTTP_200_OK)
+def check_file_by_project(file : FileCreate, db: Session = Depends(get_db)):
+    response = check_file(db, file)
+    return {"check" : response}
+
+@router.put("/{file_id}", status_code=status.HTTP_200_OK)
+def modify_file_by_id(file_id : int,  file : FileUpdate, db : Session = Depends(get_db)):
+
+    updated_file = update_file(db, file_id, file)
+
+    if not updated_file:
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    return updated_file
+
 
