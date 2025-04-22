@@ -10,3 +10,7 @@ export interface AuthRecord {
 	token_type : string;
 	user : UserRecord;
 }
+
+export interface AuthCheck {
+	check : boolean;
+}

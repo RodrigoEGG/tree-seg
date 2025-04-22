@@ -1,4 +1,4 @@
-import { AuthRecord, UserRecord } from "@/interfaces/user-record";
+import { AuthCheck, AuthRecord, UserRecord } from "@/interfaces/user-record";
 import apiRequest from "./client";
 
 interface UserCreatePayload {
@@ -30,6 +30,10 @@ const userServices = {
             body
         });
     },
+
+    checkToken: async(token : string) : Promise<AuthCheck>=> {
+        return apiRequest<AuthCheck>('/auth/check', token);
+    }
 
 };
 
