@@ -37,5 +37,5 @@ class FileUrlResponse(BaseModel):
     signedurl : str
 
 class FileUpdate(BaseModel):
-    file_name : str
-    is_segmented : str
+    file_name : str | None = None
+    is_segmented : bool | None = None

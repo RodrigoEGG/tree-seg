@@ -2,6 +2,8 @@ from datetime import timedelta
 from app.utils.minio import get_minio_client, get_minio_bucket
 from sqlalchemy.orm import Session
 from app.models.files_schema import File, FileCreate, FileUpdate, FileUrl
+from minio.error import S3Error
+
 
 def get_all_files(db: Session):
     return db.query(File).all()
@@ -63,7 +65,7 @@ def delete_file(db : Session, file_id : int):
     
         file = db.query(File).filter(File.file_id == file_id).first()
 
-        client.remove_object(bucket, f"{file.project_id}/{file.file_id}")
+        client.remove_object(bucket, f"{file.project_id}/{file.file_name}")
 
         if file:
             db.delete(file)
@@ -71,7 +73,8 @@ def delete_file(db : Session, file_id : int):
         
         return file
     
-    except Exception as e:
+    except S3Error as e:
+        print(str(e))
         return None
 
 def update_file(db : Session, file_id : int , file : FileUpdate):

@@ -33,6 +33,7 @@ import UploadDataModal from "./ui/modal"
 import { useSelector } from "react-redux"
 import { selectToken } from "@/redux/slices/useSlice"
 import { fileServices } from '@/services/file-api';
+import DeleteFileModal from './delete-file';
 
   
 export const columns: ColumnDef<FileRecord>[] = [
@@ -99,16 +100,24 @@ export const columns: ColumnDef<FileRecord>[] = [
         },
     },
     {
-        accessorKey: "segmented",
+        accessorKey: "is_segmented",
         header: "Segmented",
         cell: ({ row }) => (
-            row.getValue("segmented") ? (
-                <div className="flex items-center">
-                    <Link to="/app/view">
-                        <Button variant="secondary" size="sm">Visualize</Button>
-                    </Link>
-                    <Button variant="ghost" size="sm">Delete</Button>
-                </div>
+            row.getValue("is_segmented") ? (
+                <>
+            
+                    <div className="flex items-center space-x-2">
+                        <Link to={`/app/view`}>
+                            <Button size="sm" asChild>
+                            <span>View</span>
+                            </Button>
+                        </Link>
+                        <DeleteFileModal fileId={row.original.file_id}/>
+                    </div>
+
+                </>
+
+
             ) : (
                 <Button disabled variant="outline" size="sm">
                     <Loader2 className="animate-spin" />
@@ -179,6 +188,7 @@ export function FilesTable() {
 
     useEffect(() => {
         refreshFiles();
+        console.log(files)
     }, []);
 
     return (
@@ -241,10 +251,10 @@ export function FilesTable() {
                                 {
                                     table.getRowModel().rows?.length ? (
 
-                                        table.getRowModel().rows.map((row) => (
+                                        table.getRowModel().rows.map((row, index) => (
 
                                             <TableRow
-                                                key={row.id}
+                                                key={index}
                                                 data-state={row.getIsSelected() && "selected"}
                                             >
 

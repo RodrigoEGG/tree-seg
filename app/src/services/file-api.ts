@@ -34,7 +34,13 @@ const fileServices = {
                 })
             }
         );
-    }
+    },
+    
+    deleteFile: async (fileId: number, token : string): Promise<void> => {
+        return apiRequest<void>(`/files/${fileId}`, token , {
+            method: 'DELETE'
+        });
+    },
 
 };
 
