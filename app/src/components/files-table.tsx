@@ -11,7 +11,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Loader2} from "lucide-react"
+import { ArrowUpDown, Columns, Loader2} from "lucide-react"
 import { CheckedState } from "@radix-ui/react-checkbox"
 import { Link, useParams } from "react-router-dom"
 
@@ -35,99 +35,99 @@ import { selectToken } from "@/redux/slices/useSlice"
 import { fileServices } from '@/services/file-api';
 import DeleteFileModal from './delete-file';
 
+export const getColumns = (
+    refreshFiles: () => Promise<void>
+  ): ColumnDef<FileRecord>[] => [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value: CheckedState) =>
+            table.toggleAllPageRowsSelected(!!value)
+          }
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(checked: CheckedState) =>
+            row.toggleSelected(!!checked)
+          }
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "file_name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          File
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("file_name")}</div>
+      ),
+    },
+    {
+      accessorKey: "is_segmented",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("is_segmented")}</div>
+      ),
+    },
+    {
+      accessorKey: "date_uploaded",
+      header: () => <div className="text-right">Created At</div>,
+      cell: ({ row }) => {
+        const rawDate = row.getValue("date_uploaded") as string;
+        const [day, month, year] = rawDate.split("-").map(Number);
+        const date = new Date(year, month - 1, day);
   
-export const columns: ColumnDef<FileRecord>[] = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-            checked={
-                table.getIsAllPageRowsSelected() ||
-                (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value: CheckedState) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(checked: CheckedState) => row.toggleSelected(!!checked)}
-            aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "file_name",
-        header: ({ column }) => {
-            return (
-            <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                File
-                <ArrowUpDown />
-            </Button>
-            );
-        },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("file_name")}</div>,
-    },
-    {
-        accessorKey: "is_segmented",
-        header: "Status",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("is_segmented")}</div>
-        ),
-    },
-    {
-        accessorKey: "date_uploaded",
-        header: () => <div className="text-right">Created At</div>,
-        cell: ({ row }) => {
-            const rawDate = row.getValue("date_uploaded") as string;
-            const [day, month, year] = rawDate.split("-").map(Number);
-            const date = new Date(year, month - 1, day);
-    
-            const formatted = date.toLocaleDateString("en-US", {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-            });
-            
-    
-            return <div className="text-right font-medium">{formatted}</div>;
-        },
-    },
-    {
-        accessorKey: "is_segmented",
-        header: "Segmented",
-        cell: ({ row }) => (
-            row.getValue("is_segmented") ? (
-                <>
-            
-                    <div className="flex items-center space-x-2">
-                        <Link to={`/app/view`}>
-                            <Button size="sm" asChild>
-                            <span>View</span>
-                            </Button>
-                        </Link>
-                        <DeleteFileModal fileId={row.original.file_id}/>
-                    </div>
-
-                </>
-
-
-            ) : (
-                <Button disabled variant="outline" size="sm">
-                    <Loader2 className="animate-spin" />
-                    Please wait
-                </Button>
-            )
-        ),
-    }
-];
+        const formatted = date.toLocaleDateString("en-US", {
+          month: "2-digit",
+          day: "2-digit",
+          year: "numeric",
+        });
   
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "is_segmented",
+      header: "Segmented",
+      cell: ({ row }) =>
+        row.getValue("is_segmented") ? (
+          <div className="flex items-center space-x-2">
+            <Link to={`/app/view`}>
+              <Button size="sm" asChild>
+                <span>View</span>
+              </Button>
+            </Link>
+            <DeleteFileModal
+              fileId={row.original.file_id}
+              refreshFiles={refreshFiles}
+            />
+          </div>
+        ) : (
+          <Button disabled variant="outline" size="sm">
+            <Loader2 className="animate-spin" />
+            Please wait
+          </Button>
+        ),
+    },
+  ];
+
 
 export function FilesTable() {
 
@@ -143,25 +143,6 @@ export function FilesTable() {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-
-    const table = useReactTable({
-        data: files,
-        columns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-        sorting,
-        columnFilters,
-        columnVisibility,
-        rowSelection,
-        },
-    })
 
     const refreshFiles = async () => {
 
@@ -186,9 +167,30 @@ export function FilesTable() {
 
     };
 
+    const columns = getColumns(refreshFiles);
+
+    const table = useReactTable({
+        data: files,
+        columns,
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        state: {
+        sorting,
+        columnFilters,
+        columnVisibility,
+        rowSelection,
+        },
+    })
+
+
     useEffect(() => {
         refreshFiles();
-        console.log(files)
     }, []);
 
     return (
@@ -207,7 +209,7 @@ export function FilesTable() {
                 />
 
 
-                <UploadDataModal />
+                <UploadDataModal refreshFiles={refreshFiles}/>
 
             </div>
 
@@ -274,7 +276,7 @@ export function FilesTable() {
                                         <TableRow>
 
                                             <TableCell
-                                                colSpan={columns.length}
+                                                colSpan={Columns.length}
                                                 className="h-24 text-center"
                                             >
                                             No results.

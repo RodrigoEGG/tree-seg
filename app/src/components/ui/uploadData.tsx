@@ -6,10 +6,11 @@ import { fileServices } from '@/services/file-api';
 import { useSelector } from 'react-redux';
 import { selectToken } from '@/redux/slices/useSlice';
 import { useParams } from 'react-router-dom';
+import { UploadModalProps } from '@/interfaces/refresh';
 
 const { Dragger } = Upload;
 
-const UploadData: React.FC = () => {
+const UploadData: React.FC<UploadModalProps> = ({refreshFiles}) => {
 
     const token = useSelector(selectToken)
 
@@ -57,8 +58,11 @@ const UploadData: React.FC = () => {
                     throw new Error("Error");
                 }
 
-                void fileServices.createFile(id ? parseInt(id) : 1 , realFile.name, token);
+
+                await fileServices.createFile(id ? parseInt(id) : 1 , realFile.name, token);
         
+                refreshFiles();
+
             } catch (err) {
                 console.error(err);
                 onError?.(new Error("Error al subir a MinIO"));

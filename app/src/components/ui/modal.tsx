@@ -3,8 +3,12 @@ import { Modal } from 'antd';
 import { Button } from "@/components/ui/button"
 import UploadData from './uploadData';
 import { PlusCircle } from 'lucide-react';
+import { UploadModalProps } from '@/interfaces/refresh';
 
-const UploadDataModal: React.FC = () => {
+
+
+
+const UploadDataModal: React.FC<UploadModalProps> = ( upload ) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,7 +43,7 @@ const UploadDataModal: React.FC = () => {
                 footer={false}
             >
 
-                <UploadData />
+                <UploadData {...upload} />
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                     <Button onClick={handleOk}>Upload</Button>

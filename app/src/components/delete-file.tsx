@@ -7,9 +7,10 @@ import { fileServices } from '@/services/file-api';
 
 interface DeleteFileProps {
     fileId: number;
+    refreshFiles : () => void;
 }
 
-const DeleteFileModal: React.FC<DeleteFileProps> = ({ fileId}) => {
+const DeleteFileModal: React.FC<DeleteFileProps> = ({ fileId, refreshFiles}) => {
 
     const token = useSelector(selectToken)
 
@@ -41,6 +42,7 @@ const DeleteFileModal: React.FC<DeleteFileProps> = ({ fileId}) => {
             setError(null);
 			await fileServices.deleteFile(fileId, token);
             setIsModalOpen(false);
+            refreshFiles();
         } catch (err) {
             console.error('Error deleting project:', err);
             setError(err instanceof Error ? err.message : 'Failed to delete project');
