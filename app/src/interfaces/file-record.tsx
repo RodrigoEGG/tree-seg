@@ -6,3 +6,7 @@ export interface FileRecord {
     project_id : number;
 
 }
+
+export interface FileCheck {
+    check : boolean;
+}

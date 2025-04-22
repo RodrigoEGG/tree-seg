@@ -19,22 +19,30 @@ const UploadData: React.FC<UploadModalProps> = ({refreshFiles}) => {
     const props: UploadProps = {
         name: 'file',
         multiple: false,
-        beforeUpload(file) {
+        beforeUpload: async (file) => {
             const isLt500MB = file.size < 500 * 1024 * 1024;
             const validExtensions = ['.las', '.laz'];
             const fileName = file.name.toLowerCase();
             const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
-
+          
+            const data = await fileServices.checkFile(fileName, `${id}`, token);
+            const checked = data.check;
+          
+            if (checked) {
+                message.error(`Archivo existente con ese nombre`);
+                return Upload.LIST_IGNORE;
+            }
+          
             if (!isLt500MB) {
                 message.error(`Max 500MB.`);
-                return false;
+                return Upload.LIST_IGNORE;
             }
-
+          
             if (!hasValidExtension) {
                 message.error(`Solo .las o .laz).`);
-                return false;
+                return Upload.LIST_IGNORE;
             }
-
+          
             return true;
         },
         customRequest: async ({ file, onSuccess, onError }) => {

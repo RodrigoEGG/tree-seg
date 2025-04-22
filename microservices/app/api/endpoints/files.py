@@ -48,7 +48,7 @@ def remove_file_by_id(file_id : int, db : Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Project not found")
     return None
  
-@router.post("/file/check/", status_code=status.HTTP_200_OK)
+@router.post("/check/", status_code=status.HTTP_200_OK)
 def check_file_by_project(file : FileCreate, db: Session = Depends(get_db)):
     response = check_file(db, file)
     return {"check" : response}

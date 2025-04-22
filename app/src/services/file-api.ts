@@ -1,4 +1,4 @@
-import { FileRecord } from "@/interfaces/file-record";
+import { FileCheck, FileRecord } from "@/interfaces/file-record";
 import apiRequest from "./client";
 
 
@@ -41,6 +41,17 @@ const fileServices = {
             method: 'DELETE'
         });
     },
+
+    checkFile: async(file_name : string , project_id : string, token: string) : Promise<FileCheck>=>{
+        return apiRequest<FileCheck>('/files/check/', token, {
+            method: 'POST',
+            body : JSON.stringify({
+                file_name : file_name,
+                project_id : project_id
+            })
+        });
+
+    }
 
 };
 
