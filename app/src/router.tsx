@@ -8,6 +8,7 @@ import Visualization from "./views/visualization/Visualization";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import LandingSkeleton from "./layouts/LandingSkeleton";
 import Files from "./views/files/files";
+import Tree from "./views/tree/Tree";
 
 const router = createBrowserRouter([
 
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
 			{
 				path : "/app/files/:id",
 				element : <Files/>
-			}
+			},
+			{
+				path : "/app/view/:id",
+				element : <Tree/>
+			},
 		]
 
 	},

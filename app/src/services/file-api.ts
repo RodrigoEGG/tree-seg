@@ -42,7 +42,7 @@ const fileServices = {
         });
     },
 
-    checkFile: async(file_name : string , project_id : string, token: string) : Promise<FileCheck>=>{
+    checkFile: async(file_name : string , project_id : number, token: string) : Promise<FileCheck>=>{
         return apiRequest<FileCheck>('/files/check/', token, {
             method: 'POST',
             body : JSON.stringify({

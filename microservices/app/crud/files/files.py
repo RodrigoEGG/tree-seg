@@ -52,9 +52,9 @@ def check_file(db : Session , file : FileCreate):
     result = db.query(File).filter(File.project_id == file.project_id, File.file_name == file.file_name).first()
 
     if result : 
-        return False
-    else : 
         return True
+    else : 
+        return False
     
 def delete_file(db : Session, file_id : int):
 
