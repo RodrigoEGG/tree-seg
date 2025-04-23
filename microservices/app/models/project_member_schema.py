@@ -7,7 +7,7 @@ class ProjectMember(Base):
     __tablename__ = 'project_member'
     
     projectmember_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)  # Fixed table name
     project_id = Column(Integer, ForeignKey('project.project_id', ondelete='CASCADE'), nullable=False)
     
     # Unique constraint for user_id and project_id
