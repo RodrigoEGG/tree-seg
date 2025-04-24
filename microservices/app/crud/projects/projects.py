@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.project_schema import Project, ProjectCreate, ProjectUpdate
 from app.models.project_member_schema import ProjectMember, ProjectMemberCreate
 
-# Create a new project
+#  Create a new project
 def create_project(db: Session, project: ProjectCreate):
     new_project = Project(
         name=project.name,
@@ -12,9 +12,14 @@ def create_project(db: Session, project: ProjectCreate):
     db.add(new_project)
     db.commit()
     db.refresh(new_project)
-    pm = ProjectMemberCreate(user_id=project.owner_id, project_id=new_project.project_id)
-    create_projectmember(db, pm)
+
+    pm = ProjectMember(user_id=project.owner_id, project_id=new_project.project_id)
+    db.add(pm)
+    db.commit()
+    db.refresh(pm)
+
     return new_project
+
 
 # Get all projects
 def get_projects(db: Session):

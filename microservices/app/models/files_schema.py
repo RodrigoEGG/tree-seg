@@ -39,3 +39,8 @@ class FileUrlResponse(BaseModel):
 class FileUpdate(BaseModel):
     file_name : str | None = None
     is_segmented : bool | None = None
+
+class FileCheck(BaseModel):
+    user_id : int
+    project_id : int
+    file_id : int

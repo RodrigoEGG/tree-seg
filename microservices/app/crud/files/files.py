@@ -1,8 +1,11 @@
 from datetime import timedelta
 from app.utils.minio import get_minio_client, get_minio_bucket
+from app.models.project_member_schema import ProjectMember
+from app.models.project_schema import Project
 from sqlalchemy.orm import Session
-from app.models.files_schema import File, FileCreate, FileUpdate, FileUrl
+from app.models.files_schema import File, FileCheck, FileCreate, FileUpdate, FileUrl
 from minio.error import S3Error
+from sqlalchemy import and_
 
 
 def get_all_files(db: Session):
@@ -97,5 +100,24 @@ def update_file(db : Session, file_id : int , file : FileUpdate):
     db.commit()
     db.refresh(existing_file)
     return existing_file
-    
+
+def validate_user_file(db: Session, user_id : int, project_id : int, file_id : int):
+    result = db.query(File).\
+        join(Project, File.project_id == Project.project_id).\
+        join(
+            ProjectMember,
+            and_(
+                ProjectMember.project_id == Project.project_id,
+                ProjectMember.user_id == user_id
+            )
+        ).\
+        filter(
+            File.file_id == file_id,
+            Project.project_id == project_id
+        ).first()
+
+    return result is not None
+
+
+
 
