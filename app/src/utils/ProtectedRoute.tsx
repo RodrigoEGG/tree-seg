@@ -13,6 +13,7 @@ const ProtectedRoute = ({ children }: Props) => {
 	const token = useSelector(selectToken);
 	const [isValid, setIsValid] = useState<boolean | null>(null);
 	const location = useLocation();
+	console.log("PATH:", location.pathname, "VALID:", isValid, "TOKEN:", token);
 
 	useEffect(() => {
 		const validate = async () => {
@@ -39,11 +40,11 @@ const ProtectedRoute = ({ children }: Props) => {
 		return <div>Cargando...</div>;
 	}
 
-	if (!isValid) {
+	if (!isValid && location.pathname != "/auth") {
 		return <Navigate to="/auth" replace />;
 	}
 
-	if (isValid && location.pathname.startsWith("/auth")) {
+	if (isValid && location.pathname == "/auth") {
 		return <Navigate to="/app/projects" replace />;
 	}
 
