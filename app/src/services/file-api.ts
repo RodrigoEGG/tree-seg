@@ -51,6 +51,10 @@ const fileServices = {
             })
         });
 
+    },
+
+    checkFileByProjectMember : async(userID : number, projectID : number, fileID : number, token : string) : Promise<FileCheck> => {
+        return apiRequest<FileCheck>(`/check/${userID}/${projectID}/${fileID}`, token);
     }
 
 };
