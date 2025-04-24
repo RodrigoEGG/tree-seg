@@ -10,6 +10,7 @@ import LandingSkeleton from "./layouts/LandingSkeleton";
 import Files from "./views/files/files";
 import Tree from "./views/tree/Tree";
 import FilesProtection from "./utils/FilesProtection";
+import ViewerProtection from "./utils/ViewerProtection";
 
 const router = createBrowserRouter([
 
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
 
 			{
 				path : "/app/view/:projectid/:fileid",
-				element : <Visualization/>
+				element : <ViewerProtection><Visualization/></ViewerProtection>
 			},
 			{
 				path : "/app/projects",
