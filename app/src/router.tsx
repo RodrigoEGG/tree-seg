@@ -9,6 +9,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import LandingSkeleton from "./layouts/LandingSkeleton";
 import Files from "./views/files/files";
 import Tree from "./views/tree/Tree";
+import FilesProtection from "./utils/FilesProtection";
 
 const router = createBrowserRouter([
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
 		children : [
 
 			{
-				path : "/app/view",
+				path : "/app/view/:projectid/:fileid",
 				element : <Visualization/>
 			},
 			{
@@ -28,10 +29,10 @@ const router = createBrowserRouter([
 			},
 			{
 				path : "/app/files/:id",
-				element : <Files/>
+				element : <FilesProtection><Files/></FilesProtection>,
 			},
 			{
-				path : "/app/view/:id",
+				path : "/app/view/:projectid/:fileid/:treeid",
 				element : <Tree/>
 			},
 		]

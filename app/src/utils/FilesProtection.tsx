@@ -1,28 +1,46 @@
-import { selectUid } from "@/redux/slices/useSlice";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
+import { selectToken, selectUid } from "@/redux/slices/useSlice";
+import { projectServices } from "@/services/project-api";
 
-export default function FilesProtection() {
+interface Props {
+	children?: React.ReactNode;
+}
 
-	const [validated, setValidated] = useState<Boolean>(true);
+export default function FilesProtection({ children }: Props) {
+	const [validated, setValidated] = useState<null | boolean>(null);
 
-	const {pid} = useParams();
-
+	const { id: projectid } = useParams();
 	const uid = useSelector(selectUid);
+	const token = useSelector(selectToken);
 
-	useEffect(
-		() => {
-			
-		},[]
-	)
+	useEffect(() => {
+		const validateAccess = async () => {
+			if (!projectid || !uid || !token) {
+				setValidated(false);
+				return;
+			}
 
+			try {
+				const projectIdInt = parseInt(projectid);
+				const res = await projectServices.checkProjectMember(projectIdInt, uid, token);
+				setValidated(res.check);
+			} catch (error) {
+				setValidated(false);
+			}
+		};
 
-	return (
+		validateAccess();
+	}, [projectid, uid, token]);
 
-		<>
+	if (validated === null) {
+		return <div>Verificando acceso al proyecto...</div>;
+	}
 
-		</>
+	if (!validated) {
+		return <Navigate to="/app/projects" replace />;
+	}
 
-	)
+	return <>{children}</>;
 }

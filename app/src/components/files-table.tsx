@@ -36,7 +36,8 @@ import { fileServices } from '@/services/file-api';
 import DeleteFileModal from './delete-file';
 
 export const getColumns = (
-    refreshFiles: () => Promise<void>
+    refreshFiles: () => Promise<void>,
+	projectid : number
   ): ColumnDef<FileRecord>[] => [
     {
       id: "select",
@@ -109,7 +110,7 @@ export const getColumns = (
       cell: ({ row }) =>
         row.getValue("is_segmented") ? (
           <div className="flex items-center space-x-2">
-            <Link to={`/app/view`}>
+            <Link to={`/app/view/${projectid}/${row.original.file_id}`}>
               <Button size="sm" asChild>
                 <span>View</span>
               </Button>
@@ -167,7 +168,7 @@ export function FilesTable() {
 
     };
 
-    const columns = getColumns(refreshFiles);
+    const columns = getColumns(refreshFiles,1);
 
     const table = useReactTable({
         data: files,
