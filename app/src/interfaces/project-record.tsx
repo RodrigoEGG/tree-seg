@@ -9,4 +9,8 @@ export interface ProjectMemberRecord {
     user_id : number;
     project_id : number;
     projectmember_id : number;
+} 
+
+export interface ProjectCheck {
+    check : boolean;
 }

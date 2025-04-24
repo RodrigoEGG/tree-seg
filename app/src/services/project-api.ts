@@ -1,5 +1,5 @@
 // src/services/api-service.ts
-import { ProjectMemberRecord, ProjectRecord } from "@/interfaces/project-record"; 
+import { ProjectCheck, ProjectMemberRecord, ProjectRecord } from "@/interfaces/project-record"; 
 import apiRequest from "./client";
 
 interface ProjectCreatePayload {
@@ -85,8 +85,8 @@ const projectServices = {
         );
     },
 
-    checkProjectMember: async(projectID : number, userID : number, token : string) : Promise<void> => {
-        return apiRequest<void>('')
+    checkProjectMember: async(projectID : number, userID : number, token : string) : Promise<ProjectCheck> => {
+        return apiRequest<ProjectCheck>(`/check/${userID}/${projectID}`, token);
     }
 
 };
