@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { selectToken, setToken, setUid, setUsername } from "@/redux/slices/useSlice";
 import { userServices } from "@/services/user-api";
-import { useDispatch } from "react-redux";
 
 interface Props {
 	children?: React.ReactNode;
@@ -13,6 +12,7 @@ const ProtectedRoute = ({ children }: Props) => {
 	const dispatch = useDispatch();
 	const token = useSelector(selectToken);
 	const [isValid, setIsValid] = useState<boolean | null>(null);
+	const location = useLocation();
 
 	useEffect(() => {
 		const validate = async () => {
@@ -26,9 +26,9 @@ const ProtectedRoute = ({ children }: Props) => {
 				setIsValid(res.check);
 			} catch (err) {
 				setIsValid(false);
-				dispatch(setToken({token : ""}));
-				dispatch(setUid({uid : -1}));
-				dispatch(setUsername({username : ""}));
+				dispatch(setToken({ token: "" }));
+				dispatch(setUid({ uid: -1 }));
+				dispatch(setUsername({ username: "" }));
 			}
 		};
 
@@ -41,6 +41,10 @@ const ProtectedRoute = ({ children }: Props) => {
 
 	if (!isValid) {
 		return <Navigate to="/auth" replace />;
+	}
+
+	if (isValid && location.pathname.startsWith("/auth")) {
+		return <Navigate to="/app/projects" replace />;
 	}
 
 	return <>{children}</>;
