@@ -25,7 +25,7 @@ export function LabelingInput() {
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Escribe algo"
+          placeholder="Label"
         />
         <Button onClick={handleAddBadge} variant="outline">
           Agregar

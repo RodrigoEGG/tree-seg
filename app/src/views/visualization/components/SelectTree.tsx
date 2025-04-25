@@ -17,7 +17,7 @@ export default function SelectTree() {
     const navigate = useNavigate();
 	const {projectid,fileid} = useParams();
 
-    const [count, setCount] = useState<number>(6);
+    const [count, setCount] = useState<number>(40);
     const [selectedId, setSelectedId] = useState<number | undefined>();
 
     const handleClick = () => {
