@@ -138,13 +138,6 @@ export function ProjectTable() {
             projectId={row.getValue("project_id")}
             onProjectUpdated={refreshProjects}
           />
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => handleDownload(row.getValue("project_id"))}
-          >
-            Download
-          </Button>
         </div>
       ),
     }
