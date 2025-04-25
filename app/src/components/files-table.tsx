@@ -33,7 +33,7 @@ import UploadDataModal from "./ui/modal"
 import { useSelector } from "react-redux"
 import { selectToken } from "@/redux/slices/useSlice"
 import { fileServices } from '@/services/file-api';
-import DeleteFileModal from './delete-file';
+import MenuFile from './menu-file';
 
 export const getColumns = (
     refreshFiles: () => Promise<void>,
@@ -111,14 +111,16 @@ export const getColumns = (
         row.getValue("is_segmented") ? (
           <div className="flex items-center space-x-2">
             <Link to={`/app/view/${projectid}/${row.original.file_id}`}>
-              <Button size="sm" asChild>
-                <span>View</span>
-              </Button>
+				<Button>
+					View
+                </Button>
             </Link>
-            <DeleteFileModal
+			<MenuFile
               fileId={row.original.file_id}
               refreshFiles={refreshFiles}
-            />
+			  file_name={row.original.file_name}
+			/>
+
           </div>
         ) : (
           <Button disabled variant="outline" size="sm">

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { selectToken } from '@/redux/slices/useSlice';
 import { useSelector } from 'react-redux';
 import { fileServices } from '@/services/file-api';
+import { BellIcon } from 'lucide-react';
+import { DropdownMenuItem } from './ui/dropdown-menu';
 
 interface DeleteFileProps {
     fileId: number;
@@ -53,7 +55,13 @@ const DeleteFileModal: React.FC<DeleteFileProps> = ({ fileId, refreshFiles}) => 
 
     return (
         <>
-			<Button onClick={showModal} variant="ghost" size="sm">Delete</Button>
+            <DropdownMenuItem className="hover:bg-gray-500 hover:text-black"  onSelect={(e) => {
+                e.preventDefault();
+                showModal();
+            }}>
+                <BellIcon />
+				Delete
+            </DropdownMenuItem>
             <Modal
                 title="Delet File"
                 open={isModalOpen}
