@@ -17,20 +17,21 @@ const Viewer: React.FC = () => {
 	const { viewer, setViewer, potreeContainerRef } = useViewer();
 	const [attr, setAttr] = useState<string>("rgba");
 
-  return (
-    <>
-	
 
-      <div id="potree-root">
+	return (
+		<>
+		
 
-        <Wrapper ref={potreeContainerRef} className="potree_container">
-          <div id="potree_render_area"></div>
-        </Wrapper>
+			<div id="potree-root">
+
+				<Wrapper ref={potreeContainerRef} className="potree_container">
+					<div id="potree_render_area"></div>
+				</Wrapper>
 
 
-      </div>
+			</div>
 
-    </>
+		</>
   );
 };
 

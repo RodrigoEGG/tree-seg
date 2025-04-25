@@ -26,7 +26,7 @@ export const ViewerProvider: React.FC = ({ children }) => {
       setViewer(newViewer);
 
 
-      const url = "/o4/metadata.json";
+      const url = "/o3/metadata.json";
       window.Potree.loadPointCloud(url)
         .then((e: any) => {
           const pointcloud = e.pointcloud;

@@ -6,6 +6,7 @@ import SelectMarker from "./SelectMarker";
 import Scalarfields from "./Scalarfields";
 import Metrics from "./Metrics";
 import { CircleHelp } from "lucide-react";
+import SelectTree from "./SelectTree";
 
 export default function ForestVisualizationMenu() {
   const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
@@ -78,8 +79,6 @@ export default function ForestVisualizationMenu() {
 		name: 'Point'});
 
     setMarkers((prevMarkers) => [...prevMarkers,measurement]);
-
-
 
 
 
@@ -194,7 +193,7 @@ export default function ForestVisualizationMenu() {
           </div>
 
           <div className="my-2">
-            <SelectMarker/>
+            <SelectTree/>
           </div>
 
 

@@ -17,7 +17,10 @@ export default function SelectMarker() {
 
 	const navigate = useNavigate();
 
+	const {markers} = useViewer();
+
 	const [ id, setId] =useState(undefined);
+
 
 	const handleModal = () => {
 
@@ -67,7 +70,6 @@ export default function SelectMarker() {
 		setId(markerid);
 	}
 
-	const {markers} = useViewer();
 
 	return(
 		<>
