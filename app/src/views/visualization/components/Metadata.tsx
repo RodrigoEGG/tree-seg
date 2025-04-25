@@ -14,16 +14,25 @@ import {
 	DialogTitle,
 	DialogTrigger,
   } from "@/components/ui/dialog"
+import Help from "@/components/help"
+import { metadata_desc, metadata_title } from "@/utils/help-desc"
 
-export default function Metrics() {
-  return (
+export default function Metadata() {
+	return (
 		<>
 	
 			<div className="flex items-center gap-3 p-2">
-				<h1 className="text-lg font-semibold">Metrics</h1><CircleHelp className="h-5 w-5" /> 
+				<h1 className="text-lg font-semibold">Metadata</h1>
+				<Help title={metadata_title} desc={metadata_desc}/>
 			</div>
 
 			<div className="mt-2">
+				<SidebarMenuButton asChild>
+					<a href="#">
+					<DraftingCompass />
+						<span>LAS Metadata</span>
+					</a>
+				</SidebarMenuButton>
 
 			<Dialog>
   <DialogTrigger className="w-full">
@@ -54,6 +63,13 @@ export default function Metrics() {
 					<a href="#">
 					<DraftingCompass />
 						<span>Cirfumference</span>
+					</a>
+				</SidebarMenuButton>
+
+				<SidebarMenuButton asChild>
+					<a href="#">
+					<DraftingCompass />
+						<span>Location</span>
 					</a>
 				</SidebarMenuButton>
 			</div>
