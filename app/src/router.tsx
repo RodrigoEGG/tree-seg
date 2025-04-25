@@ -27,6 +27,10 @@ const router = createBrowserRouter([
 				element : <ViewerProtection><Visualization/></ViewerProtection>
 			},
 			{
+				path : "/app/view/:projectid/:fileid/:treeid",
+				element : <Tree/>
+			},
+			{
 				path : "/app/projects",
 				element : <Projects/>
 			},
@@ -41,13 +45,9 @@ const router = createBrowserRouter([
 					{
 						path : "/app/project/map/:id",
 						element : <Map/>
+					},
 
-					}
 				]
-			},
-			{
-				path : "/app/view/:projectid/:fileid/:treeid",
-				element : <Tree/>
 			},
 		]
 

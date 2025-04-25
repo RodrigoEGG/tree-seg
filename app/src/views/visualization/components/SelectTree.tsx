@@ -11,17 +11,18 @@ import {
 } from "@/components/ui/select";
 import { tree_desc, tree_title } from "@/utils/help-desc";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SelectTree() {
     const navigate = useNavigate();
+	const {projectid,fileid} = useParams();
 
     const [count, setCount] = useState<number>(6);
     const [selectedId, setSelectedId] = useState<number | undefined>();
 
     const handleClick = () => {
         if (selectedId !== undefined) {
-            navigate(`/tree/${selectedId}`);
+            navigate(`/app/view/${projectid}/${fileid}/${selectedId}`);
         }
     };
 

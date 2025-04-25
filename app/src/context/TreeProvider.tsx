@@ -6,7 +6,7 @@ const TreeContext = createContext<ViewerContextType | undefined>(undefined);
 
 export const TreeProvider: React.FC = ({ children }) => {
 
-	const { id } = useParams();
+	const { treeid } = useParams();
 
 	const potreeContainerRef = useRef<HTMLDivElement | null>(null);
 	const [viewer, setViewer] = useState<any>(null);
@@ -30,7 +30,7 @@ export const TreeProvider: React.FC = ({ children }) => {
 			setViewer(newViewer);
 
 
-			const url = "/o4/metadata.json";
+			const url = "/o3/metadata.json";
 			window.Potree.loadPointCloud(url)
 				.then((e: any) => {
 				const pointcloud = e.pointcloud;
@@ -39,7 +39,7 @@ export const TreeProvider: React.FC = ({ children }) => {
 				material.minSize = 2;
 				material.pointSizeType = window.Potree.PointSizeType.FIXED;
 				newViewer.scene.addPointCloud(pointcloud);
-				newViewer.setFilterPointSourceIDRange(id,id);
+				newViewer.setFilterPointSourceIDRange(treeid,treeid);
 				newViewer.fitToScreen();
 				})
 				.catch((error: any) => console.error("ERROR: ", error));
