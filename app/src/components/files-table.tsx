@@ -116,9 +116,9 @@ export const getColumns = (
                 </Button>
             </Link>
 			<MenuFile
-              fileId={row.original.file_id}
-              refreshFiles={refreshFiles}
-			  file_name={row.original.file_name}
+				fileId={row.original.file_id}
+				refreshFiles={refreshFiles}
+				file_name={row.original.file_name}
 			/>
 
           </div>

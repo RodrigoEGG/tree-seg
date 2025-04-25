@@ -11,6 +11,8 @@ import Files from "./views/files/files";
 import Tree from "./views/tree/Tree";
 import FilesProtection from "./utils/FilesProtection";
 import ViewerProtection from "./utils/ViewerProtection";
+import ProjectLayout from "./layouts/projectlayout/ProjectLayout";
+import Map from "./views/map/Map";
 
 const router = createBrowserRouter([
 
@@ -29,8 +31,19 @@ const router = createBrowserRouter([
 				element : <Projects/>
 			},
 			{
-				path : "/app/files/:id",
-				element : <FilesProtection><Files/></FilesProtection>,
+				path : "/app/project",
+				element : <FilesProtection><ProjectLayout/></FilesProtection>,
+				children : [
+					{
+						path : "/app/project/files/:id",
+						element : <Files/>
+					},
+					{
+						path : "/app/project/map/:id",
+						element : <Map/>
+
+					}
+				]
 			},
 			{
 				path : "/app/view/:projectid/:fileid/:treeid",

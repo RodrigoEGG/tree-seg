@@ -14,17 +14,11 @@ createRoot(document.getElementById('root')!).render(
 
 	<StrictMode>
 
-		<PersistGate persistor={persistor}>
-
-			<Provider store={store}>
-
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
 				<RouterProvider router={router} />
-
-			</Provider>
-
-		</PersistGate>
-
-
+			</PersistGate>
+		</Provider>
 	</StrictMode>,
 
 )

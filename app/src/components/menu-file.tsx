@@ -1,7 +1,6 @@
 import {
   CreditCardIcon,
   MoreVerticalIcon,
-  UserCircleIcon,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -40,11 +39,6 @@ export default function MenuFile(props : MenuFilesProps) {
 			>
 
 				<DropdownMenuGroup>
-
-					<DropdownMenuItem className="hover:bg-gray-100 hover:text-black" >
-						<UserCircleIcon />
-						Info
-					</DropdownMenuItem>
 
 					<a href={`${url}/${id}/${props.file_name}`} download={props.file_name}>
 
