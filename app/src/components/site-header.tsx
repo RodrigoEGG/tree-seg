@@ -1,18 +1,33 @@
 import { useState } from "react";
 import { TreePine, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useSelector } from "react-redux";
+import { selectUsername, setToken, setUid, setUsername } from "@/redux/slices/useSlice";
+import { useDispatch } from "react-redux";
 
 export function SiteHeader() {
     const [activeButton, setActiveButton] = useState("TreeSeg");
 
+    const name = useSelector(selectUsername);
+    const dispatcher = useDispatch();
+    const navigate = useNavigate();
+
     const user = {
-        name: "John Doe",
+        name: name,
         email: "example@gmail.com",
-        avatar: "/images/avatar.jpg", // Replace with actual path
+        avatar: "/images/avatar.jpg",
     };
+
+    const handleLogout = () => {
+        alert("Logging out...");
+        dispatcher(setUid({uid : -1}));
+        dispatcher(setToken({token : ""}));
+        dispatcher(setUsername({username : ""}));
+        navigate("/auth", { replace: true });
+    }
 
     return (
 
@@ -61,7 +76,6 @@ export function SiteHeader() {
                     </nav>
                 </div>
 
-                {/* Right Side - User Profile with Dropdown */}
                 <div className="ml-auto">
 
                     <Popover>
@@ -78,7 +92,7 @@ export function SiteHeader() {
                         </PopoverTrigger>
 
                         <PopoverContent align="end" className="w-40 p-2 shadow-lg bg-white border rounded-md">
-                            <Button variant="ghost" className="w-full text-left" onClick={() => alert("Logging out...")}>
+                            <Button variant="ghost" className="w-full text-left" onClick={() => handleLogout()}>
                                 Logout
                             </Button>
                         </PopoverContent>
