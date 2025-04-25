@@ -1,5 +1,6 @@
 
   
+import { LabelingInput } from "@/components/labeling"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 export default function Metadata(){
@@ -28,6 +29,7 @@ export default function Metadata(){
 					<Label htmlFor="content">Volume</Label>
 					<Input id="top-p" type="number" placeholder="0.7" />
 				</div>
+				<LabelingInput/>
 			</fieldset>
 
 		</>
