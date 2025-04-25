@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup , Rectangle} from 'react-leaflet';
 import { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import "leaflet/dist/leaflet.css"
+import { Button } from '@/components/ui/button';
 
 const position: LatLngExpression = [51.505, -0.09];
 
@@ -20,7 +21,12 @@ export default function Map() {
 		</Marker>
 
 		<Rectangle bounds={bounds} pathOptions={{ color: 'red' }}>
-			<Popup>Este es un rectángulo rojo</Popup>
+			<Popup>
+				test2.las 
+				<br/>
+				<Button className='pt-2'>Go to file</Button>
+
+			</Popup>
 		</Rectangle>
 		</MapContainer>
 	);

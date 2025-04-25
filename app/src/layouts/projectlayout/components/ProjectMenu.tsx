@@ -9,10 +9,11 @@ import {
 	SidebarMenuItem,
   } from "@/components/ui/sidebar"
 import { Map, Table } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
   
   
   export default function ProjectMenu() {
+	const {id} = useParams();
 	return (
 		  <Sidebar>
 			  <SidebarContent>
@@ -25,29 +26,33 @@ import { Link } from "react-router-dom"
 						  <SidebarMenu>
 
 								<SidebarMenuItem>
-										<Link to="#">
 
-									<SidebarMenuButton>
+									<Link to={`/app/project/files/${id}`}>
 
-
-											<Table/>
-											Files Table
+										<SidebarMenuButton>
 
 
-
-									</SidebarMenuButton>
-										</Link>
-
-										<Link to="#">
-									<SidebarMenuButton>
+												<Table/>
+												Files Table
 
 
-											<Map/>
-											Map
+
+										</SidebarMenuButton>
+
+									</Link>
+
+									<Link to={`/app/project/map/${id}`}>
+
+										<SidebarMenuButton>
 
 
-									</SidebarMenuButton>
-										</Link>
+												<Map/>
+												Map
+
+
+										</SidebarMenuButton>
+
+									</Link>
 
 								</SidebarMenuItem>
   

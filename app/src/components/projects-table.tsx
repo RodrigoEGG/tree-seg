@@ -129,7 +129,7 @@ export function ProjectTable() {
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">
-          <Link to={`/app/files/${row.getValue("project_id")}`}>
+          <Link to={`/app/project/files/${row.getValue("project_id")}`}>
             <Button size="sm" asChild>
               <span>View</span>
             </Button>
