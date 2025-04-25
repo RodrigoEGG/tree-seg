@@ -1,21 +1,14 @@
-//@ts-check
 
-import { CircleHelp, DraftingCompass, Ruler } from "lucide-react"
+import { DraftingCompass, FileText, Ruler } from "lucide-react"
 
 import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar"
 
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-  } from "@/components/ui/dialog"
 import Help from "@/components/help"
 import { metadata_desc, metadata_title } from "@/utils/help-desc"
+import MetadataModal from "@/components/metadata-modal"
+import LasModal from "@/components/las-modal"
 
 export default function Metadata() {
 	return (
@@ -27,51 +20,41 @@ export default function Metadata() {
 			</div>
 
 			<div className="mt-2">
-				<SidebarMenuButton asChild>
-					<a href="#">
-					<DraftingCompass />
-						<span>LAS Metadata</span>
-					</a>
-				</SidebarMenuButton>
 
-			<Dialog>
-  <DialogTrigger className="w-full">
+				<LasModal>
 
-				<SidebarMenuButton className="w-full" asChild>
-					<a href="#">
-						<Ruler />
-						<span>Height</span>
-					</a>
-				</SidebarMenuButton>
+					<SidebarMenuButton asChild>
+						<div>
+							<FileText />
+							<span>LAS Metadata</span>
+						</div>
+					</SidebarMenuButton>
+
+				</LasModal>
 
 
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Height Stats</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>
+				<MetadataModal stat="height" value={12.5}>
 
+					<SidebarMenuButton className="w-full" asChild>
+						<div>
+							<Ruler />
+							<span>Height</span>
+						</div>
+					</SidebarMenuButton>
 
+				</MetadataModal>
 
-				<SidebarMenuButton asChild>
-					<a href="#">
-					<DraftingCompass />
-						<span>Cirfumference</span>
-					</a>
-				</SidebarMenuButton>
+				<MetadataModal stat="cirfumference" value={8.62}>
 
-				<SidebarMenuButton asChild>
-					<a href="#">
-					<DraftingCompass />
-						<span>Location</span>
-					</a>
-				</SidebarMenuButton>
+					<SidebarMenuButton asChild>
+						<div>
+							<DraftingCompass />
+							<span>Cirfumference</span>
+						</div>
+					</SidebarMenuButton>
+
+				</MetadataModal>
+
 			</div>
 
 		</>

@@ -79,7 +79,7 @@ export const metadata_title : string = "How to use metadata?";
 
 export const metadata_desc: string = `
 	<p>
-		The <strong>Metadata</strong> menu provides four options:
+		The <strong>Metadata</strong> menu provides three options:
 	</p>
 	<br/>
 	<ul>
@@ -93,10 +93,6 @@ export const metadata_desc: string = `
 		<br/>
 		<li>
 			<strong>Circumference</strong>: Provides the average circumference per tree, useful for biomass or size estimations.
-		</li>
-		<br/>
-		<li>
-			<strong>File Location</strong>: Indicates the original location of the LAS file.
 		</li>
 		<br/>
 	</ul>

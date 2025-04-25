@@ -9,9 +9,13 @@ import SelectTree from "./SelectTree";
 import Help from "@/components/help";
 import { tool_desc, tool_title } from "@/utils/help-desc";
 import Metadata from "./Metadata";
+import { GoBackButton } from "@/components/back-button";
+import { useParams } from "react-router-dom";
 
 export default function ForestVisualizationMenu() {
 	const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
+
+	const {projectid} = useParams();
 
 	const changeToSegmentation = () => {
 		if (viewer) {
@@ -112,6 +116,10 @@ export default function ForestVisualizationMenu() {
 	return (
 		<>
 			<div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
+
+				<div className="flex items-center gap-3 p-2">
+					<GoBackButton to={`/app/project/files/${projectid}`}/>
+				</div>
 
 				<div className="flex items-center gap-3 p-2">
 					<h1 className="text-lg font-semibold">Tools </h1> 
