@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { selectToken } from '@/redux/slices/useSlice';
 import { useSelector } from 'react-redux';
 import { fileServices } from '@/services/file-api';
-import { BellIcon } from 'lucide-react';
+import { BellIcon, BookmarkX } from 'lucide-react';
 import { DropdownMenuItem } from './ui/dropdown-menu';
 
 interface DeleteFileProps {
@@ -59,7 +59,7 @@ const DeleteFileModal: React.FC<DeleteFileProps> = ({ fileId, refreshFiles}) => 
                 e.preventDefault();
                 showModal();
             }}>
-                <BellIcon />
+				<BookmarkX />
 				Delete
             </DropdownMenuItem>
             <Modal

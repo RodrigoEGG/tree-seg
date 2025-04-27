@@ -1,5 +1,6 @@
 import {
   CreditCardIcon,
+  Download,
   MoreVerticalIcon,
 } from "lucide-react"
 import {
@@ -43,7 +44,7 @@ export default function MenuFile(props : MenuFilesProps) {
 					<a href={`${url}/${id}/${props.file_name}`} download={props.file_name}>
 
 						<DropdownMenuItem className="hover:bg-gray-100 hover:text-black">
-							<CreditCardIcon />
+							<Download />
 							Download
 						</DropdownMenuItem>
 
