@@ -6,6 +6,10 @@ from sqlalchemy.orm import Session
 from app.models.files_schema import File, FileCheck, FileCreate, FileUpdate, FileUrl
 from minio.error import S3Error
 from sqlalchemy import and_
+from pymongo.database import Database
+import laspy
+import io
+from pyproj import CRS, Transformer
 
 
 def get_all_files(db: Session):
@@ -101,6 +105,7 @@ def update_file(db : Session, file_id : int , file : FileUpdate):
     db.refresh(existing_file)
     return existing_file
 
+
 def validate_user_file(db: Session, user_id : int, project_id : int, file_id : int):
     result = db.query(File).\
         join(Project, File.project_id == Project.project_id).\
@@ -118,9 +123,63 @@ def validate_user_file(db: Session, user_id : int, project_id : int, file_id : i
 
     return result is not None
 
+def get_file_metadata(pg: Session, mongo: Database, file_id: int):
+    try:
+        file = pg.query(File).filter(File.file_id == file_id).first()
+        if not file:
+            raise ValueError("Archivo no encontrado en base de datos")
 
-def get_file_metadata():
-    pass
+        client = get_minio_client()
+        bucket = get_minio_bucket()
+        file_object = client.get_object(bucket, f"{file.project_id}/{file.file_name}/{file.file_name}")
 
+        data = io.BytesIO(file_object.read())
+        las = laspy.read(data)
+        vrls = las.header.parse_crs()
 
+        if not vrls:
+            raise ValueError("Error: el archivo LAS no contiene CRS")
 
+        transformer = Transformer.from_vrls(vrls, "EPSG:4326", always_xy=True)
+
+        x_max = las.header.max[0]
+        y_max = las.header.max[1]
+        x_min = las.header.min[0]
+        y_min = las.header.min[1]
+
+        lon_min, lat_min = transformer.transform(x_min, y_min)
+        lon_min2, lat_max = transformer.transform(x_min, y_max)
+        lon_max, lat_max2 = transformer.transform(x_max, y_max)
+        lon_max2, lat_min2 = transformer.transform(x_max, y_min)
+
+        coordinates = [
+            [lat_min, lon_min],
+            [lat_max, lon_min2],
+            [lat_max2, lon_max],
+            [lat_min2, lon_max2],
+            [lat_min, lon_min]
+        ]
+
+        x_mid = (x_max + x_min) / 2
+        y_mid = (y_max + y_min) / 2
+        lon_mid, lat_mid = transformer.transform(x_mid, y_mid)
+
+        header = {
+            "file_id": file.file_id,
+            "file_name": file.file_name,
+            "point_count": las.header.point_count,
+            "creation_date": las.header.creation_date,
+            "generating_software": las.header.generating_software,
+            "location": [lat_mid, lon_mid],
+            "coordinates": coordinates
+        }
+
+        metadata_collection = mongo.get_collection("metadata")
+        result = metadata_collection.insert_one(header)
+
+        return {"inserted_id": str(result.inserted_id), "header": header}
+
+    except Exception as e:
+        return e 
+
+    

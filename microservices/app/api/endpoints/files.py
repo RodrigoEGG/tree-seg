@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, FileUrl, FileUrlResponse
+from app.dependencies.mongo_depends import get_mongo
 from sqlalchemy.orm import Session
-from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_project_files, get_signed_url, update_file, validate_user_file
+from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_project_files, get_signed_url, update_file, validate_user_file
 from app.dependencies.postgres_depends import get_db
+from pymongo.database import Database
 
 router = APIRouter()
 
@@ -67,5 +69,14 @@ def modify_file_by_id(file_id : int,  file : FileUpdate, db : Session = Depends(
 def check_user_file(user_id : int, project_id : int, file_id : int, db : Session = Depends(get_db)):
     check = validate_user_file(db, user_id, project_id,file_id)
     return {"check" : check}
+
+@router.get('/file/metadata/{file_id}', status_code=status.HTTP_200_OK)
+def fetch_file_metadata(file_id: int,pg: Session = Depends(get_db), mongo_db: Database = Depends(get_mongo) ):
+    try:
+        result = get_file_metadata(pg, mongo_db, file_id)
+        return result
+    except Exception:
+        raise HTTPException(status_code=404, detail="File not found")
+
 
 
