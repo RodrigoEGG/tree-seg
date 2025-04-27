@@ -119,5 +119,8 @@ def validate_user_file(db: Session, user_id : int, project_id : int, file_id : i
     return result is not None
 
 
+def get_file_metadata():
+    pass
+
 
 
