@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, FileUrl, FileUrlResponse
 from app.dependencies.mongo_depends import get_mongo
 from sqlalchemy.orm import Session
-from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata, get_project_files, get_signed_url, update_file, validate_user_file
-from app.dependencies.postgres_depends import get_db
+from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
+from app.ends import get_db
 from pymongo.database import Database
 from bson import ObjectId
 
@@ -80,9 +80,9 @@ def fetch_file_metadata(file_id: int,pg: Session = Depends(get_db), mongo_db: Da
         raise HTTPException(status_code=404, detail="File not found")
     
 @router.get('/metadatas/{project_id}', status_code=status.HTTP_200_OK)
-def fetch_metadata(project_id : int, client : Database = Depends(get_mongo)):
+def fetch_metadata_by_project(project_id : int, client : Database = Depends(get_mongo)):
     try:
-        result = get_metadata(client, project_id)
+        result = get_metadata_by_project(client, project_id)
         return {"metadatas" : result}
     except Exception:
         raise HTTPException(status_code=404, detail="Metadata not found")

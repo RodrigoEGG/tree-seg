@@ -192,7 +192,7 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
     except Exception as e:
         return e
     
-def get_metadata(client: Database, project_id: int):
+def get_metadata_by_project(client: Database, project_id: int):
     try:
         db = client['tree-seg']
         collection = db["metadata"]
