@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from app.utils.minio import get_minio_client, get_minio_bucket
 from app.models.project_member_schema import ProjectMember
 from app.models.project_schema import Project
@@ -131,30 +131,33 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
         file = pg.query(File).filter(File.file_id == file_id).first()
         if not file:
             raise ValueError("Archivo no encontrado en base de datos")
-
+        
+        
         client = get_minio_client()
         bucket = get_minio_bucket()
-
+        
         file_object = client.get_object(bucket, f"{file.project_id}/{file.file_id}/{file.file_name}")
-
         data = io.BytesIO(file_object.read())
-        if not is_las_file(data):
-            delete_file(pg, file_id)
-            raise ValueError("El archivo no es un archivo LAS válido")
+        try:
+            las = laspy.read(data)
+        except Exception as e:
+            delete_file(pg, file.file_id)
+            raise ValueError("Error: el archivo no es LAS")
 
-        las = laspy.read(data)
+        print(las.header.point_count)
+        
         vrls = las.header.parse_crs()
-
+        
         if not vrls:
             raise ValueError("Error: el archivo LAS no contiene CRS")
 
-        transformer = Transformer.from_vrls(vrls, "EPSG:4326", always_xy=True)
+        transformer = Transformer.from_crs(vrls, "EPSG:4326", always_xy=True)
         x_max, y_max, x_min, y_min = las.header.max[0], las.header.max[1], las.header.min[0], las.header.min[1]
         lon_min, lat_min = transformer.transform(x_min, y_min)
         lon_min2, lat_max = transformer.transform(x_min, y_max)
         lon_max, lat_max2 = transformer.transform(x_max, y_max)
         lon_max2, lat_min2 = transformer.transform(x_max, y_min)
-
+        
         coordinates = [
             [lat_min, lon_min],
             [lat_max, lon_min2],
@@ -166,21 +169,25 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
         x_mid = (x_max + x_min) / 2
         y_mid = (y_max + y_min) / 2
         lon_mid, lat_mid = transformer.transform(x_mid, y_mid)
-
+        creation_date = datetime.combine(las.header.creation_date, datetime.min.time())
+        
         header = {
             "file_id": file.file_id,
             "file_name": file.file_name,
             "point_count": las.header.point_count,
-            "creation_date": las.header.creation_date,
+            "creation_date": creation_date,
             "generating_software": las.header.generating_software,
             "location": [lat_mid, lon_mid],
             "coordinates": coordinates
         }
+        
+        db = mongo['tree-seg']
+        collection = db["metadata"]
+        
+        result = collection.insert_one(header)
 
-        metadata_collection = mongo.get_collection("metadata")
-        result = metadata_collection.insert_one(header)
-
-        return {"inserted_id": str(result.inserted_id), "header": header}
+        return True
 
     except Exception as e:
         return e
+        
