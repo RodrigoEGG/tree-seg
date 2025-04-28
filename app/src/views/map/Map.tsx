@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup , Rectangle} from 'react-leaflet';
+import { MapContainer, TileLayer, Popup , Rectangle} from 'react-leaflet';
 import { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import "leaflet/dist/leaflet.css"
 import { Button } from '@/components/ui/button';
@@ -12,22 +12,19 @@ export default function Map() {
 	];
 	return (
 		<MapContainer center={position} zoom={13} style={{ height: '90vh', width:'100vw' }}>
-		<TileLayer
-			url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			attribution='&copy; OpenStreetMap contributors'
-		/>
-		<Marker position={position}>
-			<Popup>Hola desde TypeScript y Leaflet 🚀</Popup>
-		</Marker>
+			<TileLayer
+				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				attribution='&copy; OpenStreetMap contributors'
+			/>
 
-		<Rectangle bounds={bounds} pathOptions={{ color: 'red' }}>
-			<Popup>
-				test2.las 
-				<br/>
-				<Button className='pt-2'>Go to file</Button>
+			<Rectangle bounds={bounds} pathOptions={{ color: 'red' }}>
+				<Popup>
+					test2.las 
+					<br/>
+					<Button className='pt-2'>Go to file</Button>
 
-			</Popup>
-		</Rectangle>
+				</Popup>
+			</Rectangle>
 		</MapContainer>
 	);
 }

@@ -10,6 +10,7 @@ from pymongo.database import Database
 import laspy
 import io
 from pyproj import CRS, Transformer
+from bson import ObjectId
 
 
 def get_all_files(db: Session):
@@ -125,7 +126,7 @@ def validate_user_file(db: Session, user_id : int, project_id : int, file_id : i
 
     return result is not None
 
-def get_file_metadata(pg: Session, mongo: Database, file_id: int):
+def get_file_metadata(pg: Session, mongo: Database,file_id: int):
     try:
         file = pg.query(File).filter(File.file_id == file_id).first()
         if not file:
@@ -171,6 +172,7 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
         creation_date = datetime.combine(las.header.creation_date, datetime.min.time())
         
         header = {
+            "project_id" : file.project_id,
             "file_id": file.file_id,
             "file_name": file.file_name,
             "point_count": las.header.point_count,
@@ -189,4 +191,18 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
 
     except Exception as e:
         return e
-        
+    
+def get_metadata(client: Database, project_id: int):
+    try:
+        db = client['tree-seg']
+        collection = db["metadata"]
+        result = collection.find({"project_id": project_id})
+        metadata = []
+        for doc in result:
+            doc["_id"] = str(doc["_id"])
+            metadata.append(doc)
+        return metadata
+    except Exception as e:
+        return str(e)
+
+    
