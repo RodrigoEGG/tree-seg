@@ -27,7 +27,7 @@ api_router.include_router(
     users.router,
 	prefix='/users',
 	tags=["users"],
-	dependencies=[Depends(validate_token)]
+	#dependencies=[Depends(validate_token)]
 )
 
 api_router.include_router(
