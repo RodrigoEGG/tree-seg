@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { UploadProps } from 'antd';
@@ -24,15 +24,18 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
     const token = useSelector(selectToken);
     const { id } = useParams();
+	const [fileId, setFileId] = useState<number>(0);
 
     const props: UploadProps = {
         name: 'file',
         multiple: true,
-        beforeUpload(file) {
+        beforeUpload : async (file) => {
             const isLt500MB = file.size < 500 * 1024 * 1024;
             const validExtensions = ['.las', '.laz'];
             const fileName = file.name.toLowerCase();
             const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+
+			const validation = await fileServices.checkFile(file.name, parseInt(id ? id : "1"), token);
 
             if (!isLt500MB) {
                 showErrorModal('El archivo supera el límite de 500MB.');
@@ -44,6 +47,15 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
                 return false;
             }
 
+			if(validation.check){
+				showErrorModal('Ya existe un archivo con ese nombre en el proyecto');
+                return false;
+			}
+
+			const file_record  = await fileServices.createFile(id ? parseInt(id) : 1, file.name, token);
+
+			setFileId(file_record.file_id);
+
             return true;
         },
 
@@ -51,7 +63,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
             const realFile = file as File;
 
             try {
-                const data = await fileServices.getSignedUrl(`${id}/${realFile.name}`, token);
+                const data = await fileServices.getSignedUrl(`${id}/${fileId}/${realFile.name}`, token);
                 const presignedUrl = data.signedurl;
 
                 const uploadResponse = await fetch(presignedUrl, {
@@ -71,7 +83,6 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
                     throw new Error('Error al subir el archivo.');
                 }
 
-                await fileServices.createFile(id ? parseInt(id) : 1, realFile.name, token);
                 refreshFiles();
             } catch (err) {
                 console.error(err);

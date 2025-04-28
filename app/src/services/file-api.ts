@@ -22,8 +22,8 @@ const fileServices = {
         return apiRequest<FileRecord[]>(`/files/project/${projectID}`, token);
     },
 
-    createFile: async(projectID : number, filename : string, token : string) : Promise<void> => {
-        await apiRequest<void>(
+    createFile: async(projectID : number, filename : string, token : string) : Promise<FileRecord> => {
+        return await apiRequest<FileRecord>(
             '/files/file',
             token,
             {
