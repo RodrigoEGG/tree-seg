@@ -81,8 +81,8 @@ def remove_project_by_name(name: str, db: Session = Depends(get_db)):
 def create_project_member(project_member : ProjectMemberCreate):
     return create_projectmember(project_member)
 
-@router.get("/check/{user_id}/{project_id}", status_code=status.HTTP_200_OK)
-def fetch_project_member_check(user_id: int, project_id: int, db: Session = Depends(get_db)):
+@router.get("/check/{project_id}/{user_id}", status_code=status.HTTP_200_OK)
+def fetch_project_member_check(project_id: int, user_id: int, db: Session = Depends(get_db)):
     project_member = ProjectMemberCreate(user_id=user_id, project_id=project_id)
     flag = check_projectmember(db, project_member)
     return {"check": flag}

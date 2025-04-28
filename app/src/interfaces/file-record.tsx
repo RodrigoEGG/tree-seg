@@ -12,6 +12,8 @@ export interface FileCheck {
 }
 
 export interface FileMetadata {
+	_id : string;
+	project_id : number;
 	file_id : number;
 	file_name : string;
 	point_count : number;
@@ -19,5 +21,9 @@ export interface FileMetadata {
 	generating_software : string;
 	crs : string;
 	location : number[];
-	coordenates : number[][];
+	coordinates : number[][];
+}
+
+export interface ProjectMetadatas {
+	metadatas : FileMetadata[];
 }

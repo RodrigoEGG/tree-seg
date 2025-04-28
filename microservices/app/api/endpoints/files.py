@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, FileUrl, FileUrlResponse
 from app.dependencies.mongo_depends import get_mongo
+from app.dependencies.postgres_depends import get_db
 from sqlalchemy.orm import Session
 from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
-from app.ends import get_db
 from pymongo.database import Database
 from bson import ObjectId
 

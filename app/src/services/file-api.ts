@@ -1,4 +1,4 @@
-import { FileCheck, FileRecord } from "@/interfaces/file-record";
+import { FileCheck, FileMetadata, FileRecord, ProjectMetadatas } from "@/interfaces/file-record";
 import apiRequest from "./client";
 
 
@@ -59,6 +59,10 @@ const fileServices = {
 
 	getFileMetadata : async( fileID : number, token : string) : Promise <FileCheck> => {
 		return apiRequest<FileCheck>(`/files/file/metadata/${fileID}`, token)
+	},
+	
+	getFileMetadataByProject : async(projectID : number, token : string) : Promise<ProjectMetadatas> => {
+		return apiRequest<ProjectMetadatas>(`/files/metadatas/${projectID}`, token);
 	}
 
 };

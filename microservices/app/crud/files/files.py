@@ -157,13 +157,14 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
         lon_min2, lat_max = transformer.transform(x_min, y_max)
         lon_max, lat_max2 = transformer.transform(x_max, y_max)
         lon_max2, lat_min2 = transformer.transform(x_max, y_min)
+        lon_min, lat_min = transformer.transform(x_min, y_min)
+        lon_max, lat_max = transformer.transform(x_max, y_max)
         
         coordinates = [
             [lat_min, lon_min],
             [lat_max, lon_min2],
             [lat_max2, lon_max],
             [lat_min2, lon_max2],
-            [lat_min, lon_min]
         ]
 
         x_mid = (x_max + x_min) / 2
