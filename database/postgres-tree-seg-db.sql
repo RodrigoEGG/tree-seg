@@ -1,7 +1,7 @@
 -- Create tables for the database structure
 
 -- Create User table
-CREATE TABLE "user" (
+CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
