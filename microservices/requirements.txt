@@ -3,7 +3,7 @@ anyio==4.9.0
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
 bcrypt==4.3.0
-certifi==2025.1.31
+certifi==2025.4.26
 cffi==1.17.1
 click==8.1.8
 colorama==0.4.6
@@ -14,7 +14,9 @@ fastapi==0.115.12
 greenlet==3.1.1
 h11==0.14.0
 idna==3.10
+laspy==2.5.4
 minio==7.2.15
+numpy==2.2.5
 passlib==1.7.4
 psycopg2-binary==2.9.10
 pyasn1==0.4.8
@@ -23,6 +25,8 @@ pycryptodome==3.22.0
 pydantic==2.11.3
 pydantic_core==2.33.1
 pymongo==4.12.0
+pyproj==3.7.1
+python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
 python-jose==3.4.0
 python-multipart==0.0.20
