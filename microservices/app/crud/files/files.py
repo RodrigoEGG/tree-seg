@@ -64,26 +64,28 @@ def check_file(db : Session , file : FileCreate):
     else : 
         return False
     
-def delete_file(db : Session, file_id : int):
-
+def delete_file(db: Session, file_id: int):
     try:
-
         client = get_minio_client()
         bucket = get_minio_bucket()
-    
+
         file = db.query(File).filter(File.file_id == file_id).first()
+        
         if not file:
             return None
 
         client.remove_object(bucket, f"{file.project_id}/{file_id}/{file.file_name}")
+        
         db.delete(file)
         db.commit()
         
         return file
     
     except S3Error as e:
-        print(str(e))
-        return None
+        return e
+    except Exception as e:
+        return e
+
 
 def update_file(db : Session, file_id : int , file : FileUpdate):
     existing_file = db.query(File).filter(File.file_id == file_id).first()
@@ -132,12 +134,14 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
 
         client = get_minio_client()
         bucket = get_minio_bucket()
+
         file_object = client.get_object(bucket, f"{file.project_id}/{file.file_id}/{file.file_name}")
 
         data = io.BytesIO(file_object.read())
         if not is_las_file(data):
             delete_file(pg, file_id)
-            raise ValueError("El archivo no es un archivo LAS válido.")
+            raise ValueError("El archivo no es un archivo LAS válido")
+
         las = laspy.read(data)
         vrls = las.header.parse_crs()
 
@@ -145,12 +149,7 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
             raise ValueError("Error: el archivo LAS no contiene CRS")
 
         transformer = Transformer.from_vrls(vrls, "EPSG:4326", always_xy=True)
-
-        x_max = las.header.max[0]
-        y_max = las.header.max[1]
-        x_min = las.header.min[0]
-        y_min = las.header.min[1]
-
+        x_max, y_max, x_min, y_min = las.header.max[0], las.header.max[1], las.header.min[0], las.header.min[1]
         lon_min, lat_min = transformer.transform(x_min, y_min)
         lon_min2, lat_max = transformer.transform(x_min, y_max)
         lon_max, lat_max2 = transformer.transform(x_max, y_max)
@@ -184,6 +183,4 @@ def get_file_metadata(pg: Session, mongo: Database, file_id: int):
         return {"inserted_id": str(result.inserted_id), "header": header}
 
     except Exception as e:
-        return e 
-
-    
+        return e
