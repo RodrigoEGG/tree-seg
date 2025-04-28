@@ -72,17 +72,23 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
                 });
 
                 if (uploadResponse.ok) {
-                    onSuccess?.("ok");
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Subido exitosamente',
-                        text: `${realFile.name} fue subido.`,
-                        confirmButtonColor: '#3085d6',
-                    });
+					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
+
+					if(fileMetadata.check){
+						onSuccess?.("ok");
+						Swal.fire({
+							icon: 'success',
+							title: 'Subido exitosamente',
+							text: `${realFile.name} fue subido.`,
+							confirmButtonColor: '#3085d6',
+						});
+					}else{
+						showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
+						throw new Error('Error al subir el archivo.');
+					}
                 } else {
                     throw new Error('Error al subir el archivo.');
                 }
-
                 refreshFiles();
             } catch (err) {
                 console.error(err);

@@ -2,7 +2,6 @@ from datetime import timedelta, datetime
 from app.utils.minio import get_minio_client, get_minio_bucket
 from app.models.project_member_schema import ProjectMember
 from app.models.project_schema import Project
-from app.utils.lidar import is_las_file
 from sqlalchemy.orm import Session
 from app.models.files_schema import File, FileCheck, FileCreate, FileUpdate, FileUrl
 from minio.error import S3Error

@@ -55,7 +55,11 @@ const fileServices = {
 
     checkFileByProjectMember : async(userID : number, projectID : number, fileID : number, token : string) : Promise<FileCheck> => {
         return apiRequest<FileCheck>(`/files/check/${userID}/${projectID}/${fileID}`, token);
-    }
+    },
+
+	getFileMetadata : async( fileID : number, token : string) : Promise <FileCheck> => {
+		return apiRequest<FileCheck>(`/files/file/metadata/${fileID}`, token)
+	}
 
 };
 

@@ -74,7 +74,7 @@ def check_user_file(user_id : int, project_id : int, file_id : int, db : Session
 def fetch_file_metadata(file_id: int,pg: Session = Depends(get_db), mongo_db: Database = Depends(get_mongo) ):
     try:
         result = get_file_metadata(pg, mongo_db, file_id)
-        return result
+        return {"check" : result}
     except Exception:
         raise HTTPException(status_code=404, detail="File not found")
 
