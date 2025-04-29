@@ -3,11 +3,13 @@ from sqlalchemy.orm import Session
 from app.models.users_schema import User
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from app.utils.security import pwd_context, oauth2_scheme
+from app.utils.security import pwd_context, oauth2_scheme, HTTPBearer, HTTPAuthorizationCredentials
 
 SECRET_KEY = "ge_jNAKDubIXNwlFTBjBXY0RtGzhENMNftgV-df--xw"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 4320
+
+extract = HTTPBearer()
 
 
 def auth_user(db : Session , name : str, password : str):
@@ -33,3 +35,12 @@ def validate_token(token: str = Depends(oauth2_scheme)):
         return True
     except JWTError:
         raise HTTPException(status_code=401, detail="Token inválido")
+    
+
+def get_token(token: HTTPAuthorizationCredentials = Depends(extract)):
+    try:
+        payload = jwt.decode(token.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+    
