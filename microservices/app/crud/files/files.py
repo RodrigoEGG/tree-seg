@@ -98,17 +98,6 @@ def update_file(db : Session, file_id : int , file : FileUpdate):
     return existing_file
     
 
-def update_file(db : Session, file_id : int , file : FileUpdate):
-    existing_file = db.query(File).filter(File.file_id == file_id).first()
-    if not existing_file:
-        return None
-    for key, value in file.dict(exclude_unset=True).items():
-        setattr(existing_file, key, value)
-    db.commit()
-    db.refresh(existing_file)
-    return existing_file
-
-
 def validate_user_file(db: Session, user_id : int, project_id : int, file_id : int):
     result = db.query(File).\
         join(Project, File.project_id == Project.project_id).\
