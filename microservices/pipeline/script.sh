@@ -5,13 +5,16 @@ if [ "$#" -ne 4 ]; then
     exit 1
 fi
 
-param1=$1
-param2=$2
-param3=$3
-param4=$4
+project_id=$1
+file_id=$2
+file_name=$3
+token=$4
+base_name="${file_name%.las}"
 
-input="/home/juan/input/$param2/"
-output="/home/juan/output/$param2/"
+input="/home/juan/input/$file_id/"
+output="/home/juan/output/$file_id/"
+
+mkdir $output
 
 CONTAINER_NAME="test_e2e_instance"
 IMAGE_NAME="nibio/e2e-instance"
@@ -37,5 +40,5 @@ else
     exit 1
 fi
 
-$POTREE_CONVERTER "$output/home/datascience/results/segment2_out.laz" -o "/home/juan/potree/$param2/"
+$POTREE_CONVERTER "${output}home/datascience/results/${base_name}_out.laz" -o "/home/juan/potree/$file_id/"
 

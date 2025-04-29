@@ -3,7 +3,9 @@ from sqlalchemy.orm import Session
 from app.models.users_schema import User
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
-from app.utils.security import pwd_context, oauth2_scheme, HTTPBearer, HTTPAuthorizationCredentials
+from app.utils.security import pwd_context, oauth2_scheme
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 
 SECRET_KEY = "ge_jNAKDubIXNwlFTBjBXY0RtGzhENMNftgV-df--xw"
 ALGORITHM = "HS256"
