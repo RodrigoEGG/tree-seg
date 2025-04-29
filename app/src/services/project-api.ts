@@ -38,6 +38,7 @@ const projectServices = {
 
     // Create a new project
     createProject: async (project: ProjectCreatePayload, token : string): Promise<ProjectRecord> => {
+        console.log("Creating project:", project); // Debugging line
         return apiRequest<ProjectRecord>('/projects/',token,
             {
                 method: 'POST',
