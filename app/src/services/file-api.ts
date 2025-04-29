@@ -63,6 +63,10 @@ const fileServices = {
 	
 	getFileMetadataByProject : async(projectID : number, token : string) : Promise<ProjectMetadatas> => {
 		return apiRequest<ProjectMetadatas>(`/files/metadatas/${projectID}`, token);
+	},
+
+	getMetadataByFile : async(file_id : number, token : string) : Promise<FileMetadata> => {
+		return apiRequest<FileMetadata>(`/files/metadata/${file_id}`, token);
 	}
 
 };

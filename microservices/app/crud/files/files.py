@@ -172,6 +172,7 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
             "creation_date": creation_date,
             "generating_software": las.header.generating_software,
             "location": [lat_mid, lon_mid],
+            "crs" : vrls.to_string(),
             "coordinates": coordinates
         }
         
@@ -198,16 +199,15 @@ def get_metadata_by_project(client: Database, project_id: int):
     except Exception as e:
         return str(e)
 
-def get_metadata_by_file(mongo : Database,  file_id : int):
+def get_metadata_by_file(mongo: Database, file_id: int):
     try:
-        a = 0
         db = mongo["tree-seg"]
         collection = db["metadata"]
-        result = collection.find_one({"file_id" : file_id})
+        result = collection.find_one({"file_id": file_id})
+        result["_id"] = str(result["_id"])
         return result
     except Exception as e:
         return str(e)
-
 
 
     

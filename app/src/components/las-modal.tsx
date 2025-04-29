@@ -9,65 +9,55 @@ import {
 import {
 	Table,
 	TableBody,
-	TableCaption,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
   } from "@/components/ui/table"
-import React from "react"
+import { FileMetadata } from "@/interfaces/file-record";
+import { selectToken } from "@/redux/slices/useSlice";
+import { fileServices } from "@/services/file-api";
+import React, { useEffect, useState } from "react"
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
 
 interface LasModalProps {
 	children : React.ReactNode;
 }
 
-const invoices = [
-	{
-	  invoice: "INV001",
-	  paymentStatus: "Paid",
-	  totalAmount: "$250.00",
-	  paymentMethod: "Credit Card",
-	},
-	{
-	  invoice: "INV002",
-	  paymentStatus: "Pending",
-	  totalAmount: "$150.00",
-	  paymentMethod: "PayPal",
-	},
-	{
-	  invoice: "INV003",
-	  paymentStatus: "Unpaid",
-	  totalAmount: "$350.00",
-	  paymentMethod: "Bank Transfer",
-	},
-	{
-	  invoice: "INV004",
-	  paymentStatus: "Paid",
-	  totalAmount: "$450.00",
-	  paymentMethod: "Credit Card",
-	},
-	{
-	  invoice: "INV005",
-	  paymentStatus: "Paid",
-	  totalAmount: "$550.00",
-	  paymentMethod: "PayPal",
-	},
-	{
-	  invoice: "INV006",
-	  paymentStatus: "Pending",
-	  totalAmount: "$200.00",
-	  paymentMethod: "Bank Transfer",
-	},
-	{
-	  invoice: "INV007",
-	  paymentStatus: "Unpaid",
-	  totalAmount: "$300.00",
-	  paymentMethod: "Credit Card",
-	},
-  ]
-
 export default function LasModal ({children} : LasModalProps) {
+
+	const {projectid, fileid} = useParams();
+	const token = useSelector(selectToken);
+
+	const [metadata, setMetadata] = useState<FileMetadata>();
+
+	const fetcher = async () => {
+		const data = await fileServices.getMetadataByFile(parseInt(fileid ? fileid : "1"), token);
+		return data;
+	}
+
+	const { data, isLoading, error } = useSWR(fileid ? `/api/files/metadata/${fileid}` : null, fetcher, { 
+		revalidateOnFocus: false, 
+		revalidateOnReconnect: false 
+	});
+
+	useEffect(()=>{
+		setMetadata(data);
+	},[data])
+
+	if (error) return (
+		<div>
+			Failed to load data
+		</div>
+	);
+
+	if (!data) return (
+		<div>
+			Loading...
+		</div>
+	);
 
 	return (
 
@@ -88,49 +78,45 @@ export default function LasModal ({children} : LasModalProps) {
 							LAS file header information
 						</DialogTitle>
 
-						<DialogDescription>
+						<DialogDescription asChild>
+							<div>
+								<Table>
+									
+									<TableHeader>
 
-							<Table>
-								
-								<TableHeader>
+										<TableRow>
+											<TableHead className="w-[100px]">Field</TableHead>
+											<TableHead className="text-right">Data</TableHead>
+										</TableRow>
 
-									<TableRow>
-										<TableHead className="w-[100px]">Field</TableHead>
-										<TableHead className="text-right">Data</TableHead>
-									</TableRow>
+									</TableHeader>
 
-								</TableHeader>
+									<TableBody>
 
-								<TableBody>
+										<TableRow>
+											<TableCell className="font-medium">Generating System</TableCell>
+											<TableCell className="text-right">{metadata?.generating_software}</TableCell>
+										</TableRow>
 
-									<TableRow>
-										<TableCell className="font-medium">System identifier</TableCell>
-										<TableCell className="text-right">asd </TableCell>
-									</TableRow>
+										<TableRow>
+											<TableCell className="font-medium">Creation Date</TableCell>
+											<TableCell className="text-right">{metadata?.creation_date}</TableCell>
+										</TableRow>
 
-									<TableRow>
-										<TableCell className="font-medium">Generating System</TableCell>
-										<TableCell className="text-right">asd </TableCell>
-									</TableRow>
+										<TableRow>
+											<TableCell className="font-medium">Point Count</TableCell>
+											<TableCell className="text-right">{metadata?.point_count}</TableCell>
+										</TableRow>
 
-									<TableRow>
-										<TableCell className="font-medium">Creation Date</TableCell>
-										<TableCell className="text-right">asd </TableCell>
-									</TableRow>
+										<TableRow>
+											<TableCell className="font-medium">Coordenate System</TableCell>
+											<TableCell className="text-right">{metadata?.crs}</TableCell>
+										</TableRow>
 
-									<TableRow>
-										<TableCell className="font-medium">Point Count</TableCell>
-										<TableCell className="text-right">asd </TableCell>
-									</TableRow>
+									</TableBody>
 
-									<TableRow>
-										<TableCell className="font-medium">Coordenate System</TableCell>
-										<TableCell className="text-right">asd </TableCell>
-									</TableRow>
-
-								</TableBody>
-
-							</Table>
+								</Table>
+							</div>
 
 						</DialogDescription>
 

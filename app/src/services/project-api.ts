@@ -87,9 +87,8 @@ const projectServices = {
 
     checkProjectMember: async( userID : number, projectID : number, token : string) : Promise<ProjectCheck> => {
         return apiRequest<ProjectCheck>(`/projects/check/${userID}/${projectID}`, token);
-    }
-
-};
+    },
+}
 
 export { 
 	projectServices 
