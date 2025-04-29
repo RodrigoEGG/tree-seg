@@ -64,7 +64,7 @@ def check_file(db : Session , file : FileCreate):
     else : 
         return False
     
-def delete_file(db: Session, file_id: int):
+def delete_file(db: Session, mongo : Database, file_id: int):
     try:
         client = get_minio_client()
         bucket = get_minio_bucket()
@@ -75,6 +75,9 @@ def delete_file(db: Session, file_id: int):
             return None
 
         client.remove_object(bucket, f"{file.project_id}/{file_id}/{file.file_name}")
+        mongo_db = mongo['tree-seg']
+        collection = mongo_db["metadata"]
+        collection.delete_one({"file_id": file.file_id , "project_id" : file.project_id})
         
         db.delete(file)
         db.commit()
@@ -194,5 +197,7 @@ def get_metadata_by_project(client: Database, project_id: int):
         return metadata
     except Exception as e:
         return str(e)
+
+
 
     
