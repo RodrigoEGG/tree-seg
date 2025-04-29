@@ -6,6 +6,7 @@ from app.crud.trees.trees import get_tree_heights
 from app.dependencies.mongo_depends import get_mongo
 from app.dependencies.postgres_depends import get_db
 from sqlalchemy.orm import Session
+from pymongo.database import Database
 
 router = APIRouter()
 

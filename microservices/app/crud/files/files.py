@@ -214,3 +214,5 @@ def get_las_file(pg: Session, mongo: Database,file_id: int):
             delete_file(pg, file.file_id)
             raise ValueError("Error: el archivo no es LAS")
 
+    except Exception as e:
+        return e
