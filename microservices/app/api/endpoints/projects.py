@@ -45,8 +45,6 @@ def fetch_project_by_name(name: str, db: Session = Depends(get_db)):
 @router.get("/owner/{owner_id}", response_model=list[ProjectResponse], status_code=status.HTTP_200_OK)
 def fetch_projects_by_owner_id(owner_id: int, db: Session = Depends(get_db)):
     projects = get_project_by_owner_id(db, owner_id)
-    if not projects:
-        raise HTTPException(status_code=404, detail="No projects found for this owner")
     return projects
 
 @router.put("/{project_id}", response_model=ProjectResponse, status_code=status.HTTP_200_OK)
