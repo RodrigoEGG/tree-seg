@@ -32,8 +32,8 @@ const projectServices = {
     },
 
     // Get projects by owner ID
-    getProjectsByOwner: async (ownerId: number): Promise<ProjectRecord[]> => {
-        return apiRequest<ProjectRecord[]>(`/projects/owner/${ownerId}`);
+    getProjectsByOwner: async (ownerId: number, token : string): Promise<ProjectRecord[]> => {
+        return apiRequest<ProjectRecord[]>(`/projects/owner/${ownerId}`, token);
     },
 
     // Create a new project

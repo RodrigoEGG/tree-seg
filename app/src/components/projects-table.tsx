@@ -33,10 +33,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useSelector } from "react-redux"
-import { selectToken } from "@/redux/slices/useSlice"
+import { selectToken, selectUid } from "@/redux/slices/useSlice"
 
 export function ProjectTable() {
   const token = useSelector(selectToken);
+  const uid = useSelector(selectUid)
   // State to store projects data from API
   const [projects, setProjects] = useState<ProjectRecord[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -53,7 +54,7 @@ export function ProjectTable() {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await projectServices.getProjects(token);
+      const data = await projectServices.getProjectsByOwner(uid, token);
       setProjects(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
