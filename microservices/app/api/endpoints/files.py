@@ -3,7 +3,7 @@ from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, 
 from app.dependencies.mongo_depends import get_mongo
 from app.dependencies.postgres_depends import get_db
 from sqlalchemy.orm import Session
-from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
+from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_file, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
 from pymongo.database import Database
 
 router = APIRouter()
@@ -85,6 +85,14 @@ def fetch_metadata_by_project(project_id : int, client : Database = Depends(get_
         return {"metadatas" : result}
     except Exception:
         raise HTTPException(status_code=404, detail="Metadata not found")
+
+@router.get('/metadata/{file_id}', status_code=status.HTTP_200_OK)
+def fetch_metadata_by_file(file_id : int, client : Database = Depends(get_mongo)):
+    try:
+        result = get_metadata_by_file(client, file_id)
+        return result
+    except Exception as e:
+          return {}
     
 
 

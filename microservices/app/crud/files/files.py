@@ -198,6 +198,16 @@ def get_metadata_by_project(client: Database, project_id: int):
     except Exception as e:
         return str(e)
 
+def get_metadata_by_file(mongo : Database,  file_id : int):
+    try:
+        a = 0
+        db = mongo["tree-seg"]
+        collection = db["metadata"]
+        result = collection.find_one({"file_id" : file_id})
+        return result
+    except Exception as e:
+        return str(e)
+
 
 
     
