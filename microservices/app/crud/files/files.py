@@ -96,17 +96,6 @@ def update_file(db : Session, file_id : int , file : FileUpdate):
     db.commit()
     db.refresh(existing_file)
     return existing_file
-    
-
-def update_file(db : Session, file_id : int , file : FileUpdate):
-    existing_file = db.query(File).filter(File.file_id == file_id).first()
-    if not existing_file:
-        return None
-    for key, value in file.dict(exclude_unset=True).items():
-        setattr(existing_file, key, value)
-    db.commit()
-    db.refresh(existing_file)
-    return existing_file
 
 
 def validate_user_file(db: Session, user_id : int, project_id : int, file_id : int):
@@ -206,4 +195,22 @@ def get_metadata_by_project(client: Database, project_id: int):
     except Exception as e:
         return str(e)
 
-    
+def get_las_file(pg: Session, mongo: Database,file_id: int):
+    try:
+        file = pg.query(File).filter(File.file_id == file_id).first()
+        if not file:
+            raise ValueError("Archivo no encontrado en base de datos")
+        
+        
+        client = get_minio_client()
+        bucket = get_minio_bucket()
+        
+        file_object = client.get_object(bucket, f"{file.project_id}/{file.file_id}/{file.file_name}")
+        data = io.BytesIO(file_object.read())
+        try:
+            las = laspy.read(data)
+            return las 
+        except Exception as e:
+            delete_file(pg, file.file_id)
+            raise ValueError("Error: el archivo no es LAS")
+
