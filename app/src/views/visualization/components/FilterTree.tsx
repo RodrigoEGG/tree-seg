@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { scalar_desc, scalar_title } from "@/utils/help-desc";
+import { Button } from "@/components/ui/button";
 
 export default function FilterTree() {
     const navigate = useNavigate();
@@ -19,21 +20,31 @@ export default function FilterTree() {
     const [count, setCount] = useState<number>(40);
     const [selectedId, setSelectedId] = useState<number | undefined>();
 	const { viewer } = useViewer();
+	const {projectid,fileid} = useParams();
 
 
 
 	const handleSelectChange = (value: any) => {
-        const num = parseInt(value);
-        setSelectedId(num);
-		viewer.setFilterPointSourceIDRange(value, value);
+		if (value == "-1"){
+			setSelectedId(0);
+			viewer.setFilterPointSourceIDRange(0, 65535);
+		}else{
+			const num = parseInt(value);
+			setSelectedId(num);
+			viewer.setFilterPointSourceIDRange(value, value);
+		}
     };
 
-
+	const handleClick = () => {
+        if (selectedId !== undefined) {
+            navigate(`/app/view/${projectid}/${fileid}/${selectedId}`);
+        }
+    };
 
 	return (
 		<>
 			<div className="flex items-center gap-3 p-2">
-				<h1 className="text-lg font-semibold">Filter Tree</h1>
+				<h1 className="text-lg font-semibold">Tree Filter</h1>
 				<Help title={scalar_title} desc={scalar_desc} />
 			</div>
 
@@ -52,6 +63,7 @@ export default function FilterTree() {
 						<SelectGroup>
 
 							<SelectLabel>Trees</SelectLabel>
+								<SelectItem value="-1"> All</SelectItem>
 
 							{[...Array(count)].map((_, index) => (
 								<SelectItem key={index} value={`${index}`}>
@@ -67,6 +79,12 @@ export default function FilterTree() {
 				</Select>
 
 			</div>
+
+			<div className="mt-2">
+                <Button className="w-full shadow-lg" onClick={handleClick}>
+					Go to view
+                </Button>
+            </div>
 		
 		</>
 	)

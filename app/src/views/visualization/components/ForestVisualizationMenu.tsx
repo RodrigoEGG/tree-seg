@@ -5,7 +5,6 @@ import { useState } from "react";
 import SelectMarker from "./SelectMarker";
 import Scalarfields from "./Scalarfields";
 import { CircleHelp } from "lucide-react";
-import SelectTree from "./SelectTree";
 import Help from "@/components/help";
 import { tool_desc, tool_title } from "@/utils/help-desc";
 import Metadata from "./Metadata";
@@ -192,11 +191,6 @@ export default function ForestVisualizationMenu() {
 			</div>
 
 
-			<div className="grid py-4 items-start px-2 text-sm font-medium lg:px-4">
-
-				<SelectTree/>
-
-			</div>
 
 		</>
 	);
