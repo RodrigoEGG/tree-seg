@@ -8,17 +8,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSelector } from 'react-redux';
 import { selectToken, selectUid } from '@/redux/slices/useSlice';
 
-// Dummy owner ID
-
 const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAdded }) => {
     const uid = useSelector(selectUid);
-
     const token = useSelector(selectToken);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -30,15 +28,25 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
         setDate('');
     };
 
-    const handleOk = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault(); // Prevent form from refreshing the page
+        
         if (!name) {
-            message.error('Project name and date are required.');
+            message.error('Project name is required.');
             return;
         }
 
+        setIsSubmitting(true);
         const today = new Date().toISOString().split('T')[0];
 
         try {
+            console.log('Creating project with:', {
+                name,
+                description,
+                owner_id: uid,
+                date: date || today
+            });
+            
             const data = await projectServices.createProject({
                 name,
                 description,
@@ -46,18 +54,22 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
                 date: date || today,
             }, token);
 
+            console.log('Project created response:', data);
             message.success('Project created successfully!');
             resetForm();
             setIsModalOpen(false);
             onProjectAdded(); // Trigger refresh
         } catch (error) {
             message.error('Failed to create project.');
-            console.error(error);
+            console.error('Project creation error:', error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        resetForm();
     };
 
     return (
@@ -69,9 +81,9 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
                 title="Add Project"
                 open={isModalOpen}
                 onCancel={handleCancel}
-                footer={false}
+                footer={null} // Use null instead of false for cleaner React code
             >
-                <form className='flex flex-col gap-6'>
+                <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
                     <fieldset className="space-y-4">
                         <div className="form-group space-y-2">
                             <Label htmlFor="project-name">Project Name:</Label>
@@ -81,6 +93,7 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Name"
+                                required
                             />
                         </div>
                         <div className="form-group space-y-2">
@@ -106,7 +119,12 @@ const NewProjectModal: React.FC<{ onProjectAdded: () => void }> = ({ onProjectAd
                     </fieldset>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-                        <Button onClick={handleOk}>Add Project</Button>
+                        <Button 
+                            type="submit" 
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Adding...' : 'Add Project'}
+                        </Button>
                     </div>
                 </form>
             </Modal>
