@@ -1,5 +1,5 @@
 
-import { DraftingCompass, FileText, Ruler } from "lucide-react"
+import { DraftingCompass, FileText, MapIcon, Ruler } from "lucide-react"
 
 import {
   SidebarMenuButton,
@@ -9,6 +9,7 @@ import Help from "@/components/help"
 import { metadata_desc, metadata_title } from "@/utils/help-desc"
 import MetadataModal from "@/components/metadata-modal"
 import LasModal from "@/components/las-modal"
+import LocationModal from "@/components/location-modal"
 
 export default function Metadata() {
 	return (
@@ -31,6 +32,18 @@ export default function Metadata() {
 					</SidebarMenuButton>
 
 				</LasModal>
+
+				<LocationModal>
+
+					<SidebarMenuButton asChild>
+						<div>
+							<MapIcon/>
+							<span>Location</span>
+						</div>
+					</SidebarMenuButton>
+
+				</LocationModal>
+
 
 
 				<MetadataModal stat="height" value={12.5}>
