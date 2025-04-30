@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Uso: $0 parametro1 parametro2 parametro3 parametro4"
     exit 1
 fi
@@ -12,6 +12,7 @@ python3 -m pip install "laspy[lazrs,laszip]" numpy
 project_id=$1
 file_id=$2
 file_name=$3
+token=$4
 base_name="${file_name%.las}"
 
 export LD_LIBRARY_PATH="/home/juan/potreeconverter:$LD_LIBRARY_PATH"
