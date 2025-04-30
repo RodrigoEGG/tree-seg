@@ -11,6 +11,7 @@ import { tool_desc, tool_title } from "@/utils/help-desc";
 import Metadata from "./Metadata";
 import { GoBackButton } from "@/components/back-button";
 import { useParams } from "react-router-dom";
+import FilterTree from "./FilterTree";
 
 export default function ForestVisualizationMenu() {
 	const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
@@ -164,8 +165,12 @@ export default function ForestVisualizationMenu() {
 				<Scalarfields/>
 			</div>
 
+			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
+				<FilterTree/>
+			</div>
 
-			<div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
+
+			<div className="grid py-4 items-start px-2 text-sm font-medium lg:px-4">
 
 				<SelectTree/>
 
