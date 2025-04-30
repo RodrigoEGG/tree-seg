@@ -19,8 +19,8 @@ export interface FileMetadata {
 	point_count : number;
 	creation_date : string;
 	generating_software : string;
-	crs : string;
 	location : number[];
+	crs : string;
 	coordinates : number[][];
 }
 

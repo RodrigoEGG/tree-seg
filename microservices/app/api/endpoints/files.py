@@ -3,9 +3,8 @@ from app.models.files_schema import FileCreate, FileCreateResponse, FileUpdate, 
 from app.dependencies.mongo_depends import get_mongo
 from app.dependencies.postgres_depends import get_db
 from sqlalchemy.orm import Session
-from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
+from app.crud.files.files import check_file, create_file, delete_file, get_all_files, get_file, get_file_metadata, get_metadata_by_file, get_metadata_by_project, get_project_files, get_signed_url, update_file, validate_user_file
 from pymongo.database import Database
-from bson import ObjectId
 
 router = APIRouter()
 
@@ -45,8 +44,8 @@ def create_file_endpoint(file: FileCreate, db: Session = Depends(get_db)):
     return create_file(db, file)
 
 @router.delete("/{file_id}", status_code=status.HTTP_200_OK)
-def remove_file_by_id(file_id : int, db : Session = Depends(get_db)):
-    deleted_file = delete_file(db, file_id)
+def remove_file_by_id(file_id : int, db : Session = Depends(get_db) , mongo : Database = Depends(get_mongo)):
+    deleted_file = delete_file(db, mongo, file_id)
     if not deleted_file:
         raise HTTPException(status_code=404, detail="Project not found")
     return None
@@ -86,6 +85,14 @@ def fetch_metadata_by_project(project_id : int, client : Database = Depends(get_
         return {"metadatas" : result}
     except Exception:
         raise HTTPException(status_code=404, detail="Metadata not found")
+
+@router.get('/metadata/{file_id}', status_code=status.HTTP_200_OK)
+def fetch_metadata_by_file(file_id : int, client : Database = Depends(get_mongo)):
+    try:
+        result = get_metadata_by_file(client, file_id)
+        return result
+    except Exception as e:
+          return {}
     
 
 

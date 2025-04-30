@@ -73,6 +73,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
+					// await fileServices.executePipeline(fileId, token);
 
 					if(fileMetadata.check){
 						onSuccess?.("ok");

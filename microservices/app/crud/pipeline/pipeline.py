@@ -1,0 +1,13 @@
+import subprocess
+from app.models.files_schema import File
+from sqlalchemy.orm import Session
+from app.models.files_schema import File
+
+SCRIPT=""
+
+def execute_pipeline(db : Session, file_id : int, token : str):
+	file : File = db.query(File).filter(File.file_id == file_id).first()
+	if not file:
+		return False
+	subprocess.Popen(["sudo", "bash", SCRIPT , str(file.project_id), str(file.file_id), file.file_name, token])
+	return True

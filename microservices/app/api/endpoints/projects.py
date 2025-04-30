@@ -47,7 +47,6 @@ def fetch_projects_by_owner_id(owner_id: int, db: Session = Depends(get_db)):
     projects = get_project_by_owner_id(db, owner_id)
     if not projects:
         # Return an empty list instead of raising a 404 error
-        # This allows the frontend to handle the case of no projects more gracefully
         return []
     return projects
 

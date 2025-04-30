@@ -64,7 +64,7 @@ def check_file(db : Session , file : FileCreate):
     else : 
         return False
     
-def delete_file(db: Session, file_id: int):
+def delete_file(db: Session, mongo : Database, file_id: int):
     try:
         client = get_minio_client()
         bucket = get_minio_bucket()
@@ -75,6 +75,9 @@ def delete_file(db: Session, file_id: int):
             return None
 
         client.remove_object(bucket, f"{file.project_id}/{file_id}/{file.file_name}")
+        mongo_db = mongo['tree-seg']
+        collection = mongo_db["metadata"]
+        collection.delete_one({"file_id": file.file_id , "project_id" : file.project_id})
         
         db.delete(file)
         db.commit()
@@ -96,7 +99,7 @@ def update_file(db : Session, file_id : int , file : FileUpdate):
     db.commit()
     db.refresh(existing_file)
     return existing_file
-
+    
 
 def validate_user_file(db: Session, user_id : int, project_id : int, file_id : int):
     result = db.query(File).\
@@ -169,6 +172,7 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
             "creation_date": creation_date,
             "generating_software": las.header.generating_software,
             "location": [lat_mid, lon_mid],
+            "crs" : vrls.to_string(),
             "coordinates": coordinates
         }
         
@@ -195,24 +199,15 @@ def get_metadata_by_project(client: Database, project_id: int):
     except Exception as e:
         return str(e)
 
-def get_las_file(pg: Session, mongo: Database,file_id: int):
+def get_metadata_by_file(mongo: Database, file_id: int):
     try:
-        file = pg.query(File).filter(File.file_id == file_id).first()
-        if not file:
-            raise ValueError("Archivo no encontrado en base de datos")
-        
-        
-        client = get_minio_client()
-        bucket = get_minio_bucket()
-        
-        file_object = client.get_object(bucket, f"{file.project_id}/{file.file_id}/{file.file_name}")
-        data = io.BytesIO(file_object.read())
-        try:
-            las = laspy.read(data)
-            return las 
-        except Exception as e:
-            delete_file(pg, file.file_id)
-            raise ValueError("Error: el archivo no es LAS")
-
+        db = mongo["tree-seg"]
+        collection = db["metadata"]
+        result = collection.find_one({"file_id": file_id})
+        result["_id"] = str(result["_id"])
+        return result
     except Exception as e:
-        return e
+        return str(e)
+
+
+    

@@ -252,14 +252,7 @@ ALTER TABLE ONLY public.project_member
 
 --
 -- Name: project project_pkey; Type: CONSTRAINT; Schema: public
---
 
-ALTER TABLE ONLY public.project
-    ADD CONSTRAINT project_pkey PRIMARY KEY (project_id);
-
---
--- Name: users user_email_key; Type: CONSTRAINT; Schema: public
---
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT user_email_key UNIQUE (email);
