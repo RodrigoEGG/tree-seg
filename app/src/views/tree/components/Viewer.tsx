@@ -8,7 +8,8 @@ const Wrapper = styled.div`
   background-color: black;
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 100vh;
+  width: 100vw;
   position: relative;
 `;
 
@@ -17,14 +18,12 @@ export default function Viewer(){
 
 	return (
 		<>
-			<div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
 
 				<Wrapper ref={potreeContainerRef} className="potree_container" >
 					<div id="potree_render_area"></div>
 
 				</Wrapper>
 
-			</div>
 
 		
 		</>

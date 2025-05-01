@@ -8,10 +8,12 @@ export default function Menu(){
 	return (
 		<>
 			<div
-				className="relative hidden flex-col items-start gap-8 md:flex" x-chunk="dashboard-03-chunk-0"
+				className="relative hidden flex-col items-start pt-2 pr-2 gap-8 md:flex h-screen overflow-scroll" x-chunk="dashboard-03-chunk-0"
 			>
 				<div className="grid w-full items-start gap-6">
-					<GoBackButton to={`/app/view/${projectid}/${fileid}`} />
+					<div className="mt-5">
+						<GoBackButton to={`/app/view/${projectid}/${fileid}`} />
+					</div>
 
 					<Tools/>
 
