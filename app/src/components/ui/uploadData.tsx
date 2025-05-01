@@ -65,8 +65,10 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
             try {
                 const data = await fileServices.getSignedUrl(`${id}/${fileId}/${realFile.name}`, token);
                 const presignedUrl = data.signedurl;
-
-                const uploadResponse = await fetch(presignedUrl, {
+				const path = presignedUrl.split(':9000/')[1];
+				const url = import.meta.env.VITE_BUCKET_URL;
+				const final_url = `${url}/${path}`
+                const uploadResponse = await fetch(final_url, {
                     method: 'PUT',
                     body: realFile,
                 });
