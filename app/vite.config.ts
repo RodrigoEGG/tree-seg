@@ -10,11 +10,11 @@ export default defineConfig({
     },
   },
   server : {
-	host : "0.0.0.0",
-	allowedHosts : [
-		"chappie",
-		"forest.estupideznatural.tech",
-		"testing.estupideznatural.tech",
-	],
+    host : "0.0.0.0",
+    allowedHosts: [
+      "chappie",
+      "forest.estupideznatural.tech",
+      "testing.estupideznatural.tech",
+    ],
   },
 })
