@@ -84,10 +84,13 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 						});
 					}else{
 						showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
+						await fileServices.deleteFile(fileId, token);
 						throw new Error('Error al subir el archivo.');
 					}
                 } else {
+					showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
                     throw new Error('Error al subir el archivo.');
+					await fileServices.deleteFile(fileId, token);
                 }
                 refreshFiles();
             } catch (err) {
