@@ -1,6 +1,6 @@
 import Help from "@/components/help";
 import { Checkbox } from "@/components/ui/checkbox";
-import { tree_desc, tree_title } from "@/utils/help-desc";
+import { classification_desc, classification_title} from "@/utils/help-desc";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { useViewer } from "@/context/ViewerProvider";
@@ -25,7 +25,7 @@ export default function SelectTreeGround() {
 		<>
 			<div className="flex items-center gap-3 p-2">
 				<h1 className="text-lg font-semibold">Classification</h1>
-				<Help title={tree_title} desc={tree_desc} />
+				<Help title={classification_title} desc={classification_desc} />
 			</div>
 
 			<div className="mt-4 my-2 space-y-4">

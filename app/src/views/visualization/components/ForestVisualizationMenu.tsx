@@ -186,7 +186,7 @@ export default function ForestVisualizationMenu() {
 
 			</div>
 
-			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
+			<div className="grid pb-3 pt-1 items-start px-2 text-sm font-medium lg:px-4">
 				<FilterTree/>
 			</div>
 
