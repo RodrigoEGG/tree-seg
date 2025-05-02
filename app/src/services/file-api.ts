@@ -70,7 +70,7 @@ const fileServices = {
 	},
 
 	executePipeline : async(file_id : number, token : string) : Promise<FileCheck> => {
-		return apiRequest<FileCheck>(`/pipeline/${file_id}`, token);
+		return apiRequest<FileCheck>(`/files/pipeline/${file_id}`, token);
 	}
 
 };
