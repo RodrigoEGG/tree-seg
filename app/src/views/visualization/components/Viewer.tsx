@@ -1,14 +1,8 @@
 // @ts-nocheck
 import React, { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
 import { Button } from "@/components/ui/button";
 import { useViewer, ViewerProvider } from "@/context/ViewerProvider";
 
-const Wrapper = styled.div`
-  background-color: black;
-  height: 100vh;
-  position: relative;
-`;
 
 const Viewer: React.FC = () => {
 
@@ -18,13 +12,24 @@ const Viewer: React.FC = () => {
 
 	return (
 		<>
-		
 
 			<div id="potree-root">
+				<div
+					ref={potreeContainerRef}
+					style={{
+					backgroundColor: "black",
+					display: "flex",
+					flexDirection: "column",
+					height: "100vh",
+					width: "100vw",
+					position: "relative",
+					}}
+					className="potree_container"
+				>
 
-				<Wrapper ref={potreeContainerRef} className="potree_container">
 					<div id="potree_render_area"></div>
-				</Wrapper>
+
+				</div>
 
 
 			</div>
