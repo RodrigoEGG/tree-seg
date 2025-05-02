@@ -23,6 +23,21 @@ export default function Landing() {
                     </div>
                 </section>
 
+                <Demo>
+                <section id="demo" className="py-16 bg-slate-50">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-3xl font-bold text-center mb-12">Try Our Demo</h2>
+                        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-xl max-w-6xl mx-auto">
+                            {/* Demo Viewer Space */}
+                            <div className="relative">
+                                {/* Placeholder for the actual viewer component */}
+                                <ViewerDemo />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                </Demo>
+
                 <section id="features" className="py-16 container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -101,21 +116,6 @@ export default function Landing() {
                         </div>
                     </div>
                 </section>
-
-                <Demo>
-                <section id="demo" className="py-16 bg-slate-50">
-                    <div className="container mx-auto px-4">
-                        <h2 className="text-3xl font-bold text-center mb-12">Try Our Demo</h2>
-                        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-xl max-w-6xl mx-auto">
-                            {/* Demo Viewer Space */}
-                            <div className="aspect-video relative">
-                                {/* Placeholder for the actual viewer component */}
-                                <ViewerDemo />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                </Demo>
 
                 <section id="team" className="py-16 bg-white">
                     <div className="container mx-auto px-4">

@@ -86,18 +86,10 @@ const projectServices = {
         );
     },
 
-<<<<<<< HEAD
-    checkProjectMember: async(projectID : number, userID : number, token : string) : Promise<ProjectCheck> => {
-        return apiRequest<ProjectCheck>(`/projects/check/${projectID}/${userID}`, token);
-    }
-
-};
-=======
     checkProjectMember: async( userID : number, projectID : number, token : string) : Promise<ProjectCheck> => {
         return apiRequest<ProjectCheck>(`/projects/check/${userID}/${projectID}`, token);
     },
 }
->>>>>>> main
 
 export { 
 	projectServices 
