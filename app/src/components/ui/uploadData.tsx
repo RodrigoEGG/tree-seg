@@ -72,9 +72,9 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
-					// await fileServices.executePipeline(fileId, token);
+					const pipeline = await fileServices.executePipeline(fileId, token);
 
-					if(fileMetadata.check){
+					if(fileMetadata.check && pipeline.check){
 						onSuccess?.("ok");
 						Swal.fire({
 							icon: 'success',

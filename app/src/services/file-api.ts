@@ -69,8 +69,8 @@ const fileServices = {
 		return apiRequest<FileMetadata>(`/files/metadata/${file_id}`, token);
 	},
 
-	executePipeline : async(file_id : number, token : string) : Promise<void> => {
-		return apiRequest<void>(`/pipeline/${file_id}`, token);
+	executePipeline : async(file_id : number, token : string) : Promise<FileCheck> => {
+		return apiRequest<FileCheck>(`/pipeline/${file_id}`, token);
 	}
 
 };
