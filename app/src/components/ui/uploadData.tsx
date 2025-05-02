@@ -8,6 +8,7 @@ import { selectToken } from '@/redux/slices/useSlice';
 import { useParams } from 'react-router-dom';
 import { UploadModalProps } from '@/interfaces/refresh';
 import Swal from 'sweetalert2';
+import { pipelineServices } from '@/services/pipeline-api';
 
 const { Dragger } = Upload;
 
@@ -72,7 +73,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
-					const pipeline = await fileServices.executePipeline(fileId, token);
+					const pipeline = await pipelineServices.executePipeline(fileId, token);
 
 					if(fileMetadata.check && pipeline.check){
 						onSuccess?.("ok");
@@ -92,12 +93,13 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 					showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
                     throw new Error('Error al subir el archivo.');
                 }
-                refreshFiles();
             } catch (err) {
+				await fileServices.deleteFile(fileId, token);
                 console.error(err);
                 onError?.(new Error("Error al subir a MinIO"));
                 showErrorModal(`${realFile.name} falló al subir.`);
             }
+			refreshFiles();
         },
     };
 
