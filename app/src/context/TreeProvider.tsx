@@ -6,7 +6,7 @@ const TreeContext = createContext<ViewerContextType | undefined>(undefined);
 
 export const TreeProvider: React.FC = ({ children }) => {
 
-	const { treeid } = useParams();
+	const { projectid ,  fileid , treeid } = useParams();
 
 	const potreeContainerRef = useRef<HTMLDivElement | null>(null);
 	const [viewer, setViewer] = useState<any>(null);
