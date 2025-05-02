@@ -5,10 +5,7 @@ if [ "$#" -ne 3 ]; then
     exit 1
 fi
 
-#pip3 install minio
-#python3 -m pip install "laspy[lazrs,laszip]" numpy python-dotenv
-
-source /home/juan/pipeline/.venv/bin/activate
+source /home/juan/tree-seg/microservices/pipeline/.venv/bin/activate
 
 
 project_id=$1
