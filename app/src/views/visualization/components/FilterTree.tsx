@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { scalar_desc, scalar_title } from "@/utils/help-desc";
+import { scalar_desc, scalar_title, tree_desc, tree_title } from "@/utils/help-desc";
 import { Button } from "@/components/ui/button";
 
 export default function FilterTree() {
@@ -45,7 +45,7 @@ export default function FilterTree() {
 		<>
 			<div className="flex items-center gap-3 p-2">
 				<h1 className="text-lg font-semibold">Tree Filter</h1>
-				<Help title={scalar_title} desc={scalar_desc} />
+				<Help title={tree_title} desc={tree_desc} />
 			</div>
 
 			<div className="mt-4">
