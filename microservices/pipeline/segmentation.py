@@ -8,8 +8,7 @@ import numpy as np
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path="/home/juan/pipeline/.env")
-
+load_dotenv(dotenv_path="/home/juan/tree-seg/microservices/pipeline/.env")
 
 MINIO_USERNAME = os.getenv("MINIO_USERNAME")
 MINIO_PASSWORD = os.getenv("MINIO_PASSWORD")

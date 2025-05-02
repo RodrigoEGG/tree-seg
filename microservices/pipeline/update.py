@@ -3,7 +3,7 @@ import argparse
 from dotenv import load_dotenv
 import psycopg2
 
-load_dotenv("/home/juan/pipeline/.env")
+load_dotenv(dotenv_path="/home/juan/tree-seg/microservices/pipeline/.env")
 POSTGRES_URL = os.getenv("POSTGRES_URL")
 
 
