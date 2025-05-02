@@ -2,16 +2,18 @@ import argparse
 from pathlib import Path
 from minio import Minio
 from minio.error import S3Error
+from dotenv import load_dotenv
+import os
 
-# Rutas locales
+load_dotenv(dotenv_path="/home/juan/pipeline/.env")
+
+MINIO_USERNAME = os.getenv("MINIO_USERNAME")
+MINIO_PASSWORD = os.getenv("MINIO_PASSWORD")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET")
+MINIO_CLIENT = os.getenv("MINIO_CLIENT")
+
 POTREE = "/home/juan/potree/"
 BASE_OUTPUT_DIR = "/home/juan/output"
-
-# Configuración MinIO
-MINIO_USERNAME = "minioadmin"
-MINIO_PASSWORD = "minioadmin"
-MINIO_BUCKET = "tree-seg"
-MINIO_CLIENT = "127.0.0.1:9000"
 
 def get_minio_client():
     return Minio(
@@ -62,3 +64,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     upload_potree(args.project_id, args.file_id)
+

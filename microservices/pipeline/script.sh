@@ -1,18 +1,19 @@
 #!/bin/bash
 
-if [ "$#" -ne 4 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Uso: $0 parametro1 parametro2 parametro3 parametro4"
     exit 1
 fi
 
-pip3 install minio
-python3 -m pip install "laspy[lazrs,laszip]" numpy
+#pip3 install minio
+#python3 -m pip install "laspy[lazrs,laszip]" numpy python-dotenv
+
+source /home/juan/pipeline/.venv/bin/activate
 
 
 project_id=$1
 file_id=$2
 file_name=$3
-token=$4
 base_name="${file_name%.las}"
 
 export LD_LIBRARY_PATH="/home/juan/potreeconverter:$LD_LIBRARY_PATH"
@@ -53,6 +54,7 @@ fi
 
 seg_path="${output}home/datascience/results"
 
+
 python3 "$(dirname "$0")/segmentation.py" "$project_id" "$file_id" "$file_name"
 
 python3 "$(dirname "$0")/bucket.py" "$project_id" "$file_id" "$file_name"
@@ -60,4 +62,7 @@ python3 "$(dirname "$0")/bucket.py" "$project_id" "$file_id" "$file_name"
 $POTREE_CONVERTER "$seg_path/${base_name}_out.laz" -o "/home/juan/potree/$file_id/"
 
 python3 "$(dirname "$0")/potree.py" "$project_id" "$file_id" "$file_name"
+python3 "$(dirname "$0")/update.py" "$project_id" "$file_id" "$file_name"
+
+deactivate
 
