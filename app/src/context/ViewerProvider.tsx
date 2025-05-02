@@ -1,4 +1,5 @@
 // @ts-nocheck
+import IsLoading from "@/components/is-loading";
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 
 
@@ -9,6 +10,7 @@ export const ViewerProvider: React.FC = ({ children }) => {
 	const [viewer, setViewer] = useState<any>(null);
 	const [markers, setMarkers] = useState<any>([]);
 
+	const [load, setLoad] = useState<Boolean>(true);
 	useEffect(() => {
 		if (!window.Potree) {
 			return;
@@ -45,9 +47,7 @@ export const ViewerProvider: React.FC = ({ children }) => {
 	return (
 
 		<ViewerContext.Provider value={{ viewer, setViewer, potreeContainerRef , markers, setMarkers}}>
-
 			{children}
-
 		</ViewerContext.Provider>
 
 	);
