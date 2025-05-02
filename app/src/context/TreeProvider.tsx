@@ -22,8 +22,8 @@ export const TreeProvider: React.FC = ({ children }) => {
 		if (potreeContainerRef.current) {
 			const newViewer = new window.Potree.Viewer(potreeContainerRef.current);
 			newViewer.setEDLEnabled(true);
-			newViewer.setFOV(60);
-			newViewer.setPointBudget(1 * 1000 * 1000);
+			newViewer.setFOV(60	);
+			newViewer.setPointBudget(10000 * 1000);
 			newViewer.setClipTask(window.Potree.ClipTask.SHOW_INSIDE);
 			newViewer.loadSettingsFromURL();
 			newViewer.setControls(newViewer.orbitControls);

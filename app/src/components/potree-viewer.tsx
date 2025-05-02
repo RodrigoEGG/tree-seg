@@ -36,7 +36,7 @@ export default function PotreeViewer() {
 
                 window.viewer.setEDLEnabled(false);
                 window.viewer.setFOV(60);
-                window.viewer.setPointBudget(1_000_000);
+                window.viewer.setPointBudget(10_000_000);
                 window.viewer.loadSettingsFromURL();
                 window.viewer.setBackground("skybox");
 

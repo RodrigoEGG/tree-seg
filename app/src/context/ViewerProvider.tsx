@@ -18,7 +18,7 @@ export const ViewerProvider: React.FC = ({ children }) => {
 			const newViewer = new window.Potree.Viewer(potreeContainerRef.current);
 			newViewer.setEDLEnabled(true);
 			newViewer.setFOV(60);
-			newViewer.setPointBudget(1 * 1000 * 1000);
+			newViewer.setPointBudget(1 * 1000 * 10000);
 			newViewer.setClipTask(window.Potree.ClipTask.SHOW_INSIDE);
 			newViewer.loadSettingsFromURL();
 			newViewer.setControls(newViewer.orbitControls);
