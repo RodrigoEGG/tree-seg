@@ -29,8 +29,8 @@ export const TreeProvider: React.FC = ({ children }) => {
 			newViewer.setControls(newViewer.orbitControls);
 			setViewer(newViewer);
 
-
-			const url = "/o11/metadata.json";
+			const bucket = import.meta.env.VITE_BUCKET_URL;
+			const url = `${bucket}/${projectid}/${fileid}/potree/metadata.json`
 			window.Potree.loadPointCloud(url)
 				.then((e: any) => {
 				const pointcloud = e.pointcloud;

@@ -1,11 +1,13 @@
 // @ts-nocheck
 import IsLoading from "@/components/is-loading";
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 
 
 const ViewerContext = createContext<ViewerContextType | undefined>(undefined);
 
 export const ViewerProvider: React.FC = ({ children }) => {
+	const {projectid, fileid} = useParams();
 	const potreeContainerRef = useRef<HTMLDivElement | null>(null);
 	const [viewer, setViewer] = useState<any>(null);
 	const [markers, setMarkers] = useState<any>([]);
@@ -27,7 +29,8 @@ export const ViewerProvider: React.FC = ({ children }) => {
 			setViewer(newViewer);
 
 
-			const url = "/o11/metadata.json";
+			const bucket = import.meta.env.VITE_BUCKET_URL;
+			const url = `${bucket}/${projectid}/${fileid}/potree/metadata.json`
 			window.Potree.loadPointCloud(url)
 				.then((e: any) => {
 				const pointcloud = e.pointcloud;
