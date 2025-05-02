@@ -19,7 +19,7 @@ export default function Scalarfields(){
 
 
 	const { viewer } = useViewer();
-	const [attr, setAttr] = useState<string>("rgba");
+	const [attr, setAttr] = useState<string>("point source id");
 
 	const handleAttrChange = (newAttr: string) => {
 		setAttr(newAttr);
@@ -51,11 +51,13 @@ export default function Scalarfields(){
 
 						<SelectGroup>
 
-							<SelectLabel>Scalar fields</SelectLabel>
-							<SelectItem value="rgba">RGBA</SelectItem>
+							<SelectItem value="point source id">Scalar fields</SelectItem>
 							<SelectItem value="intensity">Intensity</SelectItem>
 							<SelectItem value="elevation">Elevation</SelectItem>
 							<SelectItem value="classification">Classification</SelectItem>
+							<SelectItem value="number of returns">Number of returns</SelectItem>
+							<SelectItem value="gps-time"> Gps time </SelectItem>
+
 
 						</SelectGroup>
 
