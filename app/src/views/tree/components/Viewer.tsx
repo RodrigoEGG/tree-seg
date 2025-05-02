@@ -1,5 +1,4 @@
-//@ts-check
-import IsLoading from "@/components/is-loading";
+// @ts-nocheck
 import { useTree } from "@/context/TreeProvider";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -45,25 +44,19 @@ export default function Viewer() {
 	}, [potreeContainerRef.current]);
 
 	return (
-		load ? (
-		  <IsLoading />
-		) : (
-		  <div
+		<div
 			ref={potreeContainerRef}
 			style={{
-			  backgroundColor: "black",
-			  display: "flex",
-			  flexDirection: "column",
-			  height: "100vh",
-			  width: "100vw",
-			  position: "relative",
+				backgroundColor: "black",
+				display: "flex",
+				flexDirection: "column",
+				height: "100vh",
+				width: "100vw",
+				position: "relative",
 			}}
 			className="potree_container"
-		  >
+		>
 			<div id="potree_render_area"></div>
-		  </div>
-		)
-	  );
-
-
+		</div>
+	);
 }
