@@ -1,12 +1,13 @@
-// @ts-nocheck
-// Viewer.tsx
+//@ts-check
+import IsLoading from "@/components/is-loading";
 import { useTree } from "@/context/TreeProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function Viewer() {
 	const { viewer, setViewer, potreeContainerRef } = useTree();
 	const { projectid, fileid, treeid } = useParams();
+	const [load, setIsLoad] = useState(true);
 
 	useEffect(() => {
 		if (!window.Potree) {
@@ -37,25 +38,32 @@ export default function Viewer() {
 					newViewer.scene.addPointCloud(pointcloud);
 					newViewer.setFilterPointSourceIDRange(treeid, treeid);
 					newViewer.fitToScreen();
+					setIsLoad(false);
 				})
 				.catch((error: any) => console.error("ERROR: ", error));
 		}
 	}, [potreeContainerRef.current]);
 
 	return (
-		<div
+		load ? (
+		  <IsLoading />
+		) : (
+		  <div
 			ref={potreeContainerRef}
 			style={{
-				backgroundColor: "black",
-				display: "flex",
-				flexDirection: "column",
-				height: "100vh",
-				width: "100vw",
-				position: "relative",
+			  backgroundColor: "black",
+			  display: "flex",
+			  flexDirection: "column",
+			  height: "100vh",
+			  width: "100vw",
+			  position: "relative",
 			}}
 			className="potree_container"
-		>
+		  >
 			<div id="potree_render_area"></div>
-		</div>
-	);
+		  </div>
+		)
+	  );
+
+
 }
