@@ -10,7 +10,7 @@ def get_minio_client():
             CONFIG["MINIO_CLIENT"],
             access_key=CONFIG["MINIO_USERNAME"],
             secret_key=CONFIG["MINIO_PASSWORD"],
-            secure=False
+            secure=True
         )
         return client
 

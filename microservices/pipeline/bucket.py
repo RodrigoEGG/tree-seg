@@ -4,12 +4,15 @@ import laspy
 import argparse
 from minio import Minio
 from minio.error import S3Error
+from dotenv import load_dotenv
+import os
 
-MINIO_USERNAME = "minioadmin"
-MINIO_PASSWORD = "minioadmin"
-MINIO_BUCKET = "tree-seg"
-MINIO_CLIENT = "127.0.0.1:9000"
+load_dotenv(dotenv_path="/home/juan/tree-seg/microservices/pipeline/.env")
 
+MINIO_USERNAME = os.getenv("MINIO_USERNAME")
+MINIO_PASSWORD = os.getenv("MINIO_PASSWORD")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET")
+MINIO_CLIENT = os.getenv("MINIO_CLIENT")
 
 POTREE_DIR = "/home/juan/potree"
 BASE_OUTPUT_DIR = "/home/juan/output"

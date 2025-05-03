@@ -1,16 +1,10 @@
-import exp from "constants";
 
 
 export const scalar_title: string = "How to use scalar fields?";
 export const scalar_desc: string = `
-	<p><strong>Scalar fields</strong> are attributes of a LAS file that describe characteristics of the scanned 3D points. These fields can be used to represent different properties such as color, classification, intensity, and elevation. Below are some common scalar fields:</p>
+	<p><strong>Scalar fields</strong> are attributes of a LAS file that describe characteristics of the scanned 3D points. These fields can be used to represent different properties such as classification, intensity, elevation, and time. Below are some common scalar fields:</p>
 	<br/>
 	<ul>
-		<li><strong>RGBA</strong>:  
-		This field stores the color values (red, green, blue, and alpha) of each scanned point, typically obtained from the LIDAR scanner. These values allow the points to be visually represented with the original scan colors, which is useful for creating more realistic 3D models.
-		</li>
-		<br/>
-
 		<li><strong>Classification</strong>:  
 		Classification is a label assigned to each point to describe what type of object it represents. For example, a point can be classified as part of the ground, a building, a tree, or a structure. This classification helps in processing and analyzing LIDAR data as it allows filtering and segmenting points based on their type.
 		</li>
@@ -25,9 +19,19 @@ export const scalar_desc: string = `
 		Elevation is the value that indicates the height of a point relative to sea level or a specific coordinate system. This field is essential for representing terrain relief, such as mountains, valleys, roads, and buildings. It is used in creating Digital Elevation Models (DEM) and other geospatial analysis applications.
 		</li>
 		<br/>
-	</ul>
 
+		<li><strong>Number of Returns</strong>:  
+		This field indicates how many times the laser pulse reflected back to the sensor after being emitted. A single laser pulse can generate multiple returns as it hits different surfaces (e.g., treetop, understory, ground). This helps distinguish between vegetation layers and ground surfaces in dense environments.
+		</li>
+		<br/>
+
+		<li><strong>GPS Time</strong>:  
+		GPS Time records the exact time at which the laser pulse was emitted or received, according to GPS time. This is crucial for synchronizing data with other sources (e.g., imagery or vehicle trajectory) and for performing time-based analyses of the LIDAR data.
+		</li>
+		<br/>
+	</ul>
 `;
+
 
 export const tool_title : string = "How to use the tools?";
 export const tool_desc : string = `
@@ -70,7 +74,7 @@ export const tree_desc: string = `
 		This ID is used to identify and differentiate individual trees.
 	</p>
 	<p>
-		To visualize a specific tree, you need to <strong>select it</strong> and then click the <strong>"View"</strong> button.
+		To visualize a specific tree, you need to <strong>select it</strong> and then click the <strong>"Go to view"</strong> button.
 	</p>
 `;
 
@@ -96,6 +100,11 @@ export const metadata_desc: string = `
 		</li>
 		<br/>
 	</ul>
+`;
+
+export const classification_title = "How to use classification?";
+export const classification_desc = `
+	<p>In the classification section, there are two checkboxes that are enabled by default. The first checkbox filters the view to display only the trees, while the second one shows only the ground. If either checkbox is unchecked, the corresponding elements will no longer be visible in the viewer. When they are checked again, the elements will reappear in the view.</p>
 `;
 
 

@@ -11,7 +11,7 @@ export default function Tree(){
 		<>
 			<TreeProvider>
 
-				<div className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+				<div className="grid flex-1 px-2 grid-cols-3">
 
 					<Menu/>
 

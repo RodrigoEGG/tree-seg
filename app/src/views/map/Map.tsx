@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectToken } from '@/redux/slices/useSlice';
 import { useState, useEffect } from 'react';
+import MetadataTable from '@/components/metadata-table';
 
 const ChangeView = ({ center }: { center: LatLngExpression }) => {
 	const map = useMap();
@@ -98,11 +99,14 @@ export default function Map() {
 					<Popup>
 
 						<div className='my-3 text-lg'>
-							{data.metadatas[metadataIndex].file_name}
+
+							<div>
+								<MetadataTable fileMetadata={data.metadatas[metadataIndex]}/>
+							</div>
 						</div>
 
 						<Link to={`/app/view/${id}/${data.metadatas[metadataIndex].file_id}`} >
-							<Button>Go to file</Button>
+							<Button className='w-full'>Go to file</Button>
 						</Link>
 
 					</Popup>
@@ -118,11 +122,13 @@ export default function Map() {
 					<Popup>
 
 						<div className='my-3 text-lg'>
-							{data.metadatas[metadataIndex].file_name}
+							<div>
+								<MetadataTable fileMetadata={data.metadatas[metadataIndex]}/>
+							</div>
 						</div>
 
 						<Link to={`/app/view/${id}/${data.metadatas[metadataIndex].file_id}`} >
-							<Button>Go to file</Button>
+							<Button className='w-full'>Go to file</Button>
 						</Link>
 
 					</Popup>
