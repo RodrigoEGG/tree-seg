@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
 
 # Import all endpoint routers
-from app.api.endpoints import projects, files, users, auth, trees, pipeline
+from app.api.endpoints import projects, files, users, auth, pipeline
 from app.crud.auth.auth import validate_token
 
 # Create the main API router
@@ -35,14 +35,6 @@ api_router.include_router(
 	prefix='/pipeline',
 	tags=["pipeline"],
 	dependencies=[Depends(validate_token)]
-)
-
-api_router.include_router(
-<<<<<<< HEAD
-    trees.router,
-    prefix='/trees',
-    tags=["trees"],
-    dependencies=[Depends(validate_token)]
 )
 
 api_router.include_router(
