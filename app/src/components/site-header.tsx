@@ -26,7 +26,7 @@ export function SiteHeader() {
         dispatcher(setUid({uid : -1}));
         dispatcher(setToken({token : ""}));
         dispatcher(setUsername({username : ""}));
-        navigate("/auth", { replace: true });
+        navigate("/", { replace: true });
     }
 
     return (
