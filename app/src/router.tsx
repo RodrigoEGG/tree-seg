@@ -13,6 +13,7 @@ import FilesProtection from "./utils/FilesProtection";
 import ViewerProtection from "./utils/ViewerProtection";
 import ProjectLayout from "./layouts/projectlayout/ProjectLayout";
 import Map from "./views/map/Map";
+import CreateAccount from "./views/create-account/CreateAccount";
 
 const router = createBrowserRouter([
 
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
 				element : <Landing/>
 			}
 		]
+	},
+	{
+		path : "/create-account",
+		element : <CreateAccount />
 	}
 ]);
 

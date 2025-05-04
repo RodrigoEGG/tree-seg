@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setToken, setUid, setUsername } from "@/redux/slices/useSlice";
-
+import { ArrowLeft } from "lucide-react"; 
 
 export default function Login() {
 
@@ -57,6 +57,12 @@ export default function Login() {
 
 		<form onSubmit={handleSubmit}>
 
+			<div className="absolute top-4 left-4">
+				<Button variant="link" onClick={() => navigate("/")}>
+					<ArrowLeft className="mr-2 h-4 w-4" /> Back to Landing
+				</Button>
+			</div>
+
 			<div className="mx-auto grid w-[350px] gap-6">
 
 				<div className="grid gap-2 text-center">
@@ -66,6 +72,16 @@ export default function Login() {
 						Enter your username below to login to your account
 					</p>
 
+				</div>
+
+				<div className="text-center text-sm">
+					Don&apos;t have an account?{" "}
+					<a
+						onClick={() => navigate("/create-account")}
+						className="underline underline-offset-4 cursor-pointer"
+					>
+						Sign up
+					</a>
 				</div>
 
 				<div className="grid gap-4">
@@ -86,15 +102,7 @@ export default function Login() {
 					<div className="grid gap-2">
 
 						<div className="flex items-center">
-
 							<Label htmlFor="password">Password</Label>
-							<a
-								href="/forgot-password"
-								className="ml-auto text-sm underline"
-							>
-								Forgot your password?
-							</a>
-
 						</div>
 
 						<Input
@@ -114,10 +122,6 @@ export default function Login() {
 
 					<Button type="submit" className="w-full" disabled={isLoading}>
 						{isLoading ? "Logging in..." : "Login"}
-					</Button>
-
-					<Button variant="outline" className="w-full" type="button">
-						Login with Google
 					</Button>
 
 				</div>

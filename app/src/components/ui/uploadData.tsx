@@ -8,6 +8,7 @@ import { selectToken } from '@/redux/slices/useSlice';
 import { useParams } from 'react-router-dom';
 import { UploadModalProps } from '@/interfaces/refresh';
 import Swal from 'sweetalert2';
+import { pipelineServices } from '@/services/pipeline-api';
 
 const { Dragger } = Upload;
 
@@ -65,7 +66,6 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
             try {
                 const data = await fileServices.getSignedUrl(`${id}/${fileId}/${realFile.name}`, token);
                 const presignedUrl = data.signedurl;
-
                 const uploadResponse = await fetch(presignedUrl, {
                     method: 'PUT',
                     body: realFile,
@@ -73,9 +73,9 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
-					// await fileServices.executePipeline(fileId, token);
+					const pipeline = await pipelineServices.executePipeline(fileId, token);
 
-					if(fileMetadata.check){
+					if(fileMetadata.check && pipeline.check){
 						onSuccess?.("ok");
 						Swal.fire({
 							icon: 'success',
@@ -84,18 +84,22 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 							confirmButtonColor: '#3085d6',
 						});
 					}else{
+						await fileServices.deleteFile(fileId, token);
 						showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
 						throw new Error('Error al subir el archivo.');
 					}
                 } else {
+					await fileServices.deleteFile(fileId, token);
+					showErrorModal('El archivo no tiene las propiedades de un LAS o LAZ');
                     throw new Error('Error al subir el archivo.');
                 }
-                refreshFiles();
             } catch (err) {
+				await fileServices.deleteFile(fileId, token);
                 console.error(err);
                 onError?.(new Error("Error al subir a MinIO"));
                 showErrorModal(`${realFile.name} falló al subir.`);
             }
+			refreshFiles();
         },
     };
 

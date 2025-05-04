@@ -13,10 +13,13 @@ const userServices = {
         return apiRequest<UserRecord[]>('/projects/');
     },
 
-    createUser: async (user: UserCreatePayload, token : string): Promise<UserRecord> => {
-        return apiRequest<UserRecord>('/users/user', token, {
+    createUser: async (userc: UserCreatePayload): Promise<UserRecord> => {
+        return apiRequest<UserRecord>('/userc/user', "", {
             method: 'POST',
-            body: JSON.stringify(user)
+            body: JSON.stringify(userc),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
     },
 

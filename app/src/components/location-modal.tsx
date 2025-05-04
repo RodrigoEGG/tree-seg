@@ -6,28 +6,22 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-  } from "@/components/ui/table"
 import { FileMetadata } from "@/interfaces/file-record";
 import { selectToken } from "@/redux/slices/useSlice";
 import { fileServices } from "@/services/file-api";
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
-import MetadataTable from "./metadata-table";
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Button } from "./ui/button";
 
-interface LasModalProps {
+interface LocationModalProps {
 	children : React.ReactNode;
 }
 
-export default function LasModal ({children} : LasModalProps) {
+export default function LocationModal({children} : LocationModalProps) {
 
 	const {projectid, fileid} = useParams();
 	const token = useSelector(selectToken);
@@ -76,12 +70,36 @@ export default function LasModal ({children} : LasModalProps) {
 					<DialogHeader>
 
 						<DialogTitle>
-							LAS file header information
+							Location
 						</DialogTitle>
 
 						<DialogDescription asChild>
+
 							<div>
-								<MetadataTable fileMetadata={data}/>
+
+								<fieldset className="grid gap-6 rounded-lg border p-4">
+
+
+									<div className="grid gap-3">
+										<Label htmlFor="role">Latitude</Label>
+										<Input id="top-p" type="text" value={`${data.location[0]}`} disabled  />
+									</div>
+
+									<div className="grid gap-3">
+										<Label htmlFor="content">Longitude</Label>
+										<Input id="top-p" type="text" value={`${data.location[1]}`} disabled />
+									</div>
+
+								</fieldset>
+
+									<a 
+										href={`https://www.google.com/maps?q=${data.location[0]},${data.location[1]}`} 
+										target="_blank" 
+										rel="noopener noreferrer"
+									>
+										<Button className="w-full py-3">Go to google maps</Button>
+									</a>
+
 							</div>
 
 						</DialogDescription>

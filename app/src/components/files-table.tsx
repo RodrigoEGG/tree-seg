@@ -170,7 +170,7 @@ export function FilesTable() {
 
     };
 
-    const columns = getColumns(refreshFiles,1);
+    const columns = getColumns(refreshFiles,parseInt(id ? id : "1"));
 
     const table = useReactTable({
         data: files,

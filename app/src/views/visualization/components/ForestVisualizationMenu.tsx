@@ -5,12 +5,13 @@ import { useState } from "react";
 import SelectMarker from "./SelectMarker";
 import Scalarfields from "./Scalarfields";
 import { CircleHelp } from "lucide-react";
-import SelectTree from "./SelectTree";
 import Help from "@/components/help";
 import { tool_desc, tool_title } from "@/utils/help-desc";
 import Metadata from "./Metadata";
 import { GoBackButton } from "@/components/back-button";
 import { useParams } from "react-router-dom";
+import FilterTree from "./FilterTree";
+import SelectTreeGround from "./SelectTreeGround";
 
 export default function ForestVisualizationMenu() {
 	const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
@@ -115,11 +116,24 @@ export default function ForestVisualizationMenu() {
 
 	return (
 		<>
-			<div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
+			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
 
 				<div className="flex items-center gap-3 p-2">
 					<GoBackButton to={`/app/project/files/${projectid}`}/>
 				</div>
+
+			</div>
+
+			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
+
+
+
+				<Metadata/>
+
+			</div>
+
+			<div className="grid py-4 items-start px-2 text-sm font-medium lg:px-4">
+
 
 				<div className="flex items-center gap-3 p-2">
 					<h1 className="text-lg font-semibold">Tools </h1> 
@@ -161,19 +175,23 @@ export default function ForestVisualizationMenu() {
 			</div>
 
 			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
+
 				<Scalarfields/>
-			</div>
-
-
-			<div className="grid py-8 items-start px-2 text-sm font-medium lg:px-4">
-
-				<SelectTree/>
 
 			</div>
 
-			<div className="grid pt-4 items-start px-2 text-sm font-medium lg:px-4">
-				<Metadata/>
+			<div className="grid py-4 items-start px-2 text-sm font-medium lg:px-4">
+
+				<SelectTreeGround/>
+
 			</div>
+
+			<div className="grid pb-3 pt-1 items-start px-2 text-sm font-medium lg:px-4">
+				<FilterTree/>
+			</div>
+
+
+
 		</>
 	);
 }

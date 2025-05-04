@@ -5,24 +5,29 @@ import argparse
 from minio import Minio
 from minio.error import S3Error
 import numpy as np
+from dotenv import load_dotenv
+import os
 
-MINIO_USERNAME = "minioadmin"
-MINIO_PASSWORD = "minioadmin"
-MINIO_BUCKET = "tree-seg"
-MINIO_CLIENT = "127.0.0.1:9000"
+load_dotenv(dotenv_path="/home/juan/tree-seg/microservices/pipeline/.env")
+
+MINIO_USERNAME = os.getenv("MINIO_USERNAME")
+MINIO_PASSWORD = os.getenv("MINIO_PASSWORD")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET")
+MINIO_CLIENT = os.getenv("MINIO_CLIENT")
+
+if not all([MINIO_USERNAME, MINIO_PASSWORD, MINIO_BUCKET, MINIO_CLIENT]):
+    raise ValueError("Faltan algunas variables de entorno necesarias en el archivo .env")
 
 POTREE_DIR = "/home/juan/potree"
 BASE_OUTPUT_DIR = "/home/juan/output"
 
 def update_las_file(project_id: int, file_id: int, file_name: str):
     try:
-
         file_name_base = file_name.rsplit('.las', 1)[0]
         processed_path = f"{BASE_OUTPUT_DIR}/{file_id}/home/datascience/results/{file_name_base}_out.laz"
         print(processed_path)
 
         laz = laspy.read(processed_path)
-
 
         if not hasattr(laz, "PredInstance"):
             print("El archivo laz no tiene el atributo 'PredInstance'.")

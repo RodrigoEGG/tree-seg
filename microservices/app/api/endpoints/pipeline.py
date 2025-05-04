@@ -1,16 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, status
 from app.crud.pipeline.pipeline import execute_pipeline
+from app.models.files_schema import File
 from sqlalchemy.orm import Session
-from app.crud.auth.auth import auth_user, create_token, get_token, validate_token
 from app.dependencies.postgres_depends import get_db
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 router = APIRouter()
 
-@router.get("/{file_id}", status_code=status.HTTP_200_OK)
-def start_pipeline(file_id : int , token : dict = Depends(get_token), db : Session = Depends(get_db)):
-	if not token:
-		raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido o expirado")
-	pipeline = execute_pipeline(db, file_id, token)
+executor = ThreadPoolExecutor(max_workers=2)
 
-	return {"check" : pipeline}
+@router.get("/{file_id}", status_code=status.HTTP_200_OK)
+async def start_pipeline(file_id: int, db: Session = Depends(get_db)):
+    file: File = db.query(File).filter(File.file_id == file_id).first()
+    if not file:
+        return {"check": False}
+    
+    loop = asyncio.get_running_loop()
+    loop.run_in_executor(executor, execute_pipeline, file)
+    
+    return {"check": True}

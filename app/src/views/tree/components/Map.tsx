@@ -14,8 +14,8 @@ export default function Map() {
 			<div className="w-full h-full rounded overflow-hidden">
 				<MapContainer
 					center={position}
-					zoom={13}
-					className="h-full w-full rounded z-0" // ¡importante! no uses style aquí
+					zoom={20}
+					className="h-full w-full rounded z-0"
 				>
 					<TileLayer
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

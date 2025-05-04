@@ -208,6 +208,3 @@ def get_metadata_by_file(mongo: Database, file_id: int):
         return result
     except Exception as e:
         return str(e)
-
-
-    
