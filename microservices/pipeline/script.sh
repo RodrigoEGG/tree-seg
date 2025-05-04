@@ -14,7 +14,7 @@ file_id=$2
 file_name=$3
 base_name="${file_name%.las}"
 
-export LD_LIBRARY_PATH="/home/juan/potreeconverter:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/home/juan/potreeconverter:${LD_LIBRARY_PATH:-}"
 POTREE_CONVERTER="/home/juan/potreeconverter/PotreeConverter"
 
 input="/home/juan/input/$file_id/"
