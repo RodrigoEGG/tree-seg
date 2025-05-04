@@ -13,7 +13,7 @@ export default function Projects() {
                     </div>
                 </main>
             </div>
-        </div> */
+        </div>
 
         /* Esta es la parte sin el panel */
         <div className="flex-1 ml-8 mr-8">
