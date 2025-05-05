@@ -1,13 +1,12 @@
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Bell, Tree, Upload, Eye } from "lucide-react";
+import { Bell, Upload, Eye } from "lucide-react";
 import ViewerDemo from "./components/ViewerDemo";
-import { Demo } from "@/context/Demo";
+import { Demo, useViewer } from "@/context/Demo";
 
 export default function Landing() {
+
 
     return (
         
@@ -22,6 +21,8 @@ export default function Landing() {
                         </p>
                     </div>
                 </section>
+
+
 
                 <Demo>
                 <section id="demo" className="py-16 bg-slate-50">

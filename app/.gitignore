@@ -27,3 +27,5 @@ dist-ssr
 .env
 app/package-lock.json
 app/yarn.lock
+
+microservices/uvicorn.log

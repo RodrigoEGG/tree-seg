@@ -22,7 +22,6 @@ const ViewerDemo: React.FC = () => {
 
 
             <div id="potree-root">
-
                 <Wrapper ref={potreeContainerRef} className="potree_container">
                     <div id="potree_render_area"></div>
                 </Wrapper>

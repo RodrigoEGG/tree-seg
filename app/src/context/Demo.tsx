@@ -26,13 +26,13 @@ export const Demo: React.FC = ({ children }) => {
       setViewer(newViewer);
 
 
-      const url = "/o3/metadata.json";
+      const url = "/o11/metadata.json";
       window.Potree.loadPointCloud(url)
         .then((e: any) => {
           const pointcloud = e.pointcloud;
           const material = pointcloud.material;
-          material.activeAttributeName = "rgba";
-          material.minSize = 2;
+          material.activeAttributeName = "point source id";
+          material.minSize = 1;
           material.pointSizeType = window.Potree.PointSizeType.FIXED;
           newViewer.scene.addPointCloud(pointcloud);
           newViewer.fitToScreen();
