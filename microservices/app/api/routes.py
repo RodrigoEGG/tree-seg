@@ -1,9 +1,8 @@
 from fastapi import APIRouter,Depends
 
 # Import all endpoint routers
-from app.api.endpoints import projects, files, users, auth, pipeline, userc
+from app.api.endpoints import projects, files, users, auth, pipeline, userc, trees
 from app.crud.auth.auth import validate_token
-from microservices.app import api
 
 # Create the main API router
 api_router = APIRouter()
@@ -25,7 +24,7 @@ api_router.include_router(
 )
 
 api_router.include_router(
-	files.router,
+	trees.router,
 	prefix="/trees",
 	tags=["trees"],
 	dependencies=[Depends(validate_token)]
