@@ -27,7 +27,7 @@ api_router.include_router(
 	trees.router,
 	prefix="/trees",
 	tags=["trees"],
-	dependencies=[Depends(validate_token)]
+	#dependencies=[Depends(validate_token)]
 )
 
 api_router.include_router(

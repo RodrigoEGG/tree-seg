@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.get("/metadata/heights", status_code=status.HTTP_200_OK)
 def fetch_tree_heights(
-    project_id: int, file_name: str, tree_id: int,  db: Session = Depends(get_db), mongo: Database = Depends(get_mongo)
+    project_id: int, file_name: str,  db: Session = Depends(get_db), mongo: Database = Depends(get_mongo)
 ):
     try:
         heights = get_tree_heights(db, mongo, project_id, file_name)
@@ -22,7 +22,7 @@ def fetch_tree_heights(
     
 @router.get("/metadata/diameters", status_code=status.HTTP_200_OK)
 def fetch_tree_diameters(
-    project_id: int, file_name: str, tree_id: int,  db: Session = Depends(get_db), mongo: Database = Depends(get_mongo)
+    project_id: int, file_name: str,  db: Session = Depends(get_db), mongo: Database = Depends(get_mongo)
 ):
     try:
         diameters = get_tree_diameters(db, mongo, project_id, file_name)
