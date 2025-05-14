@@ -18,8 +18,8 @@ export const Demo: React.FC = ({ children }) => {
     if (potreeContainerRef.current) {
       const newViewer = new window.Potree.Viewer(potreeContainerRef.current);
       newViewer.setEDLEnabled(true);
-      newViewer.setFOV(60);
-      newViewer.setPointBudget(1 * 1000 * 1000);
+      newViewer.setFOV(10);
+      newViewer.setPointBudget(1_000_000);
       newViewer.setClipTask(window.Potree.ClipTask.SHOW_INSIDE);
       newViewer.loadSettingsFromURL();
       newViewer.setControls(newViewer.orbitControls);
@@ -32,7 +32,7 @@ export const Demo: React.FC = ({ children }) => {
           const pointcloud = e.pointcloud;
           const material = pointcloud.material;
           material.activeAttributeName = "point source id";
-          material.minSize = 1;
+          material.minSize = 2;
           material.pointSizeType = window.Potree.PointSizeType.FIXED;
           newViewer.scene.addPointCloud(pointcloud);
           newViewer.fitToScreen();

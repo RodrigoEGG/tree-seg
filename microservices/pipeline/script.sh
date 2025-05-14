@@ -67,6 +67,9 @@ $POTREE_CONVERTER "$seg_path/${base_name}_out.laz" -o "/home/juan/potree/$file_i
 echo "[INFO] Ejecutando potree.py..."
 python3 "$(dirname "$0")/potree.py" "$project_id" "$file_id" "$file_name"
 
+echo "[INFO] Ejecutando trees.py..."
+python3 "$(dirname "$0")/trees.py" "$project_id" "$file_id" "$file_name"
+
 echo "[INFO] Ejecutando update.py..."
 python3 "$(dirname "$0")/update.py" "$project_id" "$file_id" "$file_name"
 

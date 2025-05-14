@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
-const position: LatLngExpression = [51.505, -0.09];
+const position: LatLngExpression = [-38, 176];
 
 export default function Map() {
 	return (
