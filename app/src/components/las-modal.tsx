@@ -21,6 +21,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import MetadataTable from "./metadata-table";
 
 interface LasModalProps {
 	children : React.ReactNode;
@@ -80,42 +81,7 @@ export default function LasModal ({children} : LasModalProps) {
 
 						<DialogDescription asChild>
 							<div>
-								<Table>
-									
-									<TableHeader>
-
-										<TableRow>
-											<TableHead className="w-[100px]">Field</TableHead>
-											<TableHead className="text-right">Data</TableHead>
-										</TableRow>
-
-									</TableHeader>
-
-									<TableBody>
-
-										<TableRow>
-											<TableCell className="font-medium">Generating System</TableCell>
-											<TableCell className="text-right">{metadata?.generating_software}</TableCell>
-										</TableRow>
-
-										<TableRow>
-											<TableCell className="font-medium">Creation Date</TableCell>
-											<TableCell className="text-right">{metadata?.creation_date}</TableCell>
-										</TableRow>
-
-										<TableRow>
-											<TableCell className="font-medium">Point Count</TableCell>
-											<TableCell className="text-right">{metadata?.point_count}</TableCell>
-										</TableRow>
-
-										<TableRow>
-											<TableCell className="font-medium">Coordenate System</TableCell>
-											<TableCell className="text-right">{metadata?.crs}</TableCell>
-										</TableRow>
-
-									</TableBody>
-
-								</Table>
+								<MetadataTable fileMetadata={data}/>
 							</div>
 
 						</DialogDescription>

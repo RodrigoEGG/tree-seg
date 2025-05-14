@@ -194,9 +194,15 @@ export function ProjectTable() {
           </div>
         )
       ) : error ? (
-        <div className="text-red-500 py-4">
-          Error: {error}. Please try again.
-        </div>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Add your first project to get started.
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       ) : (
         <div className="rounded-md border">
           <Table>

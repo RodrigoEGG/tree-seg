@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   background-color: black;
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 70vh;
   position: relative;
 `;
 
