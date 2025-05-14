@@ -10,8 +10,47 @@ import { metadata_desc, metadata_title } from "@/utils/help-desc"
 import MetadataModal from "@/components/metadata-modal"
 import LasModal from "@/components/las-modal"
 import LocationModal from "@/components/location-modal"
+import useSWR from "swr"
+import { fileServices } from "@/services/file-api"
+import { FileMetadata } from "@/interfaces/file-record"
+import { useEffect, useState } from "react"
+import { selectToken } from "@/redux/slices/useSlice"
+import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 
 export default function Metadata() {
+
+	const {projectid, fileid} = useParams();
+	const token = useSelector(selectToken);
+
+	const [metadata, setMetadata] = useState<FileMetadata>();
+
+	const fetcher = async () => {
+		const data = await fileServices.getMetadataByFile(parseInt(fileid ? fileid : "1"), token);
+		return data;
+	}
+
+	const { data, isLoading, error } = useSWR(fileid ? `/api/files/metadata/${fileid}` : null, fetcher, { 
+		revalidateOnFocus: false, 
+		revalidateOnReconnect: false 
+	});
+
+	useEffect(()=>{
+		setMetadata(data);
+	},[data])
+
+	if (error) return (
+		<div>
+			Failed to load data
+		</div>
+	);
+
+	if (!data) return (
+		<div>
+			Loading...
+		</div>
+	);
+
 	return (
 		<>
 	
@@ -22,7 +61,7 @@ export default function Metadata() {
 
 			<div className="mt-2">
 
-				<LasModal>
+				<LasModal metadata={data}>
 
 					<SidebarMenuButton asChild>
 						<div>
@@ -33,7 +72,7 @@ export default function Metadata() {
 
 				</LasModal>
 
-				<LocationModal>
+				<LocationModal metadata={data}>
 
 					<SidebarMenuButton asChild>
 						<div>
@@ -46,7 +85,7 @@ export default function Metadata() {
 
 
 
-				<MetadataModal stat="height" value={12.5}>
+				<MetadataModal stat="height" value={data.average_height}>
 
 					<SidebarMenuButton className="w-full" asChild>
 						<div>
@@ -57,7 +96,7 @@ export default function Metadata() {
 
 				</MetadataModal>
 
-				<MetadataModal stat="cirfumference" value={8.62}>
+				<MetadataModal stat="cirfumference" value={data.average_circumference}>
 
 					<SidebarMenuButton asChild>
 						<div>

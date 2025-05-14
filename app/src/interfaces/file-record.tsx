@@ -22,6 +22,9 @@ export interface FileMetadata {
 	location : number[];
 	crs : string;
 	coordinates : number[][];
+	average_height : number;
+	average_circumference : number;
+	tree_data : any;
 }
 
 export interface ProjectMetadatas {

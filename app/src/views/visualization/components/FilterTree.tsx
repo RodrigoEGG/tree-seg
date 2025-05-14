@@ -1,7 +1,7 @@
 import Help from "@/components/help";
 import { useNavigate, useParams } from "react-router-dom";
 import { useViewer } from "@/context/ViewerProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -11,8 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { scalar_desc, scalar_title, tree_desc, tree_title } from "@/utils/help-desc";
+import { tree_desc, tree_title } from "@/utils/help-desc";
 import { Button } from "@/components/ui/button";
+import useSWR from "swr";
+import { fileServices } from "@/services/file-api";
+import { FileMetadata } from "@/interfaces/file-record";
+import { selectToken } from "@/redux/slices/useSlice";
+import { useSelector } from "react-redux";
 
 export default function FilterTree() {
     const navigate = useNavigate();
@@ -41,6 +46,38 @@ export default function FilterTree() {
         }
     };
 
+	const token = useSelector(selectToken);
+
+	const [metadata, setMetadata] = useState<FileMetadata>();
+
+	const fetcher = async () => {
+		const data = await fileServices.getMetadataByFile(parseInt(fileid ? fileid : "1"), token);
+		return data;
+	}
+
+	const { data, isLoading, error } = useSWR(fileid ? `/api/files/metadata/${fileid}` : null, fetcher, { 
+		revalidateOnFocus: false, 
+		revalidateOnReconnect: false 
+	});
+
+	useEffect(()=>{
+		setMetadata(data);
+		setCount(data?.tree_data.length)
+	},[data])
+
+	if (error) return (
+		<div>
+			Failed to load data
+		</div>
+	);
+
+	if (!data) return (
+		<div>
+			Loading...
+		</div>
+	);
+
+
 	return (
 		<>
 			<div className="flex items-center gap-3 p-2">
@@ -66,8 +103,8 @@ export default function FilterTree() {
 								<SelectItem value="-1"> All</SelectItem>
 
 							{[...Array(count)].map((_, index) => (
-								<SelectItem key={index} value={`${index}`}>
-								Tree {index}
+								<SelectItem key={index+1} value={`${index+1}`}>
+								Tree {index+1}
 								</SelectItem>
 							))}
 
