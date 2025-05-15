@@ -32,7 +32,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
         multiple: true,
         beforeUpload : async (file) => {
             const isLt500MB = file.size < 500 * 1024 * 1024;
-            const validExtensions = ['.las', '.laz'];
+            const validExtensions = ['.las'];
             const fileName = file.name.toLowerCase();
             const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
 

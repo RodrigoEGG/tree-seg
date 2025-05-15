@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path : "/app/view/:projectid/:fileid/:treeid",
-				element : <Tree/>
+				element : <ViewerProtection><Tree/></ViewerProtection>
 			},
 			{
 				path : "/app/projects",
