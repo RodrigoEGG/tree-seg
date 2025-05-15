@@ -4,16 +4,15 @@ import {
 	Rabbit,
 	Turtle,
   } from "lucide-react"
-  
-  import { Input } from "@/components/ui/input"
-  import { Label } from "@/components/ui/label"
-  import {
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-  } from "@/components/ui/select"
+} from "@/components/ui/select"
 import { useTree } from "@/context/TreeProvider"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -29,13 +28,13 @@ export default function(){
       viewer.scene.pointclouds.forEach((pc: any) => {
         pc.material.activeAttributeName = newAttr;
       });
-      console.log("Updated attribute to:", newAttr);
+      
     }
   };
 
   const startDistanceMeasurement = () => {
     if (!viewer) {
-      console.error("Viewer not initialized");
+		
       return;
     }
 
@@ -45,7 +44,6 @@ export default function(){
     }
 
     if (!viewer.measuringTool) {
-      console.error("Measuring tool is not available in the viewer.");
       return;
     }
 
@@ -57,7 +55,6 @@ export default function(){
       name: "Distance",
     });
 
-    console.log("Measurement started:", measurement);
   };
 
     const startPointMeasurement = () => {
@@ -72,7 +69,6 @@ export default function(){
     }
 
     if (!viewer.measuringTool) {
-      console.error("Measuring tool is not available in the viewer.");
       return;
     }
 
@@ -97,7 +93,6 @@ export default function(){
 
   const startBoxMeasurement = () => {
     if (!viewer) {
-      console.error("Viewer not initialized");
       return;
     }
 
@@ -107,18 +102,18 @@ export default function(){
     }
 
     if (!viewer.measuringTool) {
-      console.error("Measuring tool is not available in the viewer.");
+		
       return;
     }
 
 	let volume = viewer.volumeTool.startInsertion(); 
 
-    console.log("Measurement started:", measurement);
+
   };
 
   const startCircleMeasurement = () => {
     if (!viewer) {
-      console.error("Viewer not initialized");
+		
       return;
     }
 
@@ -128,7 +123,7 @@ export default function(){
     }
 
     if (!viewer.measuringTool) {
-      console.error("Measuring tool is not available in the viewer.");
+		
       return;
     }
 
@@ -143,7 +138,7 @@ export default function(){
 		name: 'Circle'});
 
 
-    console.log("Measurement started:", measurement);
+
   };
 
 	return (

@@ -25,16 +25,26 @@ export const TreeProvider: React.FC = ({ children }: any) => {
 	const token = useSelector(selectToken);
 	const { fileid = "", treeid = "" } = useParams();
 
+	const [height, setHeight] = useState("");
+	const [circumference, setCircumference] = useState("");
+	const [volume, setVolume] = useState("");
+	const [badges, setBadges] = useState<string[]>([]);
+
 	const { data, error, isLoading } = useSWR(
 		fileid && treeid && token ? [fileid, treeid, token] : null,
 		fetchTreeData
 	);
 
 	useEffect(() => {
-
-		setTree(data);
-		console.log(data)
-
+		if(data){
+			setTree(data);
+			setHeight(data.height);
+			setCircumference(data.circumference);
+			if(data?.labels){
+				setBadges(data.labels)
+			}
+			console.log(data)
+		}
 	}, [data])
 
 	const contextValue = {
@@ -45,6 +55,14 @@ export const TreeProvider: React.FC = ({ children }: any) => {
 		setMarkers,
 		tree,
 		setTree,
+		height,
+		setHeight,
+		circumference,
+		setCircumference,
+		volume,
+		setVolume,
+		badges,
+		setBadges,
 		loading: isLoading,
 		error,
 	};
@@ -79,8 +97,5 @@ export const TreeProvider: React.FC = ({ children }: any) => {
 
 export const useTree = (): any => {
 	const context = useContext(TreeContext);
-	if (!context) {
-		throw new Error("useTree debe usarse dentro de un TreeProvider");
-	}
 	return context;
 };
