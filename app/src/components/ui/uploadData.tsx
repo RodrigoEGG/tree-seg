@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { InboxOutlined } from '@ant-design/icons';
+import { ConsoleSqlOutlined, InboxOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import { fileServices } from '@/services/file-api';
@@ -44,7 +44,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
             }
 
             if (!hasValidExtension) {
-                showErrorModal('Solo se permiten archivos con extensión .las o .laz.');
+                showErrorModal('Solo se permiten archivos con extensión .las');
                 return false;
             }
 
@@ -73,6 +73,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
+					console.log(fileMetadata);
 					const pipeline = await pipelineServices.executePipeline(fileId, token);
 
 					if(fileMetadata.check && pipeline.check){
@@ -112,7 +113,7 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
             <p className="ant-upload-text">Click o arrastra archivos para subir</p>
 
             <p className="ant-upload-hint">
-                Solo se aceptan archivos .las o .laz y menos de 500MB.
+                Solo se aceptan archivos .las y menos de 500MB.
             </p>
         </Dragger>
     );

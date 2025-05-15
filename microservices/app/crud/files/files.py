@@ -134,14 +134,15 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
             las = laspy.read(data)
         except Exception as e:
             delete_file(pg, file.file_id)
-            raise ValueError("Error: el archivo no es LAS")
+            return False
 
         print(las.header.point_count)
         
         vrls = las.header.parse_crs()
         
         if not vrls:
-            raise ValueError("Error: el archivo LAS no contiene CRS")
+            delete_file(pg, file.file_id)
+            return False
 
         transformer = Transformer.from_crs(vrls, "EPSG:4326", always_xy=True)
         x_max, y_max, x_min, y_min = las.header.max[0], las.header.max[1], las.header.min[0], las.header.min[1]
@@ -184,7 +185,8 @@ def get_file_metadata(pg: Session, mongo: Database,file_id: int):
         return True
 
     except Exception as e:
-        return e
+        delete_file(pg, file.file_id)
+        return False
     
 def get_metadata_by_project(client: Database, project_id: int):
     try:
