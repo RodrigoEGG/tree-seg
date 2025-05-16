@@ -7,6 +7,8 @@ import { PlusCircle } from 'lucide-react';
 
 const UploadDataModal: React.FC<any> = ( upload ) => {
 
+	console.log(upload.status)
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -25,7 +27,7 @@ const UploadDataModal: React.FC<any> = ( upload ) => {
 
         <>
 
-            <Button disabled={upload.check} size="sm" className="h-8 gap-1 ml-auto" onClick={showModal}>
+            <Button disabled={upload.status} size="sm" className="h-8 gap-1 ml-auto" onClick={showModal}>
 
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">

@@ -9,8 +9,11 @@ REDIS_LIST = "file_ids"
 
 @router.get("/insert/{user_id}")
 def insert_id(user_id : int):
-    r.rpush(REDIS_LIST, user_id)
-    return {"id": user_id}
+    try:
+        r.rpush(REDIS_LIST, user_id)
+        return {"check": True}
+    except Exception as e:
+         return {"check": False}
 
 @router.delete("/delete/{user_id}")
 def delete_id(user_id : int):
