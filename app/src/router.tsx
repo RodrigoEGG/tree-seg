@@ -14,6 +14,7 @@ import ViewerProtection from "./utils/ViewerProtection";
 import ProjectLayout from "./layouts/projectlayout/ProjectLayout";
 import Map from "./views/map/Map";
 import CreateAccount from "./views/create-account/CreateAccount";
+import NotFound from "./utils/not-found";
 
 const router = createBrowserRouter([
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
 		children : [
 
 			{
+				index : true,
 				path : "/app/view/:projectid/:fileid",
 				element : <ViewerProtection><Visualization/></ViewerProtection>
 			},
@@ -68,6 +70,7 @@ const router = createBrowserRouter([
 	{
 		path : "/",
 		element : <LandingSkeleton/>,
+		errorElement: <NotFound />,
 		children : [
 			{
 				index : true,
@@ -78,6 +81,10 @@ const router = createBrowserRouter([
 	{
 		path : "/create-account",
 		element : <CreateAccount />
+	},
+	{
+		path: "*",
+		element: <NotFound />
 	}
 ]);
 
