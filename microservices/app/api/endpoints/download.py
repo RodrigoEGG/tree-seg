@@ -39,7 +39,7 @@ def descargar_tree_data_csv(file_id: int, client : Database = Depends(get_mongo)
         return StreamingResponse(
             csv_buffer,
             media_type="text/csv",
-            headers={"Content-Disposition": "attachment; filename=tree_data.csv"}
+            headers={"Content-Disposition": f"attachment; filename=tree_data_{file_id}.csv"}
         )
     except PyMongoError as e:
         return {"error": f"Error al conectar con MongoDB: {str(e)}"}

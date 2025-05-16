@@ -1,5 +1,4 @@
 import {
-  CreditCardIcon,
   Download,
   MoreVerticalIcon,
   Sheet,
@@ -23,6 +22,7 @@ interface MenuFilesProps {
 export default function MenuFile(props : MenuFilesProps) {
 
 	const url = import.meta.env.VITE_BUCKET_URL;
+	const api = import.meta.env.VITE_LOCAL_API_URL;
 	const { id } = useParams();
 
 	return (
@@ -51,7 +51,7 @@ export default function MenuFile(props : MenuFilesProps) {
 
 					</a>
 
-					<a href={`${url}/${id}/${props.file_name}`} download={props.file_name}>
+					<a href={`${api}/download/csv/${props.fileId}`} download={props.file_name}>
 
 						<DropdownMenuItem className="hover:bg-gray-100 hover:text-black">
 							<Sheet />
