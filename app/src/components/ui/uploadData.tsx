@@ -4,11 +4,12 @@ import { Upload } from 'antd';
 import type { UploadProps } from 'antd';
 import { fileServices } from '@/services/file-api';
 import { useSelector } from 'react-redux';
-import { selectToken } from '@/redux/slices/useSlice';
+import { selectToken, selectUid } from '@/redux/slices/useSlice';
 import { useParams } from 'react-router-dom';
 import { UploadModalProps } from '@/interfaces/refresh';
 import Swal from 'sweetalert2';
 import { pipelineServices } from '@/services/pipeline-api';
+import { statusServices } from '@/services/status-api';
 
 const { Dragger } = Upload;
 
@@ -24,6 +25,7 @@ const showErrorModal = (errorMessage: string) => {
 const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
     const token = useSelector(selectToken);
+	const uid = useSelector(selectUid);
     const { id } = useParams();
 	const [fileId, setFileId] = useState<number>(0);
 
@@ -73,8 +75,8 @@ const UploadData: React.FC<UploadModalProps> = ({ refreshFiles }) => {
 
                 if (uploadResponse.ok) {
 					const fileMetadata = await fileServices.getFileMetadata(fileId, token);
-					console.log(fileMetadata);
 					const pipeline = await pipelineServices.executePipeline(fileId, token);
+					const statususr = await statusServices.insertUserStatus(uid, token)
 
 					if(fileMetadata.check && pipeline.check){
 						onSuccess?.("ok");
