@@ -1,6 +1,6 @@
 from fastapi import APIRouter,Depends
 
-from app.api.endpoints import projects, files, users, auth, pipeline, userc, trees, status
+from app.api.endpoints import projects, files, users, auth, pipeline, userc, trees, status, download
 from app.crud.auth.auth import validate_token
 
 api_router = APIRouter()
@@ -50,6 +50,12 @@ api_router.include_router(
 	status.router,
 	prefix='/status',
 	tags=["status"]
+)
+
+api_router.include_router(
+	download.router,
+	prefix='/download',
+	tags=["/downloads"]
 )
 
 api_router.include_router(
