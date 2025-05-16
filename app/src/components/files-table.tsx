@@ -132,7 +132,7 @@ export const getColumns = (
   ];
 
 
-export function FilesTable() {
+export function FilesTable({ status } : { status : any}) {
 
     const token = useSelector(selectToken);
 
@@ -212,7 +212,7 @@ export function FilesTable() {
                 />
 
 
-                <UploadDataModal refreshFiles={refreshFiles}/>
+                <UploadDataModal refreshFiles={refreshFiles} status={status}/>
 
             </div>
 
