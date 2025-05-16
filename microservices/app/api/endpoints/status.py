@@ -7,7 +7,7 @@ r = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 REDIS_LIST = "file_ids"
 
-@router.post("/insert/{user_id}")
+@router.get("/insert/{user_id}")
 def insert_id(user_id : int):
     r.rpush(REDIS_LIST, user_id)
     return {"id": user_id}
