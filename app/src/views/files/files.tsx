@@ -46,7 +46,7 @@ export default function Files() {
 
                 <br />
 
-                <FilesTable status={status} />
+                <FilesTable status={status} setStatus={setStatus}/>
 
             </div>
 

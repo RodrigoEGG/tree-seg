@@ -31,9 +31,10 @@ import {
 
 import UploadDataModal from "./ui/modal"
 import { useSelector } from "react-redux"
-import { selectToken } from "@/redux/slices/useSlice"
+import { selectToken, selectUid } from "@/redux/slices/useSlice"
 import { fileServices } from '@/services/file-api';
 import MenuFile from './menu-file';
+import { statusServices } from '@/services/status-api';
 
 export const getColumns = (
     refreshFiles: () => Promise<void>,
@@ -132,9 +133,10 @@ export const getColumns = (
   ];
 
 
-export function FilesTable({ status } : { status : any}) {
+export function FilesTable({ status, setStatus } : { status : any, setStatus : any}) {
 
     const token = useSelector(selectToken);
+	const uid = useSelector(selectUid);
 
     const { id } = useParams();
 
@@ -154,7 +156,8 @@ export function FilesTable({ status } : { status : any}) {
             setIsLoading(true);
             setError(null);
             const data = await fileServices.getFilesByProject(parseInt(id ?? '0'), token);
-            console.log(data)
+			const data2 = await statusServices.getUserStatus(uid, token);
+			setStatus(data2.check);
             setFiles(data);
 
         } catch (err) {
