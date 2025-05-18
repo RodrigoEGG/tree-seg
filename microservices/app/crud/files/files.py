@@ -70,11 +70,17 @@ def delete_file(db: Session, mongo : Database, file_id: int):
         bucket = get_minio_bucket()
 
         file = db.query(File).filter(File.file_id == file_id).first()
+        name = file.file_name.split(".las")
         
         if not file:
             return None
 
         client.remove_object(bucket, f"{file.project_id}/{file_id}/{file.file_name}")
+        client.remove_object(bucket, f"{file.project_id}/{file_id}/{name}.laz")
+        client.remove_object(bucket, f"{file.project_id}/{file_id}/potree/metadata.json")
+        client.remove_object(bucket, f"{file.project_id}/{file_id}/potree/hierarchy.bin")
+        client.remove_object(bucket, f"{file.project_id}/{file_id}/potree/octree.bin")
+        
         mongo_db = mongo['tree-seg']
         collection = mongo_db["metadata"]
         collection.delete_one({"file_id": file.file_id , "project_id" : file.project_id})
