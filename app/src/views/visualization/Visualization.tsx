@@ -2,9 +2,9 @@
 import ForestVisualizationMenu from "./components/ForestVisualizationMenu";
 import PointcloudNavigator from "./components/Test";
 import { ViewerProvider } from "@/context/ViewerProvider";
-import Viewer from "./components/Viewer";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import Forestmenu from "./components/Sidebar";
+import ReloadViewer from "./components/reload-viewer";
 
 
 
@@ -26,7 +26,8 @@ export default function Visualization() {
 
                                 <SidebarTrigger/>
 
-                                <Viewer/>
+								<ReloadViewer/>
+
 
                             </main>
 

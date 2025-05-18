@@ -18,7 +18,7 @@ export default function Viewer() {
 			const newViewer = new window.Potree.Viewer(potreeContainerRef.current);
 			newViewer.setEDLEnabled(true);
 			newViewer.setFOV(60);
-			newViewer.setPointBudget(10000 * 1000);
+			newViewer.setPointBudget(1_000_000);
 			newViewer.setClipTask(window.Potree.ClipTask.SHOW_INSIDE);
 			newViewer.loadSettingsFromURL();
 			newViewer.setControls(newViewer.orbitControls);

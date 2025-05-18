@@ -14,7 +14,7 @@ import FilterTree from "./FilterTree";
 import SelectTreeGround from "./SelectTreeGround";
 
 export default function ForestVisualizationMenu() {
-	const { viewer, setViewer, potreeContainerRef, markers, setMarkers } = useViewer();
+	const { viewer, setViewer, potreeContainerRef, markers, setMarkers, triggerReload } = useViewer();
 
 	const {projectid} = useParams();
 
@@ -138,6 +138,12 @@ export default function ForestVisualizationMenu() {
 				<div className="flex items-center gap-3 p-2">
 					<h1 className="text-lg font-semibold">Tools </h1> 
 					<Help title={tool_title} desc={tool_desc}/>
+				</div>
+
+				<div className="mt-4">
+					<Button className="w-full bg-gray-300 text-black hover:text-white shadow-lg" onClick={triggerReload}>
+						Reload Viewer
+					</Button>
 				</div>
 
 
