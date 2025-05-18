@@ -25,6 +25,8 @@ export default function MenuFile(props : MenuFilesProps) {
 	const api = import.meta.env.VITE_LOCAL_API_URL;
 	const { id } = useParams();
 
+	const name : string = props.file_name.split(".las")[0] + ".laz";
+
 	return (
 
         <DropdownMenu>
@@ -42,11 +44,11 @@ export default function MenuFile(props : MenuFilesProps) {
 
 				<DropdownMenuGroup>
 
-					<a href={`${url}/${id}/${props.fileId}/${props.file_name}`} download={props.file_name}>
+					<a href={`${url}/${id}/${props.fileId}/${name}`} download={props.file_name}>
 
 						<DropdownMenuItem className="hover:bg-gray-100 hover:text-black">
 							<Download />
-							Download LAS file
+							Download file
 						</DropdownMenuItem>
 
 					</a>
