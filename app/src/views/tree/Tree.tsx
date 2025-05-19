@@ -30,15 +30,16 @@ export default function Tree(){
 		revalidateOnReconnect: false 
 	});
 
-	useEffect(()=>{
-		if(data){
+	useEffect(() => {
+	if (data) {
+		const treeIndex = Number(treeid);
 
-			if(data.tree_data.length < parseInt(treeid ? treeid : "-1") || treeid == '0'){
-				navigate("/app/projects");
-			}
-
+		if ( isNaN(treeIndex) || !Number.isInteger(treeIndex) || treeIndex <= 0 || treeIndex > data.tree_data.length) {
+			navigate("/app/projects");
 		}
-	},[data])
+	}
+}, [data]);
+
 
 	if (error) return (
 		<div>
