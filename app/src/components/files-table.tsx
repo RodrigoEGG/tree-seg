@@ -85,25 +85,8 @@ export const getColumns = (
       accessorKey: "is_segmented",
       header: "Status",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("is_segmented")}</div>
+        <div className="capitalize">{row.getValue("is_segmented") ? "Segmented" : "In process"}</div>
       ),
-    },
-    {
-      accessorKey: "date_uploaded",
-      header: () => <div className="text-right">Created At</div>,
-      cell: ({ row }) => {
-        const rawDate = row.getValue("date_uploaded") as string;
-        const [day, month, year] = rawDate.split("-").map(Number);
-        const date = new Date(year, month - 1, day);
-  
-        const formatted = date.toLocaleDateString("en-US", {
-          month: "2-digit",
-          day: "2-digit",
-          year: "numeric",
-        });
-  
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
     },
     {
       accessorKey: "is_segmented",

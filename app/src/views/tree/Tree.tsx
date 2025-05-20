@@ -14,7 +14,7 @@ import IsValidating from "@/components/is-validating"
 
 export default function Tree(){
 
-	const {fileid, treeid} = useParams();
+	const {projectid, fileid, treeid} = useParams();
 	const navigate = useNavigate();
 	const token = useSelector(selectToken);
 
@@ -34,8 +34,15 @@ export default function Tree(){
 	if (data) {
 		const treeIndex = Number(treeid);
 
-		if ( isNaN(treeIndex) || !Number.isInteger(treeIndex) || treeIndex <= 0 || treeIndex > data.tree_data.length) {
-			navigate("/app/projects");
+		const exists = data.tree_data.some((tree : any )=> tree.treeid === treeIndex);
+
+		if (
+			isNaN(treeIndex) ||
+			!Number.isInteger(treeIndex) ||
+			treeIndex <= 0 ||
+			!exists
+		) {
+			navigate(`/app/view/${projectid}/${fileid}`);
 		}
 	}
 }, [data]);

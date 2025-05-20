@@ -32,7 +32,7 @@ export const Demo: React.FC = ({ children }) => {
           const pointcloud = e.pointcloud;
           const material = pointcloud.material;
           material.activeAttributeName = "point source id";
-          material.minSize = 2;
+          material.minSize = 1;
           material.pointSizeType = window.Potree.PointSizeType.FIXED;
           newViewer.scene.addPointCloud(pointcloud);
           newViewer.fitToScreen();
