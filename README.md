@@ -93,30 +93,5 @@ npm run dev
 The Segmentation Algorithm is responsible for processing data using a machine learning model and requires a Conda environment for dependency management. This serves as the component for segmenting the individual trees.
 Installation
 
-1. Navigate to the ML service directory:
-
-```bash
-cd <project_directory>/ai
-```
-
-2. Create and activate the Conda environment:
-
-```bash
-conda create --name ml_env python=3.12
-conda activate ml_env
-```
-
-3. install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-4. Running the Segmentation algorithm
-
-```bash
-python treeiso.py
-```
-
 ## License
 This project is licensed under **MIT License.**
